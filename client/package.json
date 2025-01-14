@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "npm run genClient && ng serve",
+    "build": "npm run genClient && ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "genClient": "typescriptclientgen generate -i ./swagger.json -n lmsclient"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +27,7 @@
     "@angular-devkit/build-angular": "^14.2.13",
     "@angular/cli": "~14.2.13",
     "@angular/compiler-cli": "^14.2.0",
+    "@ln/typescriptclientgen": "^1.0.5",
     "@types/jasmine": "~4.0.0",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",
