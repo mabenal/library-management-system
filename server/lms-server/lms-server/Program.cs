@@ -1,4 +1,6 @@
 using lms_server.Data;
+using lms_server.Mappings;
+using lms_server.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,9 @@ builder.Services.AddDbContext<LmsDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("LmsDbConnectionString"));
 });
+
+builder.Services.AddScoped<IBooksRepository, SQLBooksRepository>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
 

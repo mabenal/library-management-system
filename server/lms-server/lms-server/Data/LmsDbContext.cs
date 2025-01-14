@@ -9,11 +9,11 @@ namespace lms_server.Data
         {
         }
 
-        DbSet<Book> Books { get; set; }
+        public DbSet<Book> Books { get; set; }
 
-        DbSet<Client> Clients { get; set; }
+        public DbSet<Client> Clients { get; set; }
 
-        DbSet<BookRequest> BookRequests { get; set; }
+        public DbSet<BookRequest> BookRequests { get; set; }
 
     }
 }
