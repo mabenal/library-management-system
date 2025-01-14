@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace lms_server.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class MigrationForDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -73,6 +75,15 @@ namespace lms_server.Migrations
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Books",
+                columns: new[] { "Id", "Author", "Category", "Description", "ISBN", "NumberOfCopies", "Title", "YearPublished" },
+                values: new object[,]
+                {
+                    { new Guid("0dcd923f-d89b-4dad-a5b7-53e4780c22d0"), "F. Scott Fitzgerald", "Fiction", "The Great Gatsby is a novel by American author F. Scott Fitzgerald. The story takes place in 1922, during the Roaring Twenties, a time of prosperity in the United States after World War I. The book received critical acclaim and is widely regarded as a classic of American literature.", "9780743273565", 5, "The Great Gatsby", new DateTime(1925, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("8e2e4fe4-8bc9-4332-b3a8-6298b3ce0d86"), "Harper Lee", "Fiction", "To Kill", "jdjdjdjdjdjjjjd", 5, "To Kill a Mockingbird", new DateTime(1960, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(

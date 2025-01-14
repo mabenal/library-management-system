@@ -12,15 +12,15 @@ using lms_server.Data;
 namespace lms_server.Migrations
 {
     [DbContext(typeof(LmsDbContext))]
-    [Migration("20250114084345_initial migration")]
-    partial class initialmigration
+    [Migration("20250114135502_Migration-For-Database")]
+    partial class MigrationForDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -59,6 +59,30 @@ namespace lms_server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Books");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0dcd923f-d89b-4dad-a5b7-53e4780c22d0"),
+                            Author = "F. Scott Fitzgerald",
+                            Category = "Fiction",
+                            Description = "The Great Gatsby is a novel by American author F. Scott Fitzgerald. The story takes place in 1922, during the Roaring Twenties, a time of prosperity in the United States after World War I. The book received critical acclaim and is widely regarded as a classic of American literature.",
+                            ISBN = "9780743273565",
+                            NumberOfCopies = 5,
+                            Title = "The Great Gatsby",
+                            YearPublished = new DateTime(1925, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("8e2e4fe4-8bc9-4332-b3a8-6298b3ce0d86"),
+                            Author = "Harper Lee",
+                            Category = "Fiction",
+                            Description = "To Kill",
+                            ISBN = "jdjdjdjdjdjjjjd",
+                            NumberOfCopies = 5,
+                            Title = "To Kill a Mockingbird",
+                            YearPublished = new DateTime(1960, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("lms_server.Models.BookRequest", b =>
