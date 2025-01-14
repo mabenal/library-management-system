@@ -26,14 +26,14 @@ namespace lms_server.Controllers
         //}
 
         [HttpGet("GetAllBooks")]
-        public async Task<IActionResult> GetAllBooks()
+        public async Task<ActionResult<BookDto>> GetAllBooks()
         {
             try
             {
                 var books = await booksRepository.GetAllBooksAsync();
                 return Ok(mapper.Map<List<BookDto>>(books));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.Error.WriteLine($"in booksController: {e}");
                 throw;
@@ -51,7 +51,7 @@ namespace lms_server.Controllers
         //}
 
         //public async Task<IActionResult> AssignBook()
-        
+
         //    return Ok();
         //}
 

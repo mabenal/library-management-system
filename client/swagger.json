@@ -13,11 +13,73 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
+              }
+            }
           }
         }
       }
     }
   },
-  "components": { }
+  "components": {
+    "schemas": {
+      "BookDto": {
+        "required": [
+          "author",
+          "description",
+          "isbn",
+          "numberOfCopies",
+          "title",
+          "yearPublished"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "yearPublished": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "author": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberOfCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isbn": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
 }
