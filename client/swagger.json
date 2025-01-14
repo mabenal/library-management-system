@@ -1,0 +1,16 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "lms-server",
+      "description": "API Documentation",
+      "version": "v1"
+    },
+    "servers": [
+      {
+        "url": "https://localhost:7025/",
+        "description": "library management system connection"
+      }
+    ],
+    "paths": { },
+    "components": { }
+  }
