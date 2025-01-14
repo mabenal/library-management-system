@@ -1,5 +1,5 @@
 ﻿using lms_server.Data;
-using lms_server.Models;
+using lms.Abstractions.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace lms_server.Repository

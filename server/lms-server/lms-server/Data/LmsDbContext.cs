@@ -1,4 +1,4 @@
-﻿using lms_server.Models;
+﻿using lms.Abstractions.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace lms_server.Data
@@ -10,11 +10,8 @@ namespace lms_server.Data
         }
 
         public DbSet<Book> Books { get; set; }
-
         public DbSet<Client> Clients { get; set; }
-
         public DbSet<BookRequest> BookRequests { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,7 +19,6 @@ namespace lms_server.Data
 
             var bookEntity = new List<Book>()
             {
-
                 new Book() {
                     Id = Guid.NewGuid(),
                     Title = "The Great Gatsby",
@@ -33,7 +29,6 @@ namespace lms_server.Data
                     NumberOfCopies = 5,
                     YearPublished = new DateTime(1925, 04, 10)
                 },
-
                 new Book(){
                      Id = Guid.NewGuid(),
                     Title = "To Kill a Mockingbird",
@@ -43,14 +38,10 @@ namespace lms_server.Data
                     ISBN="jdjdjdjdjdjjjjd",
                     NumberOfCopies = 5,
                     YearPublished= new DateTime(1960, 07, 11) }
-
               };
 
             modelBuilder.Entity<Book>().HasData(bookEntity);
-
         }
-
-
         }
     }
 

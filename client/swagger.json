@@ -6,7 +6,7 @@
     "version": "v1"
   },
   "paths": {
-    "/api/Books": {
+    "/api/Books/GetAllBooks": {
       "get": {
         "tags": [
           "Books"

@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using lms_server.Models.DTO;
+using lms.Abstractions.Models.DTO;
 using lms_server.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace lms_server.Controllers
 {
@@ -11,8 +12,7 @@ namespace lms_server.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBooksRepository booksRepository;
-
-        public IMapper mapper { get; }
+        private IMapper mapper { get; }
 
         public BooksController(IBooksRepository booksRepository, IMapper mapper)
         {
@@ -25,13 +25,19 @@ namespace lms_server.Controllers
         //    return Ok();
         //}
 
-        [HttpGet]
+        [HttpGet("GetAllBooks")]
         public async Task<IActionResult> GetAllBooks()
         {
-            var books = await booksRepository.GetAllBooksAsync();
-
-
-            return Ok(mapper.Map<List<BookDto>>(books));
+            try
+            {
+                var books = await booksRepository.GetAllBooksAsync();
+                return Ok(mapper.Map<List<BookDto>>(books));
+            }
+            catch(Exception e)
+            {
+                Console.Error.WriteLine($"in booksController: {e}");
+                throw;
+            }
         }
 
         //public async Task<IActionResult> AddBook()

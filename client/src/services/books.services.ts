@@ -7,6 +7,6 @@ export class BooksService {
     constructor(@Inject('IClient') private client: IClient) {}
 
     books(): Observable<void> {
-        return this.client.books();
+        return this.client.getAllBooks();
     }
 }
