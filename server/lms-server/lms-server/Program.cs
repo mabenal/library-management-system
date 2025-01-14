@@ -1,3 +1,7 @@
+using lms_server.Data;
+using lms_server.Mappings;
+using lms_server.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +20,14 @@ builder.Services.AddSwaggerGen(c =>
         Description = "API Documentation",
     });
 });
+
+builder.Services.AddDbContext<LmsDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LmsDbConnectionString"));
+});
+
+builder.Services.AddScoped<IBooksRepository, SQLBooksRepository>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
 
