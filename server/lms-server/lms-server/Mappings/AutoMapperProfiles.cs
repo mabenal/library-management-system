@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using lms_server.Models;
-using lms_server.Models.DTO;
+using lms.Abstractions.Models;
+using lms.Abstractions.Models.DTO;
 
 namespace lms_server.Mappings
 {

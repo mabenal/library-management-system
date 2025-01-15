@@ -1,16 +1,85 @@
 {
-    "openapi": "3.0.1",
-    "info": {
-      "title": "lms-server",
-      "description": "API Documentation",
-      "version": "v1"
-    },
-    "servers": [
-      {
-        "url": "https://localhost:7025/",
-        "description": "library management system connection"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "lms-server",
+    "description": "API Documentation",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Books/GetAllBooks": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookDto"
+                }
+              }
+            }
+          }
+        }
       }
-    ],
-    "paths": { },
-    "components": { }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BookDto": {
+        "required": [
+          "author",
+          "description",
+          "isbn",
+          "numberOfCopies",
+          "title",
+          "yearPublished"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "yearPublished": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "author": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberOfCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isbn": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
   }
+}

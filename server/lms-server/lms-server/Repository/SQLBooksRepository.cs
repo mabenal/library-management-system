@@ -1,6 +1,7 @@
 ﻿using lms_server.Data;
-using lms_server.Models;
+using lms.Abstractions.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace lms_server.Repository
 {
@@ -53,5 +54,20 @@ namespace lms_server.Repository
              return bookToUpdate;
         }
 
+        public async Task<Book?> DeleteBookAsync(Guid id)
+        {
+            var book = dbContext.Books.Find(id);
+
+            if (book == null) {
+
+                return null;
+
+            }
+            dbContext.Remove(book);
+           await dbContext.SaveChangesAsync();
+
+            return book;
+           
+        }
     }
 }

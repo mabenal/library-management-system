@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lms-server", "lms-server\lms-server.csproj", "{FA53EB58-451A-475A-A6D7-A06D602B9E10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lms.Abstractions", "lms.Abstractions\lms.Abstractions.csproj", "{CE927670-499C-44B8-B3CE-744064278F02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{FA53EB58-451A-475A-A6D7-A06D602B9E10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA53EB58-451A-475A-A6D7-A06D602B9E10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA53EB58-451A-475A-A6D7-A06D602B9E10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE927670-499C-44B8-B3CE-744064278F02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE927670-499C-44B8-B3CE-744064278F02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE927670-499C-44B8-B3CE-744064278F02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE927670-499C-44B8-B3CE-744064278F02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

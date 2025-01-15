@@ -1,5 +1,4 @@
-﻿using lms_server.Models;
-using lms_server.Models.DTO;
+﻿using lms.Abstractions.Models;
 
 namespace lms_server.Repository
 {
@@ -12,6 +11,8 @@ namespace lms_server.Repository
         Task<Book> AddNewBook(Book book);
 
         Task<Book?> UpdateNewBook(Guid id, Book book);
+
+        Task<Book?> DeleteBookAsync(Guid id);
 
 
     }
