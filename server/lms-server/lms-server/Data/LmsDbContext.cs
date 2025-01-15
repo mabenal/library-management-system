@@ -1,21 +1,42 @@
 ﻿using lms.Abstractions.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace lms_server.Data
 {
-    public class LmsDbContext : DbContext
+    public class LmsDbContext : IdentityDbContext<Client, IdentityRole<Guid>, Guid>
     {
         public LmsDbContext(DbContextOptions<LmsDbContext> dbContextOptions) : base(dbContextOptions)
         {
         }
 
         public DbSet<Book> Books { get; set; }
-        public DbSet<Client> Clients { get; set; }
         public DbSet<BookRequest> BookRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+           // modelBuilder.Entity<BookRequest>()
+           //.HasOne(br => br.Client)  // Each BookRequest has one Client
+           //.WithMany()  // Each Client can have many BookRequests
+           //.HasForeignKey(br => br.ClientId)  // Foreign key 'ClientId' in BookRequest
+           //.OnDelete(DeleteBehavior.Restrict);  // Optional: Set delete behavior
+
+           // // Configure the BookRequest-Book relationship
+           // modelBuilder.Entity<BookRequest>()
+           //     .HasOne(br => br.Book)  // Each BookRequest has one Book
+           //     .WithMany()  // A Book can have many BookRequests
+           //     .HasForeignKey(br => br.BookId)  // Foreign key 'BookId' in BookRequest
+           //     .OnDelete(DeleteBehavior.Restrict);  // Optional: Set delete behavior
+
+            var roles = new List<IdentityRole>
+            {
+                new IdentityRole { Id=Guid.NewGuid().ToString(), Name = "Library Manager" , NormalizedName="Library Manager".ToUpper()},
+
+                new IdentityRole { Id=Guid.NewGuid().ToString(), Name = "Librarian", NormalizedName = "Librarian".ToUpper() },
+                new IdentityRole { Id=Guid.NewGuid().ToString(), Name = "Client", NormalizedName = "Client".ToUpper()}
+            };
 
             var bookEntity = new List<Book>()
             {
@@ -41,6 +62,7 @@ namespace lms_server.Data
               };
 
             modelBuilder.Entity<Book>().HasData(bookEntity);
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
         }
         }
     }
