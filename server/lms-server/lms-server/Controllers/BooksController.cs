@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using lms_server.Models;
 using lms_server.Models.DTO;
 using lms_server.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace lms_server.Controllers
 {
@@ -20,10 +21,15 @@ namespace lms_server.Controllers
             this.mapper = mapper;
         }
 
-        //public async Task<IActionResult> GetBook()
-        //{
-        //    return Ok();
-        //}
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> GetBookById([FromRoute] Guid id)
+        {
+            var book = await booksRepository.GetBookById(id);
+
+            return Ok(mapper.Map<BookDto>(book));
+
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAllBooks()
@@ -34,20 +40,38 @@ namespace lms_server.Controllers
             return Ok(mapper.Map<List<BookDto>>(books));
         }
 
-        //public async Task<IActionResult> AddBook()
-        //{
-        //    return Created();
-        //}
+        [HttpPost]
+        public async Task<IActionResult> AddBook([FromBody] BookDto bookDtoObject)
+        {
+            var bookDomainModel = mapper.Map<Book>(bookDtoObject);
 
-        //public async Task<IActionResult> RequestBook()
-        //{
-        //    return Ok();
-        //}
+            bookDomainModel= await booksRepository.AddNewBook(bookDomainModel);
 
-        //public async Task<IActionResult> AssignBook()
-        
-        //    return Ok();
-        //}
+            var regionDto = mapper.Map<BookDto>(bookDomainModel);
+
+            return CreatedAtAction(nameof(GetBookById), new { id = bookDomainModel.Id }, regionDto);
+
+        }
+
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateBook([FromRoute] Guid id,[FromBody] BookDto book)
+        {
+            var bookDomainModel = mapper.Map<Book>(book);
+
+            bookDomainModel = await booksRepository.UpdateNewBook(id, bookDomainModel);
+
+            if(bookDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            var bookDto = mapper.Map<BookDto>(bookDomainModel);
+
+            return Ok(bookDto);
+        }
+
+    
 
     }
 }
