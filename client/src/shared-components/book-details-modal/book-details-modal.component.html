@@ -1,0 +1,13 @@
+<div class="modal" *ngIf="book">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <img src="path/to/image.jpg" alt="Book Image" class="book-image">
+    <h2>{{ book.title }}</h2>
+    <p><strong>{{ displayConstants.Author}}</strong> {{ book.author }}</p>
+    <p><strong>{{ displayConstants.Category}}</strong> {{ book.category }}</p>
+    <p><strong>{{ displayConstants.YearPublished}}</strong> {{ book.yearPublished | date }}</p>
+    <p><strong>{{ displayConstants.Isbn}}</strong> {{ book.isbn }}</p>
+    <p><strong>{{ displayConstants.Description}}</strong> {{ book.description }}</p>
+    <button (click)="handleButtonClick()" [ngClass]="buttonState.value" [disabled]="buttonState.value !== 'request'">{{ buttonTitle }}</button>
+  </div>
+</div>
