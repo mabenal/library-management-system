@@ -22,25 +22,22 @@ namespace lms_server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("lms_server.Models.Book", b =>
+            modelBuilder.Entity("lms.Abstractions.Models.Book", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Author")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Category")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumberOfCopies")
@@ -56,33 +53,9 @@ namespace lms_server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Books");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("0dcd923f-d89b-4dad-a5b7-53e4780c22d0"),
-                            Author = "F. Scott Fitzgerald",
-                            Category = "Fiction",
-                            Description = "The Great Gatsby is a novel by American author F. Scott Fitzgerald. The story takes place in 1922, during the Roaring Twenties, a time of prosperity in the United States after World War I. The book received critical acclaim and is widely regarded as a classic of American literature.",
-                            ISBN = "9780743273565",
-                            NumberOfCopies = 5,
-                            Title = "The Great Gatsby",
-                            YearPublished = new DateTime(1925, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("8e2e4fe4-8bc9-4332-b3a8-6298b3ce0d86"),
-                            Author = "Harper Lee",
-                            Category = "Fiction",
-                            Description = "To Kill",
-                            ISBN = "jdjdjdjdjdjjjjd",
-                            NumberOfCopies = 5,
-                            Title = "To Kill a Mockingbird",
-                            YearPublished = new DateTime(1960, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
-            modelBuilder.Entity("lms_server.Models.BookRequest", b =>
+            modelBuilder.Entity("lms.Abstractions.Models.BookRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -116,7 +89,7 @@ namespace lms_server.Migrations
                     b.ToTable("BookRequests");
                 });
 
-            modelBuilder.Entity("lms_server.Models.Client", b =>
+            modelBuilder.Entity("lms.Abstractions.Models.Client", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,39 +99,56 @@ namespace lms_server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("6f7689d2-7b1b-4b11-8c17-4846f80d0998"),
+                            Address = "1234 Lexis St",
+                            EmailAddress = "John.Doe@gmail.com",
+                            LastName = "Doe",
+                            Name = "John",
+                            Password = "1234JD",
+                            PhoneNumber = "123-456-7890"
+                        },
+                        new
+                        {
+                            Id = new Guid("aadf3044-7508-4384-a5a9-1aa4bf9fd4c5"),
+                            Address = "5678 Reed St",
+                            EmailAddress = "Sarah.Smith@gmail.com",
+                            LastName = "Smith",
+                            Name = "Sarah",
+                            Password = "1234SS",
+                            PhoneNumber = "098-765-4321"
+                        });
                 });
 
-            modelBuilder.Entity("lms_server.Models.BookRequest", b =>
+            modelBuilder.Entity("lms.Abstractions.Models.BookRequest", b =>
                 {
-                    b.HasOne("lms_server.Models.Book", "Book")
+                    b.HasOne("lms.Abstractions.Models.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("lms_server.Models.Client", "Client")
+                    b.HasOne("lms.Abstractions.Models.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)

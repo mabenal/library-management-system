@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace lms_server.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationForDatabase : Migration
+    public partial class Initialmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,11 +20,11 @@ namespace lms_server.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     YearPublished = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumberOfCopies = table.Column<int>(type: "int", nullable: false),
-                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,12 +36,12 @@ namespace lms_server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,12 +78,12 @@ namespace lms_server.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Books",
-                columns: new[] { "Id", "Author", "Category", "Description", "ISBN", "NumberOfCopies", "Title", "YearPublished" },
+                table: "Clients",
+                columns: new[] { "Id", "Address", "EmailAddress", "LastName", "Name", "Password", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { new Guid("0dcd923f-d89b-4dad-a5b7-53e4780c22d0"), "F. Scott Fitzgerald", "Fiction", "The Great Gatsby is a novel by American author F. Scott Fitzgerald. The story takes place in 1922, during the Roaring Twenties, a time of prosperity in the United States after World War I. The book received critical acclaim and is widely regarded as a classic of American literature.", "9780743273565", 5, "The Great Gatsby", new DateTime(1925, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("8e2e4fe4-8bc9-4332-b3a8-6298b3ce0d86"), "Harper Lee", "Fiction", "To Kill", "jdjdjdjdjdjjjjd", 5, "To Kill a Mockingbird", new DateTime(1960, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { new Guid("6f7689d2-7b1b-4b11-8c17-4846f80d0998"), "1234 Lexis St", "John.Doe@gmail.com", "Doe", "John", "1234JD", "123-456-7890" },
+                    { new Guid("aadf3044-7508-4384-a5a9-1aa4bf9fd4c5"), "5678 Reed St", "Sarah.Smith@gmail.com", "Smith", "Sarah", "1234SS", "098-765-4321" }
                 });
 
             migrationBuilder.CreateIndex(

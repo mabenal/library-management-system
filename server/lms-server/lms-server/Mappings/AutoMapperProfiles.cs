@@ -9,6 +9,7 @@ namespace lms_server.Mappings
         public AutoMapperProfiles()
         {
             CreateMap<Book, BookDto>().ReverseMap();
+            CreateMap<Client, ClientDto>().ReverseMap();
         }
     }
 }
