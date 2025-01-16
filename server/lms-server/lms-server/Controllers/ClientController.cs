@@ -62,12 +62,13 @@ namespace lms_server.Controllers
                 {
                     return NotFound();
                 }
- 
+                else
+                {
                     var clientDto = mapper.Map<ClientDto>(clientdetails);
 
                     return Ok(clientDto);
-  
-
+                }
+ 
             }
             catch (Exception e)
             {
