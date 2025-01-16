@@ -1,2 +1,3 @@
-<button (click)="openModal()">{{displayConstants.ShowBookDetails}}</button>
+
 <app-book-details-modal *ngIf="showModal" [book]="selectedBook" [displayConstants]="displayConstants" (close)="closeModal()"></app-book-details-modal>
+<app-book-list-view [books]="books" [displayConstants]="displayConstants" (showBookDetails)="openModal($event)"></app-book-list-view>
