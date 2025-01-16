@@ -6,6 +6,14 @@ namespace lms_server.Repository
     {
         Task<List<Book>> GetAllBooksAsync();
 
+        Task<Book?> GetBookById(Guid id);
+
+        Task<Book> AddNewBook(Book book);
+
+        Task<Book?> UpdateNewBook(Guid id, Book book);
+
+        Task<Book?> DeleteBookAsync(Guid id);
+
         Task<List<Client>> GellAllClientsAsync();
 
         Task<Client> GetClientByID(Guid id);
