@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BooksService } from 'src/services/books.services';
+import { TopNavigatorComponent } from 'src/shared-components/top-navigator/top-navigator.component';
 import { BookDetailsModalComponent } from 'src/shared-components/book-details-modal/book-details-modal.component';
 import { Client, API_BASE_URL } from 'auto/autolmsclient-module';
 import { BookListViewComponent } from 'src/shared-components/book-list-view/book-list-view.component';
@@ -13,12 +14,13 @@ import { BookListViewComponent } from 'src/shared-components/book-list-view/book
   declarations: [
     AppComponent,
     BookDetailsModalComponent,
+    TopNavigatorComponent,
     BookListViewComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     BooksService,

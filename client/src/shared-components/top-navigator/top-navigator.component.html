@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="height: 35px">
+            <div class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">
+                    <i class="bi bi-house-door"></i></a>
+            </div>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">History</a>
+                </li>
+            </ul>
+            <div class="d-flex justify-content-center" style="width: 100%;">
+                <form class="d-flex" role="search" style="width: 50%; height: 45px;">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                        style="flex-grow: 1;">
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+            <div class="login-info" *ngIf="!isLoggedIn()">
+                <div class="navbar-login">
+                    <span class="login-item">
+                        <a class="btn btn-primary me-2" href="#">Login</a>
+                    </span>
+                    <span class="login-item">
+                        <a class="btn btn-secondary" href="#">Register</a>
+                    </span>
+                </div>
+            </div>
+            <div class="login-info" *ngIf="isLoggedIn()">
+                <div class="navbar-logout">
+                    <span class="login-item">
+                        <a class="btn" href="#"><i class="bi bi-person-circle"></i></a>
+                    </span>
+                    <span class="login-item">
+                        <a class="btn btn-secondary" href="#">Sign out</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
