@@ -16,7 +16,7 @@ namespace lms_server.Repository
         
         public async Task<List<Book>> GetAllBooksAsync()
         {
-             return await dbContext.Books.ToListAsync();  
+            return await dbContext.Books.ToListAsync();
         }
         
         public async Task<Book>GetBookById(Guid id)
@@ -69,5 +69,6 @@ namespace lms_server.Repository
             return book;
            
         }
+
     }
 }

@@ -14,6 +14,5 @@ namespace lms_server.Repository
 
         Task<Book?> DeleteBookAsync(Guid id);
 
-
     }
 }
