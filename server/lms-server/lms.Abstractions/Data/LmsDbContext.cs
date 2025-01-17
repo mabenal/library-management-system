@@ -1,7 +1,7 @@
 ﻿using lms.Abstractions.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace lms_server.Data
+namespace lms.Abstractions.Data
 {
     public class LmsDbContext : DbContext
     {

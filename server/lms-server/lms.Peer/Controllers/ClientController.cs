@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
-using lms_server.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations.Schema;
+using lms.Abstractions.Interfaces;
 
 namespace lms_server.Controllers
 {

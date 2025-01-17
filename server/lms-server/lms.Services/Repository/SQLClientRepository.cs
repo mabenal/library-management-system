@@ -1,6 +1,7 @@
 ﻿using lms.Abstractions.Models;
-using lms_server.Data;
+using lms.Abstractions.Data;
 using Microsoft.EntityFrameworkCore;
+using lms.Abstractions.Interfaces;
 
 namespace lms_server.Repository
 {

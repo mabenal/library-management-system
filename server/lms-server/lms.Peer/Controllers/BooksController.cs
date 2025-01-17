@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
-using lms_server.Repository;
 using Microsoft.AspNetCore.Mvc;
+using lms.Abstractions.Interfaces;
 
-
-namespace lms_server.Controllers
+namespace lms.Peer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

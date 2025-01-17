@@ -1,6 +1,6 @@
 ﻿using lms.Abstractions.Models;
 
-namespace lms_server.Repository
+namespace lms.Abstractions.Interfaces
 {
     public interface IBooksRepository
     {
