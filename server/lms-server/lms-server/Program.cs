@@ -27,6 +27,7 @@ builder.Services.AddDbContext<LmsDbContext>(options =>
 });
 
 builder.Services.AddScoped<IBooksRepository, SQLBooksRepository>();
+builder.Services.AddScoped<IClientRepository, SQLClientRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 // Add CORS policy

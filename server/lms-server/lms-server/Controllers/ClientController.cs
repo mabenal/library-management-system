@@ -9,21 +9,21 @@ namespace lms_server.Controllers
 {
     public class ClientController : Controller
     {
-        private readonly IBooksRepository booksRepository;
+        private readonly IClientRepository clientsRepository;
         private IMapper mapper { get; }
 
-        public ClientController(IBooksRepository booksRepository, IMapper mapper)
+        public ClientController(IClientRepository clientsRepository, IMapper mapper)
         {
-            this.booksRepository = booksRepository;
+            this.clientsRepository = clientsRepository;
             this.mapper = mapper;
         }
 
         [HttpGet("GetAllClients")]
-        public async Task<ActionResult<Client>> GetAllClients()
+        public async Task<ActionResult<ClientDto>> GetAllClients()
         {
             try
             {
-                var clients = await booksRepository.GellAllClientsAsync();
+                var clients = await clientsRepository.GellAllClientsAsync();
                 return Ok(mapper.Map<List<ClientDto>>(clients));
             }
             catch (Exception e)
@@ -38,7 +38,7 @@ namespace lms_server.Controllers
         {
             try
             {
-                var client = await booksRepository.GetClientByID(id);
+                var client = await clientsRepository.GetClientByID(id);
                 return Ok(mapper.Map<ClientDto>(client));
             }
             catch (Exception e)
@@ -56,7 +56,7 @@ namespace lms_server.Controllers
             {
                 var clientdetails = mapper.Map<Client>(client);
 
-                clientdetails = await booksRepository.UpdateClientDetails(id, clientdetails);
+                clientdetails = await clientsRepository.UpdateClientDetails(id, clientdetails);
 
                 if(clientdetails == null)
                 {
@@ -82,7 +82,7 @@ namespace lms_server.Controllers
         {
             try
             {
-                var client = await booksRepository.DeleteClientAsync(id);
+                var client = await clientsRepository.DeleteClientAsync(id);
 
                 if(client == null)
                 {
