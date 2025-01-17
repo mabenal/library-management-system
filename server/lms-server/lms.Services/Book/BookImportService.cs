@@ -20,9 +20,14 @@ namespace lms.Services
             var jsonData = await File.ReadAllTextAsync(filePath);
             var books = JsonConvert.DeserializeObject<List<Book>>(jsonData);
 
-            foreach (var book in books)
+            _dbContext.Books.RemoveRange(_dbContext.Books); 
+
+            if (!_dbContext.Books.Any())
             {
-                _dbContext.Books.Add(book);
+                foreach (var book in books)
+                {
+                    _dbContext.Books.Add(book);
+                }
             }
 
             await _dbContext.SaveChangesAsync();
