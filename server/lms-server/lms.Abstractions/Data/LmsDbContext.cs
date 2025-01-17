@@ -17,26 +17,28 @@ namespace lms.Abstractions.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Book>()
+                .HasKey(b => b.Id);
 
-            var clientEntity = new List<Client>()
+            var clientEntity = new List<Book>()
             {
-                new Client()
+                new Book()
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Zabdile",
-                    LastName = "Mkhize",
-                    EmailAddress = "Zamdile.Mkhize@gmail.com",
-                    Password = "1234ZM",
-                    Address = "1234 PL Manzi St",
-                    PhoneNumber = "123-456-7890"
+                    Title = "Zabdile",
+                    Author = "Mkhize",
+                    YearPublished = "Zamdile.Mkhize@gmail.com",
+                    Publisher = "1234ZM",
+                    Description = "1234 PL Manzi St",
+                    Category = "123-456-7890",
+                    Thumbnail = "Zamdile.Mkhize@gmail.com",
+                    ISBN = "1234ZM",
+                    NumberOfCopies = 2,
+                    PageCount = 2
                 },
-
             };
 
             modelBuilder.Entity<Client>().HasData(clientEntity);
         }
-
     }
 }
-
-
