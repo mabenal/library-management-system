@@ -1,14 +1,19 @@
-using lms_server.Data;
-using lms_server.Mappings;
+using lms.Abstractions.Interfaces;
+using lms.Abstractions.Data;
+using lms.Abstractions.Mappings;
 using lms_server.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using lms.Services.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(); // Add this line to include controllers from lms.Peer
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lms-server", "lms-server\lms-server.csproj", "{FA53EB58-451A-475A-A6D7-A06D602B9E10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lms-server", "lms-server\lms-server.csproj", "{FA53EB58-451A-475A-A6D7-A06D602B9E10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lms.Abstractions", "lms.Abstractions\lms.Abstractions.csproj", "{CE927670-499C-44B8-B3CE-744064278F02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lms.Abstractions", "lms.Abstractions\lms.Abstractions.csproj", "{CE927670-499C-44B8-B3CE-744064278F02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lms.Services", "lms.Services\lms.Services.csproj", "{BB7A70D3-29F2-44F7-9ED2-296AB942C079}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lms.Peer", "lms.Peer\lms.Peer.csproj", "{46DAE004-62FD-420C-A9BE-CE2191D231D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lms.Tests", "lms.Tests\lms.Tests.csproj", "{A7AAEBD0-2921-4D92-9EFA-2DC2D85BF579}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{CE927670-499C-44B8-B3CE-744064278F02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE927670-499C-44B8-B3CE-744064278F02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE927670-499C-44B8-B3CE-744064278F02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB7A70D3-29F2-44F7-9ED2-296AB942C079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB7A70D3-29F2-44F7-9ED2-296AB942C079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB7A70D3-29F2-44F7-9ED2-296AB942C079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB7A70D3-29F2-44F7-9ED2-296AB942C079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46DAE004-62FD-420C-A9BE-CE2191D231D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46DAE004-62FD-420C-A9BE-CE2191D231D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46DAE004-62FD-420C-A9BE-CE2191D231D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46DAE004-62FD-420C-A9BE-CE2191D231D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7AAEBD0-2921-4D92-9EFA-2DC2D85BF579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7AAEBD0-2921-4D92-9EFA-2DC2D85BF579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7AAEBD0-2921-4D92-9EFA-2DC2D85BF579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7AAEBD0-2921-4D92-9EFA-2DC2D85BF579}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

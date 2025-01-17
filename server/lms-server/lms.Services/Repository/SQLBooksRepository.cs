@@ -1,9 +1,11 @@
-﻿using lms_server.Data;
+﻿using lms.Abstractions.Data;
 using lms.Abstractions.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using lms.Abstractions.Interfaces;
 
-namespace lms_server.Repository
+
+namespace lms.Services.Repository
 {
     public class SQLBooksRepository : IBooksRepository
     {
