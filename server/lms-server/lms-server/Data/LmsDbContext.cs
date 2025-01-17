@@ -17,18 +17,18 @@ namespace lms_server.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-           // modelBuilder.Entity<BookRequest>()
-           //.HasOne(br => br.Client)  // Each BookRequest has one Client
-           //.WithMany()  // Each Client can have many BookRequests
-           //.HasForeignKey(br => br.ClientId)  // Foreign key 'ClientId' in BookRequest
-           //.OnDelete(DeleteBehavior.Restrict);  // Optional: Set delete behavior
+            modelBuilder.Entity<BookRequest>()
+           .HasOne(br => br.Client)
+           .WithMany()  
+           .HasForeignKey(br => br.ClientId)  
+           .OnDelete(DeleteBehavior.Restrict);  
 
-           // // Configure the BookRequest-Book relationship
-           // modelBuilder.Entity<BookRequest>()
-           //     .HasOne(br => br.Book)  // Each BookRequest has one Book
-           //     .WithMany()  // A Book can have many BookRequests
-           //     .HasForeignKey(br => br.BookId)  // Foreign key 'BookId' in BookRequest
-           //     .OnDelete(DeleteBehavior.Restrict);  // Optional: Set delete behavior
+            
+            modelBuilder.Entity<BookRequest>()
+                .HasOne(br => br.Book)  
+                .WithMany()  
+                .HasForeignKey(br => br.BookId)  
+                .OnDelete(DeleteBehavior.Restrict);  
 
             var roles = new List<IdentityRole>
             {
@@ -62,7 +62,6 @@ namespace lms_server.Data
               };
 
             modelBuilder.Entity<Book>().HasData(bookEntity);
-            modelBuilder.Entity<IdentityRole>().HasData(roles);
         }
         }
     }
