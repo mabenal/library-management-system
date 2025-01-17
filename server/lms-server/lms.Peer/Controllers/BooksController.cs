@@ -38,7 +38,7 @@ namespace lms.Peer.Controllers
         }
 
         [HttpGet("GetAllBooks")]
-        public async Task<ActionResult<List<BookDto>>> GetAllBooks()
+        public async Task<ActionResult<BookDto>> GetAllBooks()
         {
             try
             {

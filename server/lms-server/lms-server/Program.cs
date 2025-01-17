@@ -5,6 +5,7 @@ using lms_server.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using lms.Services;
 using lms.Services.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers(); // Add this line to include controllers from lms.Peer
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,26 +28,35 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDbContext<LmsDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LmsDbConnectionString"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LmsDbConnectionString"),
+        b => b.MigrationsAssembly("lms-server")); // Specify the migrations assembly
 });
 
-builder.Services.AddScoped<IBooksRepository, SQLBooksRepository>();
-builder.Services.AddScoped<IClientRepository, SQLClientRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
+
+// Add services using ServiceExecution
+builder.Services.AddServices();
 
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
 });
 
 var app = builder.Build();
+
+// Execute BookImportService on startup
+using (var scope = app.Services.CreateScope())
+{
+    var bookImportService = scope.ServiceProvider.GetRequiredService<BookImportService>();
+    var filePath = "./books.json"; // Update this path to the actual location of books.json
+    await bookImportService.ImportBooksAsync(filePath);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
