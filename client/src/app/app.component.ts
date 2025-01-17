@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   selectedBook!: BookDto;
   showModal: boolean = false;
   displayConstants: any = DisplayConstants;
+  books: BookDto[] = [];
 
   constructor(private book: BooksService) {}
 
@@ -20,11 +21,12 @@ export class AppComponent implements OnInit {
 
   returnBooks() {
     this.book.books().subscribe((res: BookDto[]) => {
-      this.selectedBook = res[0]; // Select the first book for demonstration
+      this.books = res;
     });
   }
 
-  openModal() {
+  openModal(book: BookDto) {
+    this.selectedBook = book;
     this.showModal = true;
   }
 

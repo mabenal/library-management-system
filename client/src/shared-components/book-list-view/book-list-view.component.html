@@ -1,0 +1,28 @@
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">ISBN</th>
+        <th scope="col">Category</th>
+        <th scope="col">Year Published</th>
+        <th scope="col">Available Copies</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody class="table table-hover">
+      <tr *ngFor="let book of books; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.isbn }}</td>
+        <td>{{ book.category }}</td>
+        <td>{{ book.yearPublished | date }}</td>
+        <td>{{ book.numberOfCopies }}</td>
+        <td >
+            <button  type="button" class="btn btn-dark"(click)="onShowBookDetails(book)">{{ displayConstants.ShowBookDetails }}</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
