@@ -57,5 +57,20 @@ namespace lms.Peer.Controllers
             }
         }
 
+        [HttpGet("GetBookRequestsByClientId/{clientId:Guid}")]
+        public async Task<ActionResult<BookRequestDto>> GetBookRequestsByClientId([FromRoute] Guid clientId)
+        {
+            try
+            {
+                var bookRequests = await bookRequestRepository.GetBookRequestsByClientId(clientId);
+                return Ok(mapper.Map<List<BookRequestDto>>(bookRequests));
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"in BookRequestController: {e}");
+                throw;
+            }
+        }
+
     }
 }

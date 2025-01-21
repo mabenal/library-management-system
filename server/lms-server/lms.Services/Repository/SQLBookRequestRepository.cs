@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using lms.Abstractions.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace lms.Services.Repository
@@ -33,6 +32,10 @@ namespace lms.Services.Repository
             return await dbContext.BookRequests.ToListAsync();
         }
 
+        public async Task<List<BookRequest>> GetBookRequestsByClientId(Guid clientId)
+        {
+            return await dbContext.BookRequests.Where(br => br.ClientId == clientId).ToListAsync();
+        }
 
     }
 }
