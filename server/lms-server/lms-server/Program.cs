@@ -28,11 +28,13 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDbContext<LmsDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LmsDbConnectionString"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LmsDbConnectionString"),
+        b => b.MigrationsAssembly("lms-server"));
 });
 
 builder.Services.AddScoped<IBooksRepository, SQLBooksRepository>();
 builder.Services.AddScoped<IClientRepository, SQLClientRepository>();
+builder.Services.AddScoped<IBookRequestRepository, SQLBookRequestRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 // Add CORS policy
