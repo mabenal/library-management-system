@@ -8,6 +8,9 @@
     <p><strong>{{ displayConstants.YearPublished}}</strong> {{ book.yearPublished | date }}</p>
     <p><strong>{{ displayConstants.Isbn}}</strong> {{ book.isbn }}</p>
     <p><strong>{{ displayConstants.Description}}</strong> {{ book.description }}</p>
-    <button (click)="handleButtonClick()" [ngClass]="buttonState.value" [disabled]="buttonState.value !== 'request'">{{ buttonTitle }}</button>
+    <button (click)="handleButtonClick()" 
+            [ngClass]="{'btn btn-dark': true, 'disabled': book.numberOfCopies === 0}" 
+            [disabled]="buttonState.value !== 'request' || book.numberOfCopies ===0">{{ buttonTitle }}
+    </button>
   </div>
 </div>
