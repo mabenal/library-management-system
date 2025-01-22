@@ -21,6 +21,7 @@ export class BookDetailsModalComponent implements OnInit, OnDestroy {
   buttonTitle = 'Request';
   buttonState = new BehaviorSubject<ButtonState>(ButtonState.Complete);
   private subscription!: Subscription;
+  showFullDescription = false;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -39,6 +40,18 @@ export class BookDetailsModalComponent implements OnInit, OnDestroy {
       }
       this.cdr.detectChanges();
     });
+  }
+
+  getTruncatedDescription(description: string): string {
+    const words = description.split(' ');
+    if (words.length > 100) {
+      return words.slice(0, 100).join(' ') + '...';
+    }
+    return description;
+  }
+
+  toggleDescription() {
+    this.showFullDescription = !this.showFullDescription;
   }
 
   handleButtonClick() {

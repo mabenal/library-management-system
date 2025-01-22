@@ -19,8 +19,12 @@
   padding: 20px;
   width: 720px;
   max-width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .close {
@@ -32,11 +36,10 @@
 }
 
 .book-image {
-  width: 100%;
+  width: 200px;
   height: auto;
   max-height: 1080px;
   object-fit: cover;
-  border-radius: 10px;
 }
 
 button {
@@ -63,4 +66,29 @@ button.approved {
 button:disabled {
   background-color: @disabled-color;
   cursor: not-allowed;
+}
+
+.book-details {
+  display: flex;
+  flex-direction: column;
+
+  div{
+    padding: 10px;
+  }
+}
+
+.toggle-description {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .book-details {
+    flex-direction: row;
+  }
+
+  .book-image {
+    margin-right: 20px;
+  }
 }

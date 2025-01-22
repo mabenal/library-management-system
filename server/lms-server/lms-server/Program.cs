@@ -48,6 +48,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Execute BookImportService on startup

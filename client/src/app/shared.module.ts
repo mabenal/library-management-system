@@ -31,4 +31,4 @@ import { BookSearchComponent } from 'src/shared-components/book-search/book-sear
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class SharedModule { }

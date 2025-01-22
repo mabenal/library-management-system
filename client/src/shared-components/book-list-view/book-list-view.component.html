@@ -1,28 +1,19 @@
-<table class="table table-bordered">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Title</th>
-        <th scope="col">Author</th>
-        <th scope="col">ISBN</th>
-        <th scope="col">Category</th>
-        <th scope="col">Year Published</th>
-        <th scope="col">Available Copies</th>
-        <th scope="col">Status</th>
-      </tr>
-    </thead>
-    <tbody class="table table-hover">
-      <tr *ngFor="let book of books; let i = index">
-        <th scope="row">{{ i + 1 }}</th>
-        <td>{{ book.title }}</td>
-        <td>{{ book.author }}</td>
-        <td>{{ book.isbn }}</td>
-        <td>{{ book.category }}</td>
-        <td>{{ book.yearPublished | date }}</td>
-        <td>{{ book.numberOfCopies }}</td>
-        <td >
-            <button  type="button" class="btn btn-dark"(click)="onShowBookDetails(book)">{{ displayConstants.ShowBookDetails }}</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="book-list">
+  <div class="book-item" *ngFor="let book of books; let i = index">
+    <div class="book-left">
+      <img src={{book.thumbnail}} alt="Book Image"/>
+    </div>
+    <div class="book-right">
+      <div class="bookHeading">{{ book.title }}</div>
+      <div class="label">{{ book.author }}</div>
+      <div class="label">
+        <span>{{ book.category }}</span>
+        <span>{{ book.yearPublished | date }}</span>
+        <span>{{ book.pageCount }} Pages</span>
+      </div>
+      <div>
+        <button type="button" class="btn btn-dark" (click)="onShowBookDetails(book)">{{ displayConstants.ShowBookDetails }}</button>
+      </div>
+    </div>
+  </div>
+</div>

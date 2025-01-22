@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { BookDto } from 'auto/autolmsclient-abstractions';
 import { BooksService } from 'src/services/books.services';
 import { DisplayConstants } from 'src/constants/constants';
-import { BookDto } from 'auto/autolmsclient-abstractions';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,17 +13,29 @@ export class AppComponent implements OnInit {
   showModal: boolean = false;
   displayConstants: any = DisplayConstants;
   books: BookDto[] = [];
+  filteredBooks: BookDto[] = [];
+  genres: string[] = [
+    'Fiction', 'Non-Fiction', 'Science Fiction', 'Fantasy', 'Mystery', 'Thriller',
+    'Romance', 'Horror', 'Biography', 'History', 'Self-Help', 'Children'
+  ];
 
-  constructor(private book: BooksService) {}
+  constructor(@Inject(BooksService) private book: BooksService) {}
 
   ngOnInit() {
     this.returnBooks();
   }
 
-  returnBooks() {
-    this.book.books().subscribe((res: BookDto[]) => {
-      this.books = res;
-    });
+  async returnBooks() {
+    try {
+      this.books = await this.book.books().toPromise();
+      this.filteredBooks = this.books; // Initialize filteredBooks with all books
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  }
+
+  filterBooksByGenre(genre: string) {
+    this.filteredBooks = this.books.filter(book => book.category === genre);
   }
 
   openModal(book: BookDto) {
