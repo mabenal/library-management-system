@@ -3,7 +3,6 @@ using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace lms.Peer.Controllers
 {
@@ -14,7 +13,7 @@ namespace lms.Peer.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private SignInManager<ApplicationUser> signInManager;
 
-        public ITokenRepository tokenRepository { get; }
+        public ITokenRepository tokenRepository { get; set; }
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ITokenRepository tokenRepository)
         {
@@ -76,7 +75,7 @@ namespace lms.Peer.Controllers
                     if (loginResult.Succeeded)
                     {
 
-                        var token = tokenRepository.CreateJWTToken(user);
+                        var token = await tokenRepository.CreateJWTTokenAsync(user);
 
                         var loginResponseObject = new LoginResponseDto
                         {
@@ -110,8 +109,6 @@ namespace lms.Peer.Controllers
                 return NotFound(new { Message = "User not found" });
             }
 
-
-            
             var result = await userManager.AddToRoleAsync(user, assignRoleDto.Role);
 
             var assignRoleResponse = new AccountActionResponseDto
@@ -119,7 +116,6 @@ namespace lms.Peer.Controllers
                 isSuccessful = result.Succeeded,
                 errors=result.Errors
             };
-
 
             if (result.Succeeded)
             {
@@ -151,7 +147,7 @@ namespace lms.Peer.Controllers
                 return Ok(removeRoleResponse);
             }
 
-            return BadRequest(result.Errors);
+            return BadRequest(removeRoleResponse);
 
         }
 
@@ -183,7 +179,7 @@ namespace lms.Peer.Controllers
 
                 }
 
-                return BadRequest(result.Errors);
+                return BadRequest(result);
 
 
             }
@@ -221,7 +217,7 @@ namespace lms.Peer.Controllers
                     return Ok(changePasswordResponse);
                 }
 
-                return BadRequest(result.Errors);
+                return BadRequest(changePasswordResponse);
 
             }
             catch (Exception ex)

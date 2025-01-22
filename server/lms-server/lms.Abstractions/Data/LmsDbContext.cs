@@ -1,71 +1,52 @@
 ﻿using lms.Abstractions.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using lms.Abstractions.Models.DTO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace lms.Abstractions.Data
 {
-
     public class LmsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public LmsDbContext(DbContextOptions<LmsDbContext> dbContextOptions) : base(dbContextOptions)
         {
         }
-        public DbSet<Book> Books { get; set; }
-        public DbSet<BookRequest> BookRequests { get; set; }
 
+        public DbSet<Book> Books { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<BookRequest> BookRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<BookRequest>()
-           .HasOne(br => br.Client)
-           .WithMany()
-           .HasForeignKey(br => br.ClientId)
-           .OnDelete(DeleteBehavior.Restrict);
 
 
-            modelBuilder.Entity<BookRequest>()
-                .HasOne(br => br.Book)
-                .WithMany()
-                .HasForeignKey(br => br.BookId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            var roles = new List<IdentityRole>
+            var clientEntity = new List<Client>()
             {
-                new IdentityRole { Id=Guid.NewGuid().ToString(), Name = "Library Manager" , NormalizedName="Library Manager".ToUpper()},
-
-                new IdentityRole { Id=Guid.NewGuid().ToString(), Name = "Librarian", NormalizedName = "Librarian".ToUpper() },
-                new IdentityRole { Id=Guid.NewGuid().ToString(), Name = "Client", NormalizedName = "Client".ToUpper()}
-            };
-
-            var bookEntity = new List<Book>()
-            {
-                new Book() {
+                new Client()
+                {
                     Id = Guid.NewGuid(),
-                    Title = "The Great Gatsby",
-                    Author = "F. Scott Fitzgerald",
-                    Category = "Fiction",
-                    Description = "The Great Gatsby is a novel by American author F. Scott Fitzgerald. The story takes place in 1922, during the Roaring Twenties, a time of prosperity in the United States after World War I. The book received critical acclaim and is widely regarded as a classic of American literature.",
-                    ISBN = "9780743273565",
-                    NumberOfCopies = 5,
-                    YearPublished = new DateTime(1925, 04, 10)
+                    Name = "Zabdile",
+                    LastName = "Mkhize",
+                    EmailAddress = "Zamdile.Mkhize@gmail.com",
+                    Password = "1234ZM",
+                    Address = "1234 PL Manzi St",
+                    PhoneNumber = "123-456-7890"
                 },
-                new Book(){
-                     Id = Guid.NewGuid(),
-                    Title = "To Kill a Mockingbird",
-                    Author = "Harper Lee",
-                    Category = "Fiction",
-                    Description = "To Kill",
-                    ISBN="jdjdjdjdjdjjjjd",
-                    NumberOfCopies = 5,
-                    YearPublished= new DateTime(1960, 07, 11) }
-              };
+                new Client()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Sanele",
+                    LastName = "Mkhize",
+                    EmailAddress = "Sanele.Mkhize@gmail.com",
+                    Password = "1234SM",
+                    Address = "1234 PL RELX St",
+                    PhoneNumber = "123-456-7890"
+                }
 
-            modelBuilder.Entity<Book>().HasData(bookEntity);
+            };
+            modelBuilder.Entity<Client>().HasData(clientEntity);
+
         }
     }
 }
-
-

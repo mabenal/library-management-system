@@ -43,14 +43,18 @@ namespace lms.Services.Repository
                 return null;
             }
 
+                bookToUpdate.Id = book.Id;
                 bookToUpdate.Title = book.Title;
                 bookToUpdate.Author = book.Author;
                 bookToUpdate.Description = book.Description;
-                bookToUpdate.ISBN = book.ISBN;
                 bookToUpdate.YearPublished = book.YearPublished;
                 bookToUpdate.NumberOfCopies = book.NumberOfCopies;
                 bookToUpdate.Category = book.Category;
-                await dbContext.SaveChangesAsync();
+                bookToUpdate.Publisher = book.Publisher;
+                bookToUpdate.PageCount = book.PageCount;
+                bookToUpdate.Thumbnail = book.Thumbnail;
+                bookToUpdate.ISBN = book.ISBN;
+            await dbContext.SaveChangesAsync();
             
 
              return bookToUpdate;
@@ -71,6 +75,5 @@ namespace lms.Services.Repository
             return book;
            
         }
-
     }
 }

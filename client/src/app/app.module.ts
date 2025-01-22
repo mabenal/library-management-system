@@ -9,13 +9,17 @@ import { TopNavigatorComponent } from 'src/shared-components/top-navigator/top-n
 import { BookDetailsModalComponent } from 'src/shared-components/book-details-modal/book-details-modal.component';
 import { Client, API_BASE_URL } from 'auto/autolmsclient-module';
 import { BookListViewComponent } from 'src/shared-components/book-list-view/book-list-view.component';
+import { BookSearchComponent } from 'src/shared-components/book-search/book-search.component';
+import { PaginationComponent } from 'src/shared-components/book-list-view/pagination/pagination.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BookDetailsModalComponent,
     TopNavigatorComponent,
-    BookListViewComponent
+    BookListViewComponent,
+    BookSearchComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

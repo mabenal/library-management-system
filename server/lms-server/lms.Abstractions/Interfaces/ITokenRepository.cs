@@ -5,6 +5,6 @@ namespace lms.Abstractions.Interfaces
 {
     public interface ITokenRepository
     {
-        string CreateJWTToken(ApplicationUser user);
+        Task<string> CreateJWTTokenAsync(ApplicationUser user);
     }
 }

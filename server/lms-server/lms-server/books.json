@@ -1,0 +1,57 @@
+[
+    {
+        "title": "A Game of Thrones",
+        "author": "George R. R. Martin",
+        "publisher": "Bantam",
+        "yearPublished": "2011",
+        "description": "Fantasy-roman.",
+        "isbn": "UOM:39015050507618",
+        "pageCount": 876,
+        "category": "Fiction",
+        "thumbnail": "http://books.google.com/books/content?id=bIZiAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "numberofCopies": 5
+    },
+    {
+        "title": "The No. 1 Ladies' Detective Agency",
+        "author": "Alexander McCall Smith",
+        "yearPublished": "1998",
+        "description": "Set in Africa, with an engaging heroine who could give Miss Marple a run for her money.",
+        "isbn": "UOM:39015051882689",
+        "pageCount": 240,
+        "category": "Fiction",
+        "thumbnail": "http://books.google.com/books/content?id=xNYKAQAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "numberofCopies": 5
+    },
+    {
+        "title": "The Night Manager",
+        "author": "John Le Carré",
+        "publisher": "Random House Digital, Inc.",
+        "yearPublished": "1993",
+        "description": "Former British intelligence officer Jonathan Pine attempts to infiltrate the entourage of Roper, a sinister and powerful Englishman responsible for fitting together the pieces for a monumental arms-for-cocaine deal. Reprint.",
+        "isbn": "id_100345385764",
+        "pageCount": 484,
+        "category": "Fiction",
+        "thumbnail": "http://books.google.com/books/content?id=9CATRvUh3m4C&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+    },
+    {
+        "title": "The Curious Incident of the Dog in the Night-time",
+        "author": "Mark Haddon",
+        "publisher": "Vintage",
+        "yearPublished": "2003",
+        "description": "YA. Murder mystery. Despite his overwhelming fear of interacting with people, Christopher, a mathematically-gifted, autistic fifteen-year-old boy, decides to investigate the murder of a neighbour's dog and uncovers secret information about his mother. Whitbread book of the year 2003. WAYRBA list 2005.",
+        "isbn": "UOM:39015062063501",
+        "pageCount": 288,
+        "category": "Fiction",
+        "thumbnail": "http://books.google.com/books/content?id=I51aAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+    },
+    {
+        "title": "The Road to Gandolfo",
+        "author": "Robert Ludlum",
+        "publisher": "Bantam",
+        "yearPublished": "1992",
+        "description": "A humourous tale where the premis is to kidnap Pope Francesco I and ransom him off for every catholic in the world.",
+        "isbn": "id_100553271091",
+        "category": "Fiction",
+        "thumbnail": "http://books.google.com/books/content?id=DLOS4iKf2GoC&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+    }
+]

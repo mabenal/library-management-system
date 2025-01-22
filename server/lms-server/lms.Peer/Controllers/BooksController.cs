@@ -3,6 +3,7 @@ using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using lms.Abstractions.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace lms.Peer.Controllers
 {
@@ -36,9 +37,9 @@ namespace lms.Peer.Controllers
 
             }
         }
-
+        [Authorize(Roles = "Client")]
         [HttpGet("GetAllBooks")]
-        public async Task<ActionResult<List<BookDto>>> GetAllBooks()
+        public async Task<ActionResult<BookDto>> GetAllBooks()
         {
             try
             {
