@@ -18,34 +18,6 @@ namespace lms.Abstractions.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            var bookEntity = new List<Book>()
-            {
-                new Book()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "The Alchemist",
-                    YearPublished = new DateTime(1988, 1, 1),
-                    Author = "Paulo Coelho",
-                    Category = "Fiction",
-                    NumberOfCopies = 10,
-                    ISBN = "978-0-06-231500-7",
-                    Description = "The Alchemist follows the journey of an Andalusian shepherd"
-                },
-                new Book()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "The Little Prince",
-                    YearPublished = new DateTime(1943, 1, 1),
-                    Author = "Antoine de Saint-Exupéry",
-                    Category = "Fiction",
-                    NumberOfCopies = 10,
-                    ISBN = "978-0-15-601219-5",
-                    Description = "The Little Prince is philosophical tale, with humanist values"
-                }
-            };
-
-
-
 
             var clientEntity = new List<Client>()
             {
@@ -71,8 +43,6 @@ namespace lms.Abstractions.Data
                 }
 
             };
-
-            modelBuilder.Entity<Book>().HasData(bookEntity);
             modelBuilder.Entity<Client>().HasData(clientEntity);
 
         }
