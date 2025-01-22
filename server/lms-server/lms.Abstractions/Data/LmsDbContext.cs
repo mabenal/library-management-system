@@ -76,8 +76,5 @@ namespace lms.Abstractions.Data
             modelBuilder.Entity<Client>().HasData(clientEntity);
 
         }
-
     }
 }
-
-
