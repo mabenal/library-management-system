@@ -10,6 +10,7 @@ namespace lms.Abstractions.Mappings
         {
             CreateMap<Book, BookDto>().ReverseMap();
             CreateMap<Client, ClientDto>().ReverseMap();
+            CreateMap<BookRequest, BookRequestDto>().ReverseMap();
         }
     }
 }

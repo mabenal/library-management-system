@@ -1,4 +1,6 @@
-﻿namespace lms.Abstractions.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace lms.Abstractions.Models
 {
     public class BookRequest
     {
@@ -7,7 +9,11 @@
         public required DateTime DateRequested { get; set; }
         public DateTime DateApproved { get; set; }
         public DateTime DateReturned { get; set; }
+
+
+        [ForeignKey("Client")]
         public Guid ClientId { get; set; }
+        [ForeignKey("Book")]
         public Guid BookId { get; set; }
 
         //navigation properties
