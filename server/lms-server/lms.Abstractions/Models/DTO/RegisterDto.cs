@@ -7,24 +7,25 @@ using System.Threading.Tasks;
 
 namespace lms.Abstractions.Models.DTO
 {
-    public class ClientDto
+    public class RegisterDto
     {
         [Required]
         public string Name { get; set; }
         [Required]
-
         public string LastName { get; set; }
         [Required]
-        [DataType(DataType.EmailAddress)]
-        public string EmailAddress { get; set; }
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-        [Required]
+        public string Email { get; set; }
 
+        [Required]
         public string Address { get; set; }
-        [Required]
 
+        [Required]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
+        [Required]
+        public string ConfirmPassword { get; set; }
     }
 }
