@@ -1,5 +1,5 @@
 <div class="book-list">
-  <div class="book-item" *ngFor="let book of books; let i = index">
+  <div class="book-item" *ngFor="let book of paginatedBooks; let i = index">
     <div class="book-left">
       <img src={{book.thumbnail}} alt="Book Image"/>
     </div>
@@ -17,3 +17,8 @@
     </div>
   </div>
 </div>
+<app-pagination
+[currentPage]="currentPage"
+[totalPages]="totalPages"
+(pageChange)="changePage($event)"
+></app-pagination>

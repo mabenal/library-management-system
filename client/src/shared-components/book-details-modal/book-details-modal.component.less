@@ -1,6 +1,6 @@
 @import '../../styles.less';
 
-.modal {
+.modal-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,7 +9,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: @modal-background-color;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   z-index: 2;
 }
 
@@ -72,7 +72,7 @@ button:disabled {
   display: flex;
   flex-direction: column;
 
-  div{
+  div {
     padding: 10px;
   }
 }

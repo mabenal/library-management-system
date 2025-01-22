@@ -1,4 +1,43 @@
-@import "../../styles.less";
+@import '../../styles.less';
+
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .applied-filters {
+    display: flex;
+    flex-wrap: wrap;
+
+    .filter-pill {
+      background-color: @primary-color;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+
+      button {
+        background: none;
+        border: none;
+        color: white;
+        margin-left: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .clear-filters-btn {
+    background-color: @danger-color;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
 
 .book-list {
     display: flex;

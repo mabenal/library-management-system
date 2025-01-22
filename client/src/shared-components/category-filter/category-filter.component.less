@@ -1,0 +1,35 @@
+@import '../../styles.less';
+
+.category-filter {
+  margin-left: 20px; /* Add left margin */
+
+  .genres-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    height: 100%;
+    align-content: space-between;
+
+    span {
+      display: flex;
+      align-items: center;
+      line-height: 2;
+      cursor: pointer;
+      padding: 10px;
+      border: 1px solid transparent;
+      transition: border-color 0.3s;
+
+      &:hover {
+        border-color: #ccc;
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid white;
+        margin-right: 10px;
+      }
+    }
+  }
+}

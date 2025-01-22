@@ -1,4 +1,5 @@
 ﻿using lms.Abstractions.Models;
+using lms.Abstractions.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace lms.Abstractions.Data
@@ -17,28 +18,33 @@ namespace lms.Abstractions.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Book>()
-                .HasKey(b => b.Id);
 
-            var clientEntity = new List<Book>()
+            var clientEntity = new List<Client>()
             {
-                new Book()
+                new Client()
                 {
                     Id = Guid.NewGuid(),
-                    Title = "Zabdile",
-                    Author = "Mkhize",
-                    YearPublished = "Zamdile.Mkhize@gmail.com",
-                    Publisher = "1234ZM",
-                    Description = "1234 PL Manzi St",
-                    Category = "123-456-7890",
-                    Thumbnail = "Zamdile.Mkhize@gmail.com",
-                    ISBN = "1234ZM",
-                    NumberOfCopies = 2,
-                    PageCount = 2
+                    Name = "Zabdile",
+                    LastName = "Mkhize",
+                    EmailAddress = "Zamdile.Mkhize@gmail.com",
+                    Password = "1234ZM",
+                    Address = "1234 PL Manzi St",
+                    PhoneNumber = "123-456-7890"
                 },
-            };
+                new Client()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Sanele",
+                    LastName = "Mkhize",
+                    EmailAddress = "Sanele.Mkhize@gmail.com",
+                    Password = "1234SM",
+                    Address = "1234 PL RELX St",
+                    PhoneNumber = "123-456-7890"
+                }
 
+            };
             modelBuilder.Entity<Client>().HasData(clientEntity);
+
         }
     }
 }

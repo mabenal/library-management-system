@@ -1,16 +1,10 @@
 <app-top-navigator></app-top-navigator>
-<app-book-details-modal *ngIf="showModal" [book]="selectedBook" [displayConstants]="displayConstants"
-    (close)="closeModal()"></app-book-details-modal>
+<app-book-details-modal *ngIf="showModal && selectedBook" [book]="selectedBook"
+[displayConstants]="displayConstants" (close)="closeModal()"></app-book-details-modal>
 <div class="main-container">
     <app-book-list-view class="books-container" [books]="filteredBooks" [displayConstants]="displayConstants"
         (showBookDetails)="openModal($event)"></app-book-list-view>
-        <div class="lorem-container">
-            <h3>Genres</h3>
-            <div class="genres-grid">
-                <span *ngFor="let genre of genres" (click)="filterBooksByGenre(genre)">
-                    <img src="path/to/image.jpg" alt="Genre Image">
-                    {{ genre }}
-                </span>
-            </div>
-        </div>
+    <div class="category-container">
+        <app-category-filter [books]="books" (filteredBooksChange)="updateFilteredBooks($event)"></app-category-filter>
+    </div>
 </div>
