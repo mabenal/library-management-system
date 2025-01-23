@@ -1,0 +1,36 @@
+@import "../styles.less";
+
+.main-container {
+    display: flex;
+    width: 1145px;
+    margin: 20px auto;
+
+    .books-container {
+        width: 728px;
+    }
+
+    .category-container {
+        width: 400px;
+        height: 500px;
+        padding: 0 20px 20px 20px !important;
+        margin-left: 20px;
+    }
+}
+
+@media only screen and (max-width: 1174px) {
+    .main-container {
+        flex-direction: column;
+        width: 100%;
+        padding: 15px;
+
+
+        .books-container {
+            width: 100%;
+        }
+
+        .category-container {
+            width: 100%;
+            margin-left: 0px;
+        }
+    }
+}
