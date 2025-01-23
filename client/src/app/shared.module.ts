@@ -13,6 +13,7 @@ import { BookSearchComponent } from 'src/shared-components/book-search/book-sear
 import { PaginationComponent } from 'src/shared-components/book-list-view/pagination/pagination.component';
 import { CategoryFilterComponent } from 'src/shared-components/category-filter/category-filter.component';
 import { TruncatePipe } from 'src/shared-components/book-details-modal/truncate.pipe';
+import { SearchResultsOverlayComponent } from 'src/shared-components/search-results-overlay/search-results-overlay.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { TruncatePipe } from 'src/shared-components/book-details-modal/truncate.
     BookSearchComponent,
     PaginationComponent,
     CategoryFilterComponent,
+    SearchResultsOverlayComponent,
     TruncatePipe
   ],
   imports: [

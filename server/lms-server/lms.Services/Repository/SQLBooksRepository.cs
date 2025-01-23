@@ -3,6 +3,7 @@ using lms.Abstractions.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using lms.Abstractions.Interfaces;
+using Microsoft.Extensions.Logging;
 
 
 namespace lms.Services.Repository
@@ -10,10 +11,12 @@ namespace lms.Services.Repository
     public class SQLBooksRepository : IBooksRepository
     {
         private readonly LmsDbContext dbContext;
+        private readonly ILogger<SQLBooksRepository> _logger;
 
-        public SQLBooksRepository(LmsDbContext dbContext)
+        public SQLBooksRepository(LmsDbContext dbContext, ILogger<SQLBooksRepository> logger)
         {
             this.dbContext = dbContext;
+            this._logger = logger;
         }
         
         public async Task<List<Book>> GetAllBooksAsync()
@@ -26,12 +29,37 @@ namespace lms.Services.Repository
             return await dbContext.Books.FindAsync(id);
         }
 
-       public async Task<Book> AddNewBook(Book book)
+        public async Task<Book> AddNewBook(Book book)
         {
             await dbContext.Books.AddAsync(book);
             await dbContext.SaveChangesAsync();
 
             return book;
+        }
+
+        public async Task<List<Book>> SearchBooksAsync(string query)
+        {
+            try
+            {
+                var searchTerms = query.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                var booksQuery = dbContext.Books.AsNoTracking().AsQueryable();
+
+                foreach (var term in searchTerms)
+                {
+                    booksQuery = booksQuery.Where(b => EF.Functions.Like(b.Title, $"%{term}%") ||
+                                                       EF.Functions.Like(b.Author, $"%{term}%") ||
+                                                       EF.Functions.Like(b.ISBN, $"%{term}%") ||
+                                                       EF.Functions.Like(b.Category, $"%{term}%"));
+                }
+
+                return await booksQuery.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while searching for books.");
+                throw;
+            }
         }
 
         public async Task<Book?> UpdateNewBook(Guid id, Book book)
