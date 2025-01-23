@@ -1,0 +1,41 @@
+@import '../../../styles.less';
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+
+  .page-item {
+    margin: 0 5px;
+
+    &.disabled .page-link {
+      color: @disabled-color;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+
+    &.active .page-link {
+      background-color: @primary-color;
+      color: @white-color;
+      border-color: @primary-color;
+    }
+  }
+
+  .page-link {
+    color: @primary-color;
+    border: 1px solid @primary-color;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+      background-color: @primary-color;
+      color: @white-color;
+    }
+  }
+}

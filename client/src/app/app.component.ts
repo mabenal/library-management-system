@@ -1,33 +1,45 @@
 import { Component, OnInit } from '@angular/core';
+import { BookDto } from 'auto/autolmsclient-abstractions';
 import { BooksService } from 'src/services/books.services';
 import { DisplayConstants } from 'src/constants/constants';
-import { BookDto } from 'auto/autolmsclient-abstractions';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
-  selectedBook!: BookDto;
+  selectedBook: BookDto | null = null;
   showModal: boolean = false;
-  displayConstants: any = DisplayConstants;
+  displayConstants: typeof DisplayConstants = DisplayConstants;
   books: BookDto[] = [];
+  filteredBooks: BookDto[] = [];
 
-  constructor(private book: BooksService) {}
+  constructor(private bookService: BooksService) {}
 
   ngOnInit() {
-    this.returnBooks();
+    this.fetchBooks();
   }
 
-  returnBooks() {
-    this.book.books().subscribe((res: BookDto[]) => {
-      this.books = res;
-    });
+  // Fetches the list of books from the service
+  async fetchBooks() {
+    try {
+      this.books = await this.bookService.books().toPromise();
+      this.filteredBooks = this.books;
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  }
+
+  updateFilteredBooks(filteredBooks: BookDto[]) {
+    this.filteredBooks = filteredBooks;
   }
 
   openModal(book: BookDto) {
-    this.selectedBook = book;
-    this.showModal = true;
+    if (book) {
+      this.selectedBook = book;
+      this.showModal = true;
+    }
   }
 
   closeModal() {

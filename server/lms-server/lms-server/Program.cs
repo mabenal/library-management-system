@@ -108,6 +108,8 @@ builder.Services.AddAuthorization();
 
 
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Execute BookImportService on startup

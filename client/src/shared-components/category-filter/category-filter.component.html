@@ -1,0 +1,11 @@
+<div class="category-filter">
+  <div class="genres-grid">
+    <ng-container *ngFor="let category of categoryKeys">
+      <span (click)="onToggleCategory(category)">
+        <img src="path/to/image.jpg" alt="Genre Image">
+        {{ category }}
+      </span>
+    </ng-container>
+  </div>
+  <!-- <button (click)="clearFilters()">Clear Filters</button> -->
+</div>

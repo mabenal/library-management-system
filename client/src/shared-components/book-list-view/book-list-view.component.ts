@@ -15,7 +15,7 @@ export class BookListViewComponent implements OnInit {
   @Output() showBookDetails = new EventEmitter<BookDto>();
   
   currentPage: number = 1;
-  itemsPerPage: number = 3;
+  itemsPerPage: number = 15;
 
   constructor() { }
 
