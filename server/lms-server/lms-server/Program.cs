@@ -60,6 +60,10 @@ builder.Services.AddSwaggerGen(c =>
 
 });
 
+// Use Singleton for ConfigurationManager
+var configurationManager = lms.Abstractions.ConfigurationManager.GetInstance(builder.Configuration);
+builder.Services.AddSingleton(configurationManager);
+
 builder.Services.AddDbContext<LmsDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("LmsDbConnectionString"),

@@ -1,0 +1,10 @@
+<div class="search-results-overlay" *ngIf="results && results.length">
+    <div *ngFor="let book of results.slice(0, 3)">
+      <img [src]="book.thumbnail" alt="Book Image" class="thumbnail">
+      <div class="book-info">
+        <div class="title" [innerHTML]="highlight(book.title)"></div>
+        <div class="author">{{ book.author }}</div>
+      </div>
+    </div>
+    <button class="view-all-btn" (click)="viewAll()">View All</button>
+</div>

@@ -15,7 +15,6 @@ namespace lms.Peer.Controllers
     {
         private readonly IBooksRepository booksRepository;
         private IMapper mapper { get; }
-        private readonly string apiKey = "AIzaSyCKPZUJfOAlBng9idsWRRptw2e-MDX5x2M";
         private readonly HttpClient httpClient;
 
         public BooksController(IBooksRepository booksRepository, IMapper mapper, HttpClient httpClient)
@@ -26,82 +25,17 @@ namespace lms.Peer.Controllers
         }
 
         [HttpGet("SearchBooks/{query}")]
-        public async Task<ActionResult> SearchBooks([FromRoute] string query)
+        public async Task<ActionResult<BookDto>> SearchBooks([FromRoute] string query)
         {
             try
             {
-                var response = await httpClient.GetAsync($"https://www.googleapis.com/books/v1/volumes?q=subject:{query}&maxResults=10&key={apiKey}");
-                response.EnsureSuccessStatusCode();
-
-                var content = await response.Content.ReadAsStringAsync();
-                var jsonDocument = JsonDocument.Parse(content);
-
-                var filteredBooks = jsonDocument.RootElement.GetProperty("items").EnumerateArray().Select(item =>
-                {
-                    var volumeInfo = item.GetProperty("volumeInfo");
-
-                    volumeInfo.TryGetProperty("title", out var titleElement);
-                    volumeInfo.TryGetProperty("authors", out var authorsElement);
-                    volumeInfo.TryGetProperty("publisher", out var publisherElement);
-                    volumeInfo.TryGetProperty("publishedDate", out var publishedDateElement);
-                    volumeInfo.TryGetProperty("description", out var descriptionElement);
-                    volumeInfo.TryGetProperty("industryIdentifiers", out var industryIdentifiersElement);
-                    volumeInfo.TryGetProperty("pageCount", out var pageCountElement);
-                    volumeInfo.TryGetProperty("categories", out var categoriesElement);
-                    volumeInfo.TryGetProperty("imageLinks", out var imageLinksElement);
-
-                    return new {
-                        title = titleElement.ValueKind == JsonValueKind.String ? titleElement.GetString() : null,
-                        authors = authorsElement.ValueKind == JsonValueKind.Array 
-                            ? authorsElement.GetArrayLength() == 1 
-                                ? authorsElement.EnumerateArray().First().GetString() 
-                                : string.Join(", ", authorsElement.EnumerateArray().Select(author => author.GetString()).ToArray(), 0, authorsElement.GetArrayLength() - 1) + " & " + authorsElement.EnumerateArray().Last().GetString() 
-                            : null,
-                        publisher = publisherElement.ValueKind == JsonValueKind.String ? publisherElement.GetString() : null,
-                        publishedDate = publishedDateElement.ValueKind == JsonValueKind.String ? publishedDateElement.GetString() : null,
-                        description = descriptionElement.ValueKind == JsonValueKind.String ? descriptionElement.GetString() : null,
-                        isbn = industryIdentifiersElement.ValueKind == JsonValueKind.Array 
-                            ? industryIdentifiersElement.EnumerateArray()
-                                .Select(identifier => identifier.GetProperty("identifier").GetString())
-                                .OrderByDescending(id => id.Length)
-                                .FirstOrDefault() 
-                            : null,
-                        pageCount = pageCountElement.ValueKind == JsonValueKind.Number ? pageCountElement.GetInt32() : (int?)null,
-                        categories = categoriesElement.ValueKind == JsonValueKind.Array 
-                            ? categoriesElement.GetArrayLength() == 1 
-                                ? categoriesElement.EnumerateArray().First().GetString() 
-                                : string.Join(", ", categoriesElement.EnumerateArray().Select(category => category.GetString()).ToArray(), 0, categoriesElement.GetArrayLength() - 1) + " & " + categoriesElement.EnumerateArray().Last().GetString() 
-                            : null,
-                        thumbnail = imageLinksElement.ValueKind == JsonValueKind.Object && imageLinksElement.TryGetProperty("thumbnail", out var thumbnailElement) 
-                            ? thumbnailElement.GetString() 
-                            : null,
-                        numberOfCopies = new Random().Next(1, 26)
-                    };
-                }).ToList();
-
-                //// Read existing JSON file
-                //var jsonFilePath = "../../lms-server/lms-server/books.json";
-                //var existingJson = await System.IO.File.ReadAllTextAsync(jsonFilePath);
-                //var existingBooks = JsonSerializer.Deserialize<List<object>>(existingJson);
-
-                //// Append new search results
-                //existingBooks.AddRange(filteredBooks);
-
-                //// Write updated data back to JSON file
-                //var updatedJson = JsonSerializer.Serialize(existingBooks, new JsonSerializerOptions { WriteIndented = true });
-                //await System.IO.File.WriteAllTextAsync(jsonFilePath, updatedJson);
-
-                return Ok(filteredBooks);
+                var books = await booksRepository.SearchBooksAsync(query);
+                return Ok(mapper.Map<List<BookDto>>(books));
             }
-            catch (HttpRequestException e)
+            catch (Exception e)
             {
-                Console.Error.WriteLine($"Request error: {e.Message}");
+                Console.Error.WriteLine($"in booksController: {e}");
                 return StatusCode(500, "Internal server error");
-            }
-            catch (JsonException e)
-            {
-                Console.Error.WriteLine($"JSON error: {e.Message}");
-                return StatusCode(500, "Error processing JSON response");
             }
         }
 
