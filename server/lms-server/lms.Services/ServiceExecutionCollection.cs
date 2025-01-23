@@ -18,7 +18,8 @@ namespace lms.Services
                 .AddScoped<BookImportService>()
                 .AddScoped<IBooksRepository, SQLBooksRepository>()
                 .AddScoped<IClientRepository, SQLClientRepository>()
-                .AddScoped<IBookRequestRepository, SQLBookRequestRepository>();
+                .AddScoped<IBookRequestRepository, SQLBookRequestRepository>()
+                .AddScoped<ITokenRepository, TokenRepository>();
             // Add other services here
         }
     }
