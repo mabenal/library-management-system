@@ -11,7 +11,6 @@ namespace lms.Abstractions.Data
         public LmsDbContext(DbContextOptions<LmsDbContext> dbContextOptions) : base(dbContextOptions)
         {
         }
-
         public DbSet<Book> Books { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<BookRequest> BookRequests { get; set; }

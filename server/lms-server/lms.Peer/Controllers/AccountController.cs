@@ -1,8 +1,10 @@
 ﻿using lms.Abstractions.Interfaces;
 using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace lms.Peer.Controllers
 {
@@ -99,8 +101,9 @@ namespace lms.Peer.Controllers
 
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPut("AssignRole")]
+        
         public async Task<ActionResult<AccountActionResponseDto>> AssignRole([FromBody] RoleDto assignRoleDto)
         {
             var user = await userManager.FindByIdAsync(assignRoleDto.UserId.ToString());
@@ -124,7 +127,7 @@ namespace lms.Peer.Controllers
 
             return BadRequest(assignRoleResponse);
         }
-
+        [Authorize(Roles ="admin")]
         [HttpPut("RemoveRole")]
         public async Task<IActionResult> RemoveRole([FromBody] RoleDto roleModel)
         {
@@ -152,7 +155,7 @@ namespace lms.Peer.Controllers
         }
 
         [HttpPut("ChangePassword")]
-
+        
         public async Task<ActionResult<AccountActionResponseDto>> ChangePassword([FromBody] ChangePasswordRequestDto changePasswordRequestDto)
         {
             try
@@ -226,6 +229,29 @@ namespace lms.Peer.Controllers
                 throw;
             }
         }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try 
+            { 
+                var allUsers = await userManager.Users.ToListAsync();
+
+            if (allUsers != null)
+            {
+                 return Ok(allUsers);
+            }
+
+            return NotFound();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error in AccountController: {ex}");
+                throw;
+            }
+        }
+
 
     }
 }

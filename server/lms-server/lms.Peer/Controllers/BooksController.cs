@@ -121,7 +121,7 @@ namespace lms.Peer.Controllers
 
             }
         }
-        [Authorize(Roles = "Client")]
+        [Authorize(Roles = "client")]
         [HttpGet("GetAllBooks")]
         public async Task<ActionResult<BookDto>> GetAllBooks()
         {
@@ -137,6 +137,7 @@ namespace lms.Peer.Controllers
             }
         }
 
+        [Authorize(Roles = "librarian")]
         [HttpPost("AddBook")]
         public async Task<ActionResult<BookDto>> AddBook([FromBody] BookDto bookDtoObject)
         {
@@ -158,7 +159,7 @@ namespace lms.Peer.Controllers
 
 
         }
-
+        [Authorize(Roles = "librarian")]
         [HttpPut("UpdateBook/{id:Guid}")]
         public async Task<ActionResult<BookDto>> UpdateBook([FromRoute] Guid id,[FromBody] BookDto book)
         {
@@ -185,6 +186,7 @@ namespace lms.Peer.Controllers
             }
 
         }
+        [Authorize(Roles = "librarian")]
         [HttpDelete("RemoveBook/{id:Guid}")]
         public async Task<ActionResult<BookDto>> DeleteBook([FromRoute] Guid id)
         {
