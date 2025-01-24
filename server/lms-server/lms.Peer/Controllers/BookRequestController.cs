@@ -8,6 +8,7 @@ using lms.Abstractions.Interfaces;
 using AutoMapper;
 using lms.Abstractions.Models.DTO;
 using lms.Abstractions.Models;
+using lms.Abstractions.Exceptions;
 
 namespace lms.Peer.Controllers
 {
@@ -49,6 +50,10 @@ namespace lms.Peer.Controllers
                 var bookRequestDomainModel = mapper.Map<BookRequest>(bookRequestDto);
                 var bookRequest = await bookRequestRepository.AddNewRequest(bookRequestDomainModel);
                 return Ok(mapper.Map<BookRequestDto>(bookRequest));
+            }
+            catch(GoblalException e)
+            {
+                return StatusCode(403, e.Message);
             }
             catch (Exception e)
             {

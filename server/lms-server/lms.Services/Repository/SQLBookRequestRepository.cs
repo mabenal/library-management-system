@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using lms.Abstractions.Exceptions;
 
 namespace lms.Services.Repository
 {
@@ -21,6 +22,11 @@ namespace lms.Services.Repository
 
         public async Task<BookRequest> AddNewRequest(BookRequest bookRequest)
         {
+            var alreadyRequested = await dbContext.BookRequests.FirstOrDefaultAsync(br => br.BookId == bookRequest.BookId && br.ClientId == bookRequest.ClientId);
+            if (alreadyRequested != null)
+            {
+                throw new GoblalException("You've already requested this book, check your book request history");
+            }
             await dbContext.BookRequests.AddAsync(bookRequest);
             await dbContext.SaveChangesAsync();
 
