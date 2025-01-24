@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { BookDto } from 'auto/autolmsclient-abstractions';
 import { Router } from '@angular/router';
 
@@ -10,11 +10,12 @@ import { Router } from '@angular/router';
 export class SearchResultsOverlayComponent {
   @Input() results: BookDto[] = [];
   @Input() searchTerm: string = '';
+  @Output() viewAll = new EventEmitter<void>();
 
   constructor(private router: Router) {}
 
-  viewAll(): void {
-    this.router.navigate(['/search-results']);
+  viewAllClick(): void {
+    this.viewAll.emit();
   }
 
   highlight(text: string): string {

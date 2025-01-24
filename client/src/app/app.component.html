@@ -1,10 +1,4 @@
 <app-top-navigator></app-top-navigator>
-<app-book-details-modal *ngIf="showModal && selectedBook" [book]="selectedBook"
-[displayConstants]="displayConstants" (close)="closeModal()"></app-book-details-modal>
 <div class="main-container">
-    <app-book-list-view class="books-container" [books]="filteredBooks" [displayConstants]="displayConstants"
-        (showBookDetails)="openModal($event)"></app-book-list-view>
-    <div class="category-container">
-        <app-category-filter [books]="books" (filteredBooksChange)="updateFilteredBooks($event)"></app-category-filter>
-    </div>
+    <router-outlet></router-outlet>
 </div>

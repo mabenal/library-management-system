@@ -10,10 +10,11 @@ import { CATEGORIES } from 'src/constants';
 })
 export class CategoryFilterComponent implements OnInit {
   @Input() books: BookDto[] = [];
-  @Output() filteredBooksChange = new EventEmitter<BookDto[]>();
+  @Output() filteredBooksChange = new EventEmitter<{ filteredBooks: BookDto[], category: string | null }>();
 
   categoryKeys: string[] = [];
   selectedCategories: string[] = [];
+  CATEGORIES = CATEGORIES;
 
   constructor() {}
 
@@ -43,7 +44,7 @@ export class CategoryFilterComponent implements OnInit {
           console.warn(`Category ${category} not found`);
           return false;
         }
-        return CATEGORIES[category].some(subCategory => {
+        return CATEGORIES[category].subCategories.some(subCategory => {
           return book.category && book.category.includes(subCategory);
         });
       });
@@ -52,7 +53,8 @@ export class CategoryFilterComponent implements OnInit {
 
   filterBooks() {
     const filteredBooks = this.getFilteredBooks();
-    this.filteredBooksChange.emit(filteredBooks);
+    const category = this.selectedCategories.length > 0 ? this.selectedCategories[0] : null;
+    this.filteredBooksChange.emit({ filteredBooks, category });
   }
 
   clearFilters() {

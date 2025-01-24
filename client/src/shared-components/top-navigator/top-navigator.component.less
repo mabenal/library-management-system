@@ -1,54 +1,29 @@
+@import "../../styles.less";
+
 .navbar {
-    background-color: #c5e1f6;
-}
-
-.bi {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.nav-link {
-    color: #000;
-}
-
-.nav-link:hover {
-    color: #0056b3;
-}
-
-.home-navbar{
-    width: 19%;
-    display: flex;
-}
-
-.search-bar {
-    width: 60%;
-}
-
-
-
-.login-bar {
-    width: 20%;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.login-info {
-    height: 40px;
-    display: inline-table;
-
-    .navbar-login {
-        display: flex;
-
-        .btn.bi {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-    }
-}
-.navbar-logout{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: @white-color;
+    height: 73px;
     width: 100%;
-    height: 100%;
+    position: fixed;
+    z-index: 11;
+    top: 0;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.header {
+    text-align: left;
+    z-index: 12;
+    position: fixed;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 9px;
+}
+
+#logo {
+    float: left;
+    margin-right: 14px;
+    margin-top: 8px;
+    margin-left: -2px;
 }

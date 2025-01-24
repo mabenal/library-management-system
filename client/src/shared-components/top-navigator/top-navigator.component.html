@@ -1,18 +1,34 @@
 <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
+    <div class="header">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent" style="height: 35px">
             <div class="home-navbar">
-                <div class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">
-                        <i class="bi bi-house-door"></i></a>
+                <div id="logo" class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/dashboard">
+                        <i class="bi bi-house-door"></i> Dashboard
+                    </a>
                 </div>
                 <div class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">History</a>
+                        <a class="nav-link" routerLink="/books">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/clients">Clients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/inventory">Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/request-management">Request Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/history">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/settings">Settings</a>
                     </li>
                 </div>
             </div>
@@ -33,7 +49,7 @@
                 <div class="login-info" *ngIf="isLoggedIn()">
                     <div class="navbar-logout">
                         <span class="login-item">
-                            <a class="btn" href="#"><i class="bi bi-person-circle"></i></a>
+                            <a class="btn" routerLink="/account"><i class="bi bi-person-circle"></i></a>
                         </span>
                         <span class="login-item">
                             <a class="btn btn-secondary" href="#">Sign out</a>
