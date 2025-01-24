@@ -43,40 +43,24 @@ namespace lms_server.Migrations
                     b.Property<int>("NumberOfCopies")
                         .HasColumnType("int");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
+                    b.Property<int>("PageCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Publisher")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("YearPublished")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Thumbnail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("YearPublished")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Books");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("2fbfeaf4-ec74-4d27-b765-d6a25a92d419"),
-                            Author = "Paulo Coelho",
-                            Category = "Fiction",
-                            Description = "The Alchemist follows the journey of an Andalusian shepherd",
-                            ISBN = "978-0-06-231500-7",
-                            NumberOfCopies = 10,
-                            Title = "The Alchemist",
-                            YearPublished = new DateTime(1988, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("3bf34826-e79d-4eee-b6d9-0531b8e5c6e6"),
-                            Author = "Antoine de Saint-Exupéry",
-                            Category = "Fiction",
-                            Description = "The Little Prince is philosophical tale, with humanist values",
-                            ISBN = "978-0-15-601219-5",
-                            NumberOfCopies = 10,
-                            Title = "The Little Prince",
-                            YearPublished = new DateTime(1943, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("lms.Abstractions.Models.BookRequest", b =>
@@ -144,7 +128,7 @@ namespace lms_server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8520313e-8253-4289-9751-22fae6d6f740"),
+                            Id = new Guid("8bdd9a3d-04d2-4bd1-886a-984f0a4f8aba"),
                             Address = "1234 PL Manzi St",
                             EmailAddress = "Zamdile.Mkhize@gmail.com",
                             LastName = "Mkhize",
@@ -154,7 +138,7 @@ namespace lms_server.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f298644e-55cd-4059-9f85-275f83f7d162"),
+                            Id = new Guid("bdcd61b5-87ce-422f-bf26-52a1ed2f13f0"),
                             Address = "1234 PL RELX St",
                             EmailAddress = "Sanele.Mkhize@gmail.com",
                             LastName = "Mkhize",

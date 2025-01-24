@@ -18,13 +18,16 @@ namespace lms_server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YearPublished = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfCopies = table.Column<int>(type: "int", nullable: false),
                     ISBN = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    YearPublished = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumberOfCopies = table.Column<int>(type: "int", nullable: false),
+                    PageCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,21 +81,12 @@ namespace lms_server.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Books",
-                columns: new[] { "Id", "Author", "Category", "Description", "ISBN", "NumberOfCopies", "Title", "YearPublished" },
-                values: new object[,]
-                {
-                    { new Guid("2fbfeaf4-ec74-4d27-b765-d6a25a92d419"), "Paulo Coelho", "Fiction", "The Alchemist follows the journey of an Andalusian shepherd", "978-0-06-231500-7", 10, "The Alchemist", new DateTime(1988, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("3bf34826-e79d-4eee-b6d9-0531b8e5c6e6"), "Antoine de Saint-Exupéry", "Fiction", "The Little Prince is philosophical tale, with humanist values", "978-0-15-601219-5", 10, "The Little Prince", new DateTime(1943, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Clients",
                 columns: new[] { "Id", "Address", "EmailAddress", "LastName", "Name", "Password", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { new Guid("8520313e-8253-4289-9751-22fae6d6f740"), "1234 PL Manzi St", "Zamdile.Mkhize@gmail.com", "Mkhize", "Zabdile", "1234ZM", "123-456-7890" },
-                    { new Guid("f298644e-55cd-4059-9f85-275f83f7d162"), "1234 PL RELX St", "Sanele.Mkhize@gmail.com", "Mkhize", "Sanele", "1234SM", "123-456-7890" }
+                    { new Guid("8bdd9a3d-04d2-4bd1-886a-984f0a4f8aba"), "1234 PL Manzi St", "Zamdile.Mkhize@gmail.com", "Mkhize", "Zabdile", "1234ZM", "123-456-7890" },
+                    { new Guid("bdcd61b5-87ce-422f-bf26-52a1ed2f13f0"), "1234 PL RELX St", "Sanele.Mkhize@gmail.com", "Mkhize", "Sanele", "1234SM", "123-456-7890" }
                 });
 
             migrationBuilder.CreateIndex(
