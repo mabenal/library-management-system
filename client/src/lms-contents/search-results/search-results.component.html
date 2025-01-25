@@ -1,0 +1,81 @@
+<div class="search-results">
+  <div class="search-results-header">
+    <div class="header-left">
+      <h1>Search Results for "{{ searchTerm }}"</h1>
+      <p>{{ searchResults.length }} books found in {{ searchTime }} seconds</p>
+    </div>
+    <div class="header-right">
+      <label>
+        <input type="checkbox" (change)="toggleExactMatch($event)">
+        Exact Match
+      </label>
+      <label>
+        <select (change)="filterByPageCount($event)">
+          <option value="">Any</option>
+          <option value="0-100">0-100</option>
+          <option value="101-200">101-200</option>
+          <option value="201-300">201-300</option>
+          <option value="301-400">301-400</option>
+          <option value="401+">401+</option>
+        </select>
+      </label>
+      <label>
+        <select (change)="filterByYear($event)">
+          <option value="">Any</option>
+          <option *ngFor="let year of publicationYears" [value]="year">{{ year }}</option>
+        </select>
+      </label>
+      <label>
+        Sort By:
+        <select (change)="sortResults($event)">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      </label>
+    </div>
+  </div>
+  <div *ngIf="searchResults.length > 0; else noResults">
+    <div *ngFor="let book of paginatedResults">
+      <div class="book">
+        <img [src]="book.thumbnail" alt="Book Image" class="thumbnail">
+        <div class="book-info">
+          <div class="title">{{ book.title }}</div>
+          <div class="author">{{ book.author }}</div>
+          <div class="year">{{ book.yearPublished }}</div>
+        </div>
+      </div>
+    </div>
+    <nav *ngIf="searchResults.length > itemsPerPage" aria-label="Page navigation" class="d-flex justify-content-center align-items-center">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="navigatePage(1)" aria-label="First">
+            <span aria-hidden="true">&laquo;&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="navigatePage(currentPage - 1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="currentPage === (i + 1)">
+          <a class="page-link" (click)="navigatePage(i + 1)">{{ i + 1 }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="navigatePage(currentPage + 1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="navigatePage(totalPages)" aria-label="Last">
+            <span aria-hidden="true">&raquo;&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <ng-template #noResults>
+    <div class="no-results">
+      Can't find results for "{{ searchTerm }}"
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,134 @@
+@import '../../styles.less';
+
+@text-muted-color: #6c757d;
+
+.search-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .header-left {
+    h1 {
+      margin: 0;
+    }
+    p {
+      margin: 0;
+      color: @text-muted-color;
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+
+    label {
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+
+      input[type="radio"] {
+        margin-right: 5px;
+      }
+
+      select {
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
+.search-results {
+  margin: 20px auto;
+  width: 80%;
+  background-color: @lms-background-color;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    font-size: 24px;
+    color: @primary-color;
+    margin-bottom: 20px;
+  }
+
+  .book {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: @white-color;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+    .thumbnail {
+      width: 80px;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .book-info {
+      flex: 1;
+      padding: 10px 20px;
+
+      .title {
+        font-size: 18px;
+        font-weight: bold;
+        color: @primary-color;
+        margin-bottom: 5px;
+      }
+
+      .author {
+        font-size: 14px;
+        color: @book-detail-color;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .no-results {
+    font-size: 18px;
+    color: @danger-color;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+
+    .page-item {
+      margin: 0 5px;
+
+      &.disabled .page-link {
+        color: @disabled-color;
+        pointer-events: none;
+        cursor: not-allowed;
+      }
+
+      &.active .page-link {
+        background-color: @primary-color;
+        color: @white-color;
+        border-color: @primary-color;
+      }
+    }
+
+    .page-link {
+      color: @primary-color;
+      border: 1px solid @primary-color;
+      padding: 5px 10px;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+
+      &:hover {
+        background-color: @primary-color;
+        color: @white-color;
+      }
+    }
+  }
+}

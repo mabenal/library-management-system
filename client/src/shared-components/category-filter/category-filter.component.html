@@ -1,8 +1,8 @@
 <div class="category-filter">
   <div class="genres-grid">
     <ng-container *ngFor="let category of categoryKeys">
-      <span (click)="onToggleCategory(category)">
-        <img src="path/to/image.jpg" alt="Genre Image">
+      <span (click)="onToggleCategory(category)" class="category">
+        <img [src]="CATEGORIES[category].imagePath" alt="{{ category }} Image">
         {{ category }}
       </span>
     </ng-container>

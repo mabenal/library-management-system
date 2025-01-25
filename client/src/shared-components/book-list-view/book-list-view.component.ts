@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { BookDto } from 'auto/autolmsclient-abstractions';
 
 @Component({
@@ -9,6 +9,7 @@ import { BookDto } from 'auto/autolmsclient-abstractions';
 export class BookListViewComponent implements OnInit {
   @Input() books: BookDto[] = [];
   @Input() displayConstants: any;
+  @Input() enablePagination: boolean = true; // Add this line
   @Output() showBookDetails = new EventEmitter<BookDto>();
 
   currentPage: number = 1;
@@ -24,6 +25,9 @@ export class BookListViewComponent implements OnInit {
   }
 
   get paginatedBooks(): BookDto[] {
+    if (!this.enablePagination) {
+      return this.books;
+    }
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.books.slice(startIndex, startIndex + this.itemsPerPage);
   }
