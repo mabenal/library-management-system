@@ -1,44 +1,5 @@
 @import '../../styles.less';
 
-.filter-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-
-  .applied-filters {
-    display: flex;
-    flex-wrap: wrap;
-
-    .filter-pill {
-      background-color: @primary-color;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 20px;
-      margin-right: 10px;
-      display: flex;
-      align-items: center;
-
-      button {
-        background: none;
-        border: none;
-        color: white;
-        margin-left: 5px;
-        cursor: pointer;
-      }
-    }
-  }
-
-  .clear-filters-btn {
-    background-color: @danger-color;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-}
-
 .book-list {
     display: flex;
     flex-direction: column;
@@ -47,9 +8,15 @@
 .book-item {
     display: flex;
     margin-bottom: 20px;
-    background-color: @lms-background-color;
+    background-color: @white-color;
     height: 130px;
     border-radius: 5px !important;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out;
+
+    &:hover {
+        box-shadow: 0 0 10px #4285f4;
+    }
 }
 
 .book-left {
@@ -73,6 +40,9 @@
     word-break: break-word;
 }
 
-.book-right>div:last-child {
-    padding-top: 15px;
+.bookHeading {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }

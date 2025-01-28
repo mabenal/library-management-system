@@ -9,4 +9,8 @@ export class BooksService {
     books(): Observable<any> {
         return this.client.getAllBooks();
     }
+
+    searchBooks(query: string): Observable<any> {
+        return this.client.searchBooks(query);
+    }
 }

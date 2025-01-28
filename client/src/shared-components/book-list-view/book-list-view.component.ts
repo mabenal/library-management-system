@@ -1,8 +1,5 @@
-import { Component, OnInit, EventEmitter, Input, Output, ChangeDetectorRef, OnDestroy} from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { BookDto } from 'auto/autolmsclient-abstractions';
-import { BookDetailsModalComponent } from '../book-details-modal/book-details-modal.component';
-import { PaginationComponent } from './pagination/pagination.component';
 
 @Component({
   selector: 'app-book-list-view',
@@ -10,24 +7,27 @@ import { PaginationComponent } from './pagination/pagination.component';
   styleUrls: ['./book-list-view.component.less']
 })
 export class BookListViewComponent implements OnInit {
-  @Input() books: BookDto[] = []; // List of books
+  @Input() books: BookDto[] = [];
   @Input() displayConstants: any;
+  @Input() enablePagination: boolean = true; // Add this line
   @Output() showBookDetails = new EventEmitter<BookDto>();
-  
+
   currentPage: number = 1;
   itemsPerPage: number = 15;
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log('Books:', this.books);
   }
-  
+
   onShowBookDetails(book: BookDto) {
     this.showBookDetails.emit(book);
   }
 
   get paginatedBooks(): BookDto[] {
+    if (!this.enablePagination) {
+      return this.books;
+    }
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.books.slice(startIndex, startIndex + this.itemsPerPage);
   }
@@ -41,5 +41,4 @@ export class BookListViewComponent implements OnInit {
   get totalPages(): number {
     return Math.ceil(this.books.length / this.itemsPerPage);
   }
-
 }

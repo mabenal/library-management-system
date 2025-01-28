@@ -1,7 +1,8 @@
 <div class="search">
-    <form class="search-form" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-            style="flex-grow: 1;">
-        <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+    <form class="search-form" role="search" (submit)="onSubmit($event, searchInput.value)">
+        <input #searchInput class="search-input" type="search" placeholder="Search" aria-label="Search"
+            (input)="search(searchInput.value)" [value]="searchTerm">
+        <button class="search-button" type="submit" (click)="onSearchButtonClick(searchInput.value)"><i class="bi bi-search"></i></button>
     </form>
+    <app-search-results-overlay *ngIf="showOverlay" [results]="(searchResults$ | async) || []" [searchTerm]="searchTerm" (viewAll)="onViewAllClick()"></app-search-results-overlay>
 </div>

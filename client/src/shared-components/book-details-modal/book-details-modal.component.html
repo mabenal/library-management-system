@@ -3,19 +3,19 @@
     <span class="close" (click)="closeModal()">&times;</span>
     <div class="book-details">
       <div>
-        <img [src]="book?.thumbnail" alt="Book Image" class="book-image">
+        <img [src]="book.thumbnail" alt="Book Image" class="book-image">
       </div>
       <div>
-        <h2>{{ book?.title }}</h2>
-        <p><strong>{{ displayConstants.Author }}</strong> {{ book?.author }}</p>
-        <p><strong>{{ displayConstants.Category }}</strong> {{ book?.category }}</p>
-        <p><strong>{{ displayConstants.YearPublished }}</strong> {{ book?.yearPublished | date }}</p>
-        <p><strong>{{ displayConstants.Isbn }}</strong> {{ book?.isbn }}</p>
+        <h2>{{ book.title }}</h2>
+        <p><strong>{{ displayConstants.Author }}</strong> {{ book.author }}</p>
+        <p><strong>{{ displayConstants.Category }}</strong> {{ book.category }}</p>
+        <p><strong>{{ displayConstants.YearPublished }}</strong> {{ book.yearPublished | date }}</p>
+        <p><strong>{{ displayConstants.Isbn }}</strong> {{ book.isbn }}</p>
         <p>
           <strong>{{ displayConstants.Description }}</strong>
-          <span *ngIf="!showFullDescription">{{ book?.description | truncate: 100 }}</span>
-          <span *ngIf="showFullDescription">{{ book?.description }}</span>
-          <span *ngIf="book?.description && book.description.split(' ').length > 100" (click)="toggleFullDescription()" class="toggle-description">
+          <span *ngIf="!showFullDescription">{{ book.description | truncate: 100 }}</span>
+          <span *ngIf="showFullDescription">{{ book.description }}</span>
+          <span *ngIf="book.description && book.description.split(' ').length > 100" (click)="toggleFullDescription()" class="toggle-description">
             {{ showFullDescription ? 'See Less' : 'See More' }}
           </span>
         </p>

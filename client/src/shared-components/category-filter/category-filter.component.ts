@@ -10,10 +10,11 @@ import { CATEGORIES } from 'src/constants';
 })
 export class CategoryFilterComponent implements OnInit {
   @Input() books: BookDto[] = [];
-  @Output() filteredBooksChange = new EventEmitter<BookDto[]>();
+  @Output() filteredBooksChange = new EventEmitter<{ filteredBooks: BookDto[], category: string | null }>();
 
   categoryKeys: string[] = [];
   selectedCategories: string[] = [];
+  CATEGORIES = CATEGORIES;
 
   constructor() {}
 
@@ -22,12 +23,13 @@ export class CategoryFilterComponent implements OnInit {
   }
 
   onToggleCategory(category: string) {
-    const index = this.selectedCategories.indexOf(category);
-    if (index > -1) {
-      this.selectedCategories.splice(index, 1);
-    } else {
-      this.selectedCategories.push(category);
-    }
+    // Clear the previous filter
+    this.selectedCategories = [];
+
+    // Add the newly selected category
+    this.selectedCategories.push(category);
+
+    // Filter the books
     this.filterBooks();
   }
 
@@ -42,8 +44,8 @@ export class CategoryFilterComponent implements OnInit {
           console.warn(`Category ${category} not found`);
           return false;
         }
-        return CATEGORIES[category].some(subCategory => {
-          return book.category.includes(subCategory);
+        return CATEGORIES[category].subCategories.some(subCategory => {
+          return book.category && book.category.includes(subCategory);
         });
       });
     });
@@ -51,7 +53,8 @@ export class CategoryFilterComponent implements OnInit {
 
   filterBooks() {
     const filteredBooks = this.getFilteredBooks();
-    this.filteredBooksChange.emit(filteredBooks);
+    const category = this.selectedCategories.length > 0 ? this.selectedCategories[0] : null;
+    this.filteredBooksChange.emit({ filteredBooks, category });
   }
 
   clearFilters() {

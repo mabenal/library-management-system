@@ -19,7 +19,6 @@ namespace lms.Abstractions.Data
         {
             base.OnModelCreating(modelBuilder);
 
-
             var clientEntity = new List<Client>()
             {
                 new Client()
@@ -42,7 +41,6 @@ namespace lms.Abstractions.Data
                     Address = "1234 PL RELX St",
                     PhoneNumber = "123-456-7890"
                 }
-
             };
             modelBuilder.Entity<Client>().HasData(clientEntity);
 
