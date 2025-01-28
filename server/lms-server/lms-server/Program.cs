@@ -1,12 +1,14 @@
-using lms.Abstractions.Interfaces;
+
 using lms.Abstractions.Data;
 using lms.Abstractions.Mappings;
-using lms_server.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using lms.Services;
-using lms.Services.Repository;
+using lms.Abstractions.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +26,43 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Description = "API Documentation",
     });
+
+    c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme ="Bearer",
+        BearerFormat = "JWT" 
+
+
+    });
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+
+            new OpenApiSecurityScheme
+            {
+                Reference= new OpenApiReference
+                {
+                    Type= ReferenceType.SecurityScheme,
+                    Id= JwtBearerDefaults.AuthenticationScheme
+                },
+                Scheme="Oauth2",
+                Name= JwtBearerDefaults.AuthenticationScheme,
+                In= ParameterLocation.Header,
+            },
+             new List<string>()
+
+        }
+
+        });
+
 });
+
+// Use Singleton for ConfigurationManager
+var configurationManager = lms.Abstractions.ConfigurationManager.GetInstance(builder.Configuration);
+builder.Services.AddSingleton(configurationManager);
 
 builder.Services.AddDbContext<LmsDbContext>(options =>
 {
@@ -48,6 +86,32 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>() 
+    .AddEntityFrameworkStores<LmsDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
+builder.Services.AddAuthorization();
+
+
+
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
@@ -60,22 +124,52 @@ using (var scope = app.Services.CreateScope())
     await bookImportService.ImportBooksAsync(filePath);
 }
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    //add the user roles to the DB and seed an admin user
+    using (var scope = app.Services.CreateScope())
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "lms-server v1");
-    });
-}
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-app.UseHttpsRedirection();
+        string[] roleNames = { "client", "librarian", "admin" };
+        foreach (var roleName in roleNames)
+        {
+            var roleExist = await roleManager.RoleExistsAsync(roleName);
+            if (!roleExist)
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
+            }
+        }
 
-app.UseCors("AllowAllOrigins"); // Enable CORS
+        var adminUser = await userManager.FindByEmailAsync("admin@lms.com");
+        if (adminUser == null)
+        {
+            var user = new ApplicationUser { UserName = "admin@lms.com", Email = "admin@lms.com" };
+            var result = await userManager.CreateAsync(user, "Test@123");
 
-app.UseAuthorization();
+            if (result.Succeeded)
+            {
 
-app.MapControllers();
+            }
+        }
+    }
 
-app.Run();
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "lms-server v1");
+        });
+    }
+
+    app.UseHttpsRedirection();
+
+    app.UseCors("AllowAllOrigins"); // Enable CORS
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+

@@ -1,0 +1,19 @@
+<div class="search-results-overlay" *ngIf="searchTerm">
+    <div *ngIf="results.length; else noResults">
+        <div *ngFor="let book of results.slice(0, 3)">
+            <div class="book">
+                <img [src]="book.thumbnail" alt="Book Image" class="thumbnail">
+                <div class="book-info">
+                    <div class="title" [innerHTML]="highlight(book.title)"></div>
+                    <div class="author">{{ book.author }}</div>
+                </div>
+            </div>
+        </div>
+        <button class="view-all-btn" (click)="viewAllClick()">View All</button>
+    </div>
+    <ng-template #noResults>
+        <div class="no-results">
+            Can't find results for "{{ searchTerm }}"
+        </div>
+    </ng-template>
+  </div>

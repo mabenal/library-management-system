@@ -1,10 +1,12 @@
 ﻿using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace lms.Abstractions.Data
 {
-    public class LmsDbContext : DbContext
+    public class LmsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public LmsDbContext(DbContextOptions<LmsDbContext> dbContextOptions) : base(dbContextOptions)
         {
@@ -17,7 +19,6 @@ namespace lms.Abstractions.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
 
             var clientEntity = new List<Client>()
             {
@@ -41,7 +42,6 @@ namespace lms.Abstractions.Data
                     Address = "1234 PL RELX St",
                     PhoneNumber = "123-456-7890"
                 }
-
             };
             modelBuilder.Entity<Client>().HasData(clientEntity);
 

@@ -1,0 +1,23 @@
+<div class="login-container">
+    <div class="tabs">
+      <button (click)="selectTab('client')" [class.active]="selectedTab === 'client'">Client</button>
+      <button (click)="selectTab('librarian')" [class.active]="selectedTab === 'librarian'">Librarian</button>
+      <button (click)="selectTab('admin')" [class.active]="selectedTab === 'admin'">Admin</button>
+    </div>
+    <form (ngSubmit)="onSubmit()">
+      <div>
+        <label for="username">Username</label>
+        <input id="username" [(ngModel)]="username" name="username" required />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input id="password" type="password" [(ngModel)]="password" name="password" required />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    <div class="reset-links">
+      <a routerLink="/reset-username">Forgot Username?</a>
+      <a routerLink="/reset-password">Forgot Password?</a>
+    </div>
+  </div>
