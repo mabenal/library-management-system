@@ -11,9 +11,13 @@ namespace lms.Abstractions.Models.DTO
     {
         [Required]
         [DataType(DataType.EmailAddress)]
-        public string Username { get; set; }
-        public string CurrentPassword { get; set; }
+        public required string Username { get; set; }
+
+        [Required]
+        public required string CurrentPassword { get; set; }
+        
         [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
+        [Required]
+        public required string NewPassword { get; set; }
     }
 }

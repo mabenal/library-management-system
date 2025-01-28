@@ -2,7 +2,6 @@
 using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations.Schema;
 using lms.Abstractions.Interfaces;
 
 namespace lms_server.Controllers
@@ -76,7 +75,7 @@ namespace lms_server.Controllers
                 throw;
             }
         }
-
+        
         [HttpDelete("DeleteClient/{id:Guid}")]
         public async Task<ActionResult<ClientDto>> DeleteClient([FromRoute] Guid id)
         {

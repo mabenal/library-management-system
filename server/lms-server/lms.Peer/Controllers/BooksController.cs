@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using lms.Abstractions.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
+using lms.Abstractions.CustomActionFilters;
 
 namespace lms.Peer.Controllers
 {
@@ -24,6 +25,7 @@ namespace lms.Peer.Controllers
             this.httpClient = httpClient;
         }
 
+        [Authorize(Roles = "client,librarian")]
         [HttpGet("SearchBooks/{query}")]
         public async Task<ActionResult<BookDto>> SearchBooks([FromRoute] string query)
         {
@@ -55,7 +57,11 @@ namespace lms.Peer.Controllers
 
             }
         }
+<<<<<<< HEAD
+        [Authorize(Roles = "client,librarian")]
+=======
         
+>>>>>>> main
         [HttpGet("GetAllBooks")]
         public async Task<ActionResult<BookDto>> GetAllBooks()
         {
@@ -71,7 +77,9 @@ namespace lms.Peer.Controllers
             }
         }
 
+        [Authorize(Roles = "librarian")]
         [HttpPost("AddBook")]
+        [ValidateModel]
         public async Task<ActionResult<BookDto>> AddBook([FromBody] BookDto bookDtoObject)
         {
             try
@@ -92,8 +100,9 @@ namespace lms.Peer.Controllers
 
 
         }
-
+        [Authorize(Roles = "librarian")]
         [HttpPut("UpdateBook/{id:Guid}")]
+        [ValidateModel]
         public async Task<ActionResult<BookDto>> UpdateBook([FromRoute] Guid id,[FromBody] BookDto book)
         {
             try
@@ -119,6 +128,7 @@ namespace lms.Peer.Controllers
             }
 
         }
+        [Authorize(Roles = "librarian")]
         [HttpDelete("RemoveBook/{id:Guid}")]
         public async Task<ActionResult<BookDto>> DeleteBook([FromRoute] Guid id)
         {
