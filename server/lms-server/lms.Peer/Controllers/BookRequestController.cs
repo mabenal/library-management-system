@@ -77,5 +77,21 @@ namespace lms.Peer.Controllers
             }
         }
 
+        [HttpPut("ApproveRequest/{clientId:Guid}/{bookId:Guid}")]
+        public async Task<ActionResult<BookRequestDto>> ApproveRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId, [FromBody] BookRequestDto bookRequestDto)
+        {
+            try
+            {
+                var bookRequestDomainModel = mapper.Map<BookRequest>(bookRequestDto);
+                var bookRequest = await bookRequestRepository.ApproveRequest(clientId, bookId, bookRequestDomainModel);
+                return Ok(mapper.Map<BookRequestDto>(bookRequest));
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"in BookRequestController: {e}");
+                throw;
+            }
+        }
+
     }
 }

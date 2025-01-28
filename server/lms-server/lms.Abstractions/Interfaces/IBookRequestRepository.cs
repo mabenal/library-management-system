@@ -14,5 +14,7 @@ namespace lms.Abstractions.Interfaces
         Task<BookRequest> AddNewRequest(BookRequest bookRequest);
 
         Task<List<BookRequest>> GetBookRequestsByClientId(Guid clientId);
+
+        Task<BookRequest> ApproveRequest(Guid clientId ,Guid bookId ,BookRequest bookRequest);
     }
 }
