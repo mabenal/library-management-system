@@ -13,6 +13,7 @@ namespace lms.Abstractions.Models.DTO
         public string? Status { get; set; }
         public DateTime DateApproved { get; set; }
         public DateTime DateRequested { get; set; }
+        public  DateTime AcceptedReturnDate { get; set; }
         public DateTime DateReturned { get; set; }
         public Guid ClientId { get; set; }
         public Guid BookId { get; set; }

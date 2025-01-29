@@ -64,10 +64,16 @@ namespace lms.Services.Repository
         public async Task<BookRequest> ApproveRequest(Guid clientId, Guid bookId, BookRequest bookRequest)
         {
             var bookRequestToApprove = await dbContext.BookRequests.SingleOrDefaultAsync(br => br.ClientId == clientId && br.BookId == bookId);
+            var bookstatus = await dbContext.BookRequests.AnyAsync(bs => bs.BookId == bookRequest.BookId && bs.ClientId == bookRequest.BookId && bs.Status == "Pending");
 
             if (bookRequestToApprove == null)
             {
                 return null;
+            }
+            if(!bookstatus)
+            {
+                throw new GoblalException("Only books with a Pending status can be approved");
+
             }
 
             bookRequestToApprove.Status = "Approved";
@@ -77,5 +83,26 @@ namespace lms.Services.Repository
             return bookRequestToApprove;
         }
 
+        public async Task<BookRequest> CancelResquest(Guid clientId, Guid bookId, BookRequest bookRequest)
+        {
+            var bookRequestToCancel = await dbContext.BookRequests.SingleOrDefaultAsync(br => br.ClientId == clientId && br.BookId == bookId);
+            var bookstatus = await dbContext.BookRequests.AnyAsync(bs => bs.BookId == bookRequest.BookId && bs.ClientId == bookRequest.BookId && bs.Status == "Pending");
+
+
+            if (bookRequestToCancel == null)
+            {
+                return null;
+            }
+            if (!bookstatus)
+            {
+                throw new GoblalException("Only books with a Pending status can be canceled");
+
+            }
+
+            bookRequestToCancel.Status = "Cancelled";
+
+            await dbContext.SaveChangesAsync();
+            return bookRequestToCancel;
+        }
     }
 }
