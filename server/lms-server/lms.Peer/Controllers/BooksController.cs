@@ -57,11 +57,8 @@ namespace lms.Peer.Controllers
 
             }
         }
-<<<<<<< HEAD
+
         [Authorize(Roles = "client,librarian")]
-=======
-        
->>>>>>> main
         [HttpGet("GetAllBooks")]
         public async Task<ActionResult<BookDto>> GetAllBooks()
         {
