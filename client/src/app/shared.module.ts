@@ -27,6 +27,7 @@ import { UserGroupingComponent } from '../lms-contents/user-grouping/user-groupi
 import { HistoryComponent } from '../lms-contents/history/history.component';
 import { LoginComponent } from '../authentication/lms-contents/login/login.component';
 import { FormsModule } from '@angular/forms';
+import { FooterComponent } from 'src/shared-components/book-list-view/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { FormsModule } from '@angular/forms';
     HistoryComponent,
     LoginComponent,
     TruncatePipe,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
