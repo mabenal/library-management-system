@@ -11,6 +11,7 @@ namespace lms.Abstractions.Models.DTO
     {
         [Required]
         public string? Status { get; set; }
+        public string? Title { get; set; }
         public DateTime DateApproved { get; set; }
         public DateTime DateRequested { get; set; }
         public  DateTime AcceptedReturnDate { get; set; }

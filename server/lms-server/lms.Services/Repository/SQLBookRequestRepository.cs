@@ -40,6 +40,9 @@ namespace lms.Services.Repository
                 throw new GoblalException("The book has no available copies at the moment, please try again later");
             }
 
+            var bookTitle = bookEntity.Title;
+
+            bookRequest.Title = bookTitle;  
             bookEntity.NumberOfCopies--;
             bookRequest.Status = "Pending";
             bookRequest.DateRequested  = DateTime.Now;
