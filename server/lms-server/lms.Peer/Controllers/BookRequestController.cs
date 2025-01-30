@@ -8,6 +8,7 @@ using lms.Abstractions.Interfaces;
 using AutoMapper;
 using lms.Abstractions.Models.DTO;
 using lms.Abstractions.Models;
+using lms.Abstractions.Exceptions;
 
 namespace lms.Peer.Controllers
 {
@@ -50,6 +51,10 @@ namespace lms.Peer.Controllers
                 var bookRequest = await bookRequestRepository.AddNewRequest(bookRequestDomainModel);
                 return Ok(mapper.Map<BookRequestDto>(bookRequest));
             }
+            catch(GoblalException e)
+            {
+                return StatusCode(403, e.Message);
+            }
             catch (Exception e)
             {
                 Console.Error.WriteLine($"in BookRequestController: {e}");
@@ -64,6 +69,46 @@ namespace lms.Peer.Controllers
             {
                 var bookRequests = await bookRequestRepository.GetBookRequestsByClientId(clientId);
                 return Ok(mapper.Map<List<BookRequestDto>>(bookRequests));
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"in BookRequestController: {e}");
+                throw;
+            }
+        }
+
+        [HttpPut("ApproveRequest/{clientId:Guid}/{bookId:Guid}")]
+        public async Task<ActionResult<BookRequestDto>> ApproveRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId, [FromBody] BookRequestDto bookRequestDto)
+        {
+            try
+            {
+                var bookRequestDomainModel = mapper.Map<BookRequest>(bookRequestDto);
+                var bookRequest = await bookRequestRepository.ApproveRequest(clientId, bookId, bookRequestDomainModel);
+                return Ok(mapper.Map<BookRequestDto>(bookRequest));
+            }
+            catch (GoblalException e)
+            {
+                return StatusCode(403, e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine($"in BookRequestController: {e}");
+                throw;
+            }
+        }
+
+        [HttpPut("CancelRequest/{clientId:Guid}/{bookId:Guid}")]
+        public async Task<ActionResult<BookRequestDto>> CancelRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId, [FromBody] BookRequestDto bookRequestDto)
+        {
+            try
+            {
+                var bookRequestDomainModel = mapper.Map<BookRequest>(bookRequestDto);
+                var bookRequest = await bookRequestRepository.CancelResquest(clientId, bookId, bookRequestDomainModel);
+                return Ok(mapper.Map<BookRequestDto>(bookRequest));
+            }
+            catch (GoblalException e)
+            {
+                return StatusCode(403, e.Message);
             }
             catch (Exception e)
             {

@@ -6,7 +6,9 @@ namespace lms.Abstractions.Models
     {
         public Guid Id { get; set; }
         public required string Status { get; set; }
+        public required  string Title { get; set; }
         public required DateTime DateRequested { get; set; }
+        public required DateTime AcceptedReturnDate { get; set; }
         public DateTime DateApproved { get; set; }
         public DateTime DateReturned { get; set; }
 

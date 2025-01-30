@@ -3,6 +3,8 @@ using lms.Abstractions.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using lms.Abstractions.Interfaces;
+using System.Net;
+using lms.Abstractions.Exceptions;
 using Microsoft.Extensions.Logging;
 
 
@@ -31,6 +33,12 @@ namespace lms.Services.Repository
 
         public async Task<Book> AddNewBook(Book book)
         {
+            //Checkn if the ISBN is already in the database
+            var bookExists = await dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == book.ISBN);
+            if(bookExists !=null)
+            {
+                throw new GoblalException("Book with the same ISBN already exists");
+            }
             await dbContext.Books.AddAsync(book);
             await dbContext.SaveChangesAsync();
 

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using lms.Abstractions.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
+
+using lms.Abstractions.Exceptions;
 using lms.Abstractions.CustomActionFilters;
 
 namespace lms.Peer.Controllers
@@ -88,6 +90,10 @@ namespace lms.Peer.Controllers
                 var regionDto = mapper.Map<BookDto>(bookDomainModel);
 
                 return CreatedAtAction(nameof(GetBookById), new { id = bookDomainModel.Id }, regionDto);
+            }
+            catch (GoblalException e)
+            {
+                return StatusCode(403, e.Message);
             }
             catch (Exception e)
             {
