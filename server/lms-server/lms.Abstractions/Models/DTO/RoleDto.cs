@@ -10,8 +10,8 @@ namespace lms.Abstractions.Models.DTO
     public class RoleDto
     {
         [Required]
-        public Guid UserId { get; set; }
+        public required Guid UserId { get; set; }
         [Required]
-        public string Role { get; set; }
+        public required string Role { get; set; }
     }
 }

@@ -98,7 +98,7 @@ namespace lms.Services.Repository
 
         public async Task<Book?> DeleteBookAsync(Guid id)
         {
-            var book = dbContext.Books.Find(id);
+            var book = await dbContext.Books.FindAsync(id);
 
             if (book == null) {
 

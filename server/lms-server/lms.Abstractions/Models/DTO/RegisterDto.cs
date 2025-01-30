@@ -1,31 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace lms.Abstractions.Models.DTO
 {
     public class RegisterDto
     {
         [Required]
-        public string Name { get; set; }
+        [Range(1, 255, ErrorMessage = "Please enter name between 1 and 255 characters")]
+        public required string Name { get; set; }
         [Required]
-        public string LastName { get; set; }
+        [Range(1, 255, ErrorMessage = "Please enter last name between 1 and 255 characters")]
+
+        public required string LastName { get; set; }
         [Required]
-        public string Email { get; set; }
+        [DataType(DataType.EmailAddress)]
+        public required string Email { get; set; }
 
         [Required]
-        public string Address { get; set; }
+        public required string Address { get; set; }
 
         [Required]
-        public string PhoneNumber { get; set; }
+        [MinLength(10, ErrorMessage ="Phone number must be exactly 10 digits")]
+        [MaxLength(10, ErrorMessage = "Phone number must be exactly 10 digits")]
+
+        public required string PhoneNumber { get; set; }
 
         [Required]
-        public string Password { get; set; }
+        [DataType(DataType.Password)]
+
+        public required string Password { get; set; }
 
         [Required]
-        public string ConfirmPassword { get; set; }
+        public required string ConfirmPassword { get; set; }
     }
 }
