@@ -1,4 +1,5 @@
-﻿using lms.Abstractions.Models;
+﻿using lms.Abstractions.Interfaces;
+using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lms.Abstractions.Data
 {
-    public class LmsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+    public class LmsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>, ILmsDbContext
     {
         public LmsDbContext(DbContextOptions<LmsDbContext> dbContextOptions) : base(dbContextOptions)
         {

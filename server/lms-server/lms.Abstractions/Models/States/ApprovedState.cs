@@ -1,5 +1,6 @@
 ﻿using lms.Abstractions.Data;
 using lms.Abstractions.Exceptions;
+using lms.Abstractions.Interfaces;
 using lms.Abstractions.Models;
 using lms.Abstractions.Models.States;
 using System.Threading.Tasks;
@@ -8,12 +9,12 @@ namespace lms.Abstractions.Models.States
 {
     public class ApprovedState : IBookRequestState
     {
-        public Task Approve(BookRequest bookRequest, LmsDbContext dbContext)
+        public Task Approve(BookRequest bookRequest, ILmsDbContext dbContext)
         {
             throw new GlobalException("The book request is already approved.");
         }
 
-        public Task Cancel(BookRequest bookRequest, LmsDbContext dbContext)
+        public Task Cancel(BookRequest bookRequest, ILmsDbContext dbContext)
         {
             throw new GlobalException("Approved book requests cannot be canceled.");
         }
@@ -23,7 +24,7 @@ namespace lms.Abstractions.Models.States
             throw new GlobalException("Approved book requests cannot be pending.");
         }
 
-        public async Task Return(BookRequest bookRequest, LmsDbContext dbContext)
+        public async Task Return(BookRequest bookRequest, ILmsDbContext dbContext)
         {
             bookRequest.Status = "Returned";
             bookRequest.DateReturned = DateTime.Now;
@@ -32,7 +33,7 @@ namespace lms.Abstractions.Models.States
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task MarkAsOverdue(BookRequest bookRequest, LmsDbContext dbContext)
+        public async Task MarkAsOverdue(BookRequest bookRequest, ILmsDbContext dbContext)
         {
             bookRequest.Status = "Overdue";
             bookRequest.SetState(new OverdueState());
