@@ -1,9 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { LoginDto, LoginResponseDto } from 'auto/autolmsclient-abstractions';
+import { AccountActionResponseDto, ChangePasswordRequestDto, LoginDto, LoginResponseDto, RegisterDto, RegisterResponseDto } from 'auto/autolmsclient-abstractions';
 import { IClient } from 'auto/autolmsclient-abstractions';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -25,6 +24,27 @@ export class AuthService {
         }
       });
   }
+
+  register(registerDTO: RegisterDto):Promise<RegisterResponseDto>{
+    return this.client.register(registerDTO).toPromise().then((response: RegisterResponseDto | undefined) => {
+      if (response?.succeeded) {
+        return response;
+      } else {
+        throw new Error('Registration failed');
+      }
+    });
+
+  }
+
+  changePassword(changePasswordRequestDto:ChangePasswordRequestDto):Promise<AccountActionResponseDto>{
+    return this.client.changePassword(changePasswordRequestDto).toPromise().then((response:AccountActionResponseDto|undefined)=>{
+      if(response?.isSuccessful){
+        return response;
+      }
+      {
+          throw new Error('password change failed');
+      }
+    })}
 
   isLoggedIn(): boolean {
     return this.loggedIn.value;

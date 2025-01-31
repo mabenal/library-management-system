@@ -50,6 +50,7 @@ namespace lms.Peer.Controllers
 
                 if (registrationResult.Succeeded)
                 {
+                    await userManager.AddToRoleAsync(user, "client");
                     return Ok(registerResponse);
                 }
                 else
@@ -59,8 +60,8 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                throw new GlobalException($"Error in AccountController: {ex}");
-                throw;
+                Console.Error.WriteLine($"Error in AccountController: {ex}");
+                return StatusCode(500, new { Message = "An internal server error occurred. Please try again later." });
             }
         }
 
@@ -77,12 +78,15 @@ namespace lms.Peer.Controllers
 
                     if (loginResult.Succeeded)
                     {
+                        var userRoles = await userManager.GetRolesAsync(user);
                         var token = await tokenRepository.CreateJWTTokenAsync(user);
 
                         var loginResponseObject = new LoginResponseDto
                         {
-                            Token = token,
-                            Username = loginObject.UserName
+
+                             Token =  token,
+                             Username = loginObject.UserName,
+                             UserRoles = userRoles.ToList()
                         };
 
                         return Ok(loginResponseObject);
@@ -99,13 +103,12 @@ namespace lms.Peer.Controllers
                 return StatusCode(500, new { Message = "An error occurred during login" });
             }
         }
-
         [Authorize(Roles = "admin")]
         [HttpPut("AssignRole")]
-        
         public async Task<ActionResult<AccountActionResponseDto>> AssignRole([FromBody] RoleDto assignRoleDto)
         {
-            var user = await userManager.FindByIdAsync(assignRoleDto.UserId.ToString());
+           try{
+             var user = await userManager.FindByIdAsync(assignRoleDto.UserId.ToString());
             if (user == null)
             {
                 return NotFound(new { Message = "User not found" });
@@ -125,12 +128,18 @@ namespace lms.Peer.Controllers
             }
 
             return BadRequest(assignRoleResponse);
+
+           }catch(Exception ex)
+           {
+                return StatusCode(500, new { Message = "An error occurred during assigning a role to a user" });
+           }
         }
         [Authorize(Roles ="admin")]
         [HttpPut("RemoveRole")]
         public async Task<IActionResult> RemoveRole([FromBody] RoleDto roleModel)
         {
-            var user = await userManager.FindByIdAsync(roleModel.UserId.ToString());
+          try{
+              var user = await userManager.FindByIdAsync(roleModel.UserId.ToString());
             if (user == null)
             {
                 return NotFound(new { Message = "User not found" });
@@ -150,6 +159,12 @@ namespace lms.Peer.Controllers
             }
 
             return BadRequest(removeRoleResponse);
+          }
+          catch (Exception ex)
+          {
+                return StatusCode(500, new { Message = "An error occurred during removing a user from role" });
+        
+          }
 
         }
 
@@ -187,8 +202,9 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                throw new GlobalException($"Error in AccountController: {ex}");
-                throw;
+            
+            return StatusCode(500, new { Message = "An error occured when changing password" });
+
             }
         }
 
@@ -224,8 +240,8 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                throw new GlobalException($"Error in AccountController: {ex}");
-                throw;
+            return StatusCode(500, new { Message = "An error occurred when deleting userd" });
+
             }
         }
 
@@ -246,8 +262,8 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                throw new GlobalException($"Error in AccountController: {ex}");
-                throw;
+                return StatusCode(500, new { Message = "An error occurred when getting all users" });
+
             }
         }
 

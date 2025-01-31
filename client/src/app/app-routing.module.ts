@@ -9,11 +9,14 @@ import { SearchResultsComponent } from '../lms-contents/search-results/search-re
 import { SettingsComponent } from '../lms-contents/settings/settings.component';
 import { UserGroupingComponent } from '../lms-contents/user-grouping/user-grouping.component';
 import { HistoryComponent } from '../lms-contents/history/history.component';
-import { LoginComponent } from '../authentication/lms-contents/login/login.component';
-
+import { LoginComponent } from '../authentication/login/login.component';
+import { CreateAccountComponent } from 'src/authentication/create-account/create-account.component';
+import { ChangePasswordComponent } from 'src/authentication/change-password/change-password.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'change-password', component: ChangePasswordComponent },
+  { path: 'create-account', component: CreateAccountComponent},
   { path: 'search-results', component: SearchResultsComponent },
   { path: 'books', component: BooksComponent },
   { path: 'clients', component: UserGroupingComponent },
