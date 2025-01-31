@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace lms_server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class book : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -205,9 +205,11 @@ namespace lms_server.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateRequested = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateApproved = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateReturned = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AcceptedReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateApproved = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateReturned = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -233,8 +235,8 @@ namespace lms_server.Migrations
                 columns: new[] { "Id", "Address", "EmailAddress", "LastName", "Name", "Password", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { new Guid("31392fee-e2db-4e15-97b8-6d7e1af6f148"), "1234 PL RELX St", "Sanele.Mkhize@gmail.com", "Mkhize", "Sanele", "1234SM", "123-456-7890" },
-                    { new Guid("a8dbc2ca-857d-4b99-8e1c-df5e8282b9a8"), "1234 PL Manzi St", "Zamdile.Mkhize@gmail.com", "Mkhize", "Zabdile", "1234ZM", "123-456-7890" }
+                    { new Guid("81e620f7-984c-4043-9c21-95c152eab6f7"), "1234 PL RELX St", "Sanele.Mkhize@gmail.com", "Mkhize", "Sanele", "1234SM", "123-456-7890" },
+                    { new Guid("a176b927-e88c-4253-a567-3074fb337117"), "1234 PL Manzi St", "Zamdile.Mkhize@gmail.com", "Mkhize", "Zabdile", "1234ZM", "123-456-7890" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -38,7 +38,7 @@ namespace lms.Peer.Controllers
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in booksController: {e}");
+                throw new GlobalException($"in booksController: {e}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -54,13 +54,12 @@ namespace lms.Peer.Controllers
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in booksController: {e}");
+                throw new GlobalException($"in booksController: {e}");
                 throw;
 
             }
         }
 
-        [Authorize(Roles = "client,librarian")]
         [HttpGet("GetAllBooks")]
         public async Task<ActionResult<BookDto>> GetAllBooks()
         {
@@ -71,7 +70,7 @@ namespace lms.Peer.Controllers
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in booksController: {e}");
+                throw new GlobalException($"in booksController: {e}");
                 throw;
             }
         }
@@ -91,13 +90,13 @@ namespace lms.Peer.Controllers
 
                 return CreatedAtAction(nameof(GetBookById), new { id = bookDomainModel.Id }, regionDto);
             }
-            catch (GoblalException e)
+            catch (GlobalException e)
             {
                 return StatusCode(403, e.Message);
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in booksController: {e}");
+                throw new GlobalException($"in booksController: {e}");
                 throw;
             }
 
@@ -126,7 +125,7 @@ namespace lms.Peer.Controllers
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in booksController: {e}");
+                throw new GlobalException($"in booksController: {e}");
                 throw;
             }
 
@@ -149,7 +148,7 @@ namespace lms.Peer.Controllers
 
             }catch(Exception e)
             {
-                Console.Error.WriteLine($"in booksController: {e}");
+                throw new GlobalException($"in booksController: {e}");
                 throw;
 
             }

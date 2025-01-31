@@ -10,13 +10,11 @@ namespace lms.Abstractions.Interfaces
     public interface IBookRequestRepository
     {
         Task<List<BookRequest>> GetAllBookRequestsAsync();
-
         Task<BookRequest> AddNewRequest(BookRequest bookRequest);
-
         Task<List<BookRequest>> GetBookRequestsByClientId(Guid clientId);
-
-        Task<BookRequest> ApproveRequest(Guid clientId ,Guid bookId ,BookRequest bookRequest);
-
-        Task<BookRequest> CancelResquest(Guid clientId, Guid bookId, BookRequest bookRequest);
+        Task<BookRequest> ApproveRequest(Guid clientId, Guid bookId);
+        Task<BookRequest> CancelRequest(Guid clientId, Guid bookId);
+        Task<BookRequest> ReturnRequest(Guid clientId, Guid bookId);
+        Task<BookRequest> OverdueRequest(Guid clientId, Guid bookId);
     }
 }

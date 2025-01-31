@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace lms.Abstractions.Models.DTO
 {
     public class LoginDto
@@ -11,8 +10,6 @@ namespace lms.Abstractions.Models.DTO
         [DataType(DataType.EmailAddress)]
         public required string UserName { get; set; }
         [Required]
-        public required string  Password { get; set; }
-
-
+        public required string Password { get; set; }
     }
 }

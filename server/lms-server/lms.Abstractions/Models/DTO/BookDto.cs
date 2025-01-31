@@ -5,6 +5,8 @@ namespace lms.Abstractions.Models.DTO
     public class BookDto
     {
         [Required]
+        public Guid Id { get; set; }
+        [Required]
         public string? ISBN { get; set; }
         [Required]
         public string? Title { get; set; }
