@@ -1,6 +1,7 @@
 ﻿using lms.Abstractions.Interfaces;
 using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
+using lms.Abstractions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -87,19 +88,20 @@ namespace lms.Peer.Controllers
                              Username = loginObject.UserName,
                              UserRoles = userRoles.ToList()
                         };
+
                         return Ok(loginResponseObject);
                     }
 
                     return BadRequest(new { Message = "Invalid credentials" });
                 }
-                    return NotFound(new { Message = "User not found" });
+
+                return NotFound(new { Message = "User not found" });
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Error in AccountController: {ex}");
+                throw new GlobalException($"Error in AccountController: {ex}");
                 return StatusCode(500, new { Message = "An error occurred during login" });
             }
-
         }
         [Authorize(Roles = "admin")]
         [HttpPut("AssignRole")]

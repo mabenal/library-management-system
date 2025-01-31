@@ -14,15 +14,18 @@ namespace lms.Peer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class BookRequestController : ControllerBase
     {
         public readonly IBookRequestRepository bookRequestRepository;
-        private  IMapper mapper { get; }
+        public readonly IBooksRepository booksRepository;
+        public readonly IClientRepository clientRepository;
+        private IMapper mapper { get; }
 
-        public BookRequestController(IBookRequestRepository bookRequestRepository, IMapper mapper)
+        public BookRequestController(IBookRequestRepository bookRequestRepository, IBooksRepository booksRepository, IClientRepository clientRepository, IMapper mapper)
         {
             this.bookRequestRepository = bookRequestRepository;
+            this.booksRepository = booksRepository;
+            this.clientRepository = clientRepository;
             this.mapper = mapper;
         }
 
@@ -36,28 +39,27 @@ namespace lms.Peer.Controllers
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in BookRequestController: {e}");
+                throw new GlobalException($"in BookRequestController: {e}");
                 throw;
             }
         }
 
         [HttpPost("AddNewRequest")]
-        public async Task<ActionResult<BookRequestDto>> AddNewRequest([FromBody]BookRequestDto bookRequestDto)
+        public async Task<ActionResult<BookRequestDto>> AddNewRequest([FromBody] BookRequestDto bookRequestDto)
         {
             try
             {
-
                 var bookRequestDomainModel = mapper.Map<BookRequest>(bookRequestDto);
                 var bookRequest = await bookRequestRepository.AddNewRequest(bookRequestDomainModel);
                 return Ok(mapper.Map<BookRequestDto>(bookRequest));
             }
-            catch(GoblalException e)
+            catch (GlobalException e)
             {
                 return StatusCode(403, e.Message);
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in BookRequestController: {e}");
+                throw new GlobalException($"in BookRequestController: {e}");
                 throw;
             }
         }
@@ -72,50 +74,85 @@ namespace lms.Peer.Controllers
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in BookRequestController: {e}");
-                throw;
-            }
-        }
-
-        [HttpPut("ApproveRequest/{clientId:Guid}/{bookId:Guid}")]
-        public async Task<ActionResult<BookRequestDto>> ApproveRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId, [FromBody] BookRequestDto bookRequestDto)
-        {
-            try
-            {
-                var bookRequestDomainModel = mapper.Map<BookRequest>(bookRequestDto);
-                var bookRequest = await bookRequestRepository.ApproveRequest(clientId, bookId, bookRequestDomainModel);
-                return Ok(mapper.Map<BookRequestDto>(bookRequest));
-            }
-            catch (GoblalException e)
-            {
-                return StatusCode(403, e.Message);
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine($"in BookRequestController: {e}");
+                throw new GlobalException($"in BookRequestController: {e}");
                 throw;
             }
         }
 
         [HttpPut("CancelRequest/{clientId:Guid}/{bookId:Guid}")]
-        public async Task<ActionResult<BookRequestDto>> CancelRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId, [FromBody] BookRequestDto bookRequestDto)
+        public async Task<ActionResult<BookRequestDto>> CancelRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId)
         {
             try
             {
-                var bookRequestDomainModel = mapper.Map<BookRequest>(bookRequestDto);
-                var bookRequest = await bookRequestRepository.CancelResquest(clientId, bookId, bookRequestDomainModel);
+                var bookRequest = await bookRequestRepository.CancelRequest(clientId, bookId);
                 return Ok(mapper.Map<BookRequestDto>(bookRequest));
             }
-            catch (GoblalException e)
+            catch (GlobalException e)
             {
                 return StatusCode(403, e.Message);
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in BookRequestController: {e}");
+                throw new GlobalException($"in BookRequestController: {e}");
                 throw;
             }
         }
 
+        [HttpPut("ApproveRequest/{clientId:Guid}/{bookId:Guid}")]
+        public async Task<ActionResult<BookRequestDto>> ApproveRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId)
+        {
+            try
+            {
+                var bookRequest = await bookRequestRepository.ApproveRequest(clientId, bookId);
+                return Ok(mapper.Map<BookRequestDto>(bookRequest));
+            }
+            catch (GlobalException e)
+            {
+                return StatusCode(403, e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new GlobalException($"in BookRequestController: {e}");
+                throw;
+            }
+        }
+
+        [HttpPut("ReturnRequest/{clientId:Guid}/{bookId:Guid}")]
+        public async Task<ActionResult<BookRequestDto>> ReturnRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId)
+        {
+            try
+            {
+                var bookRequest = await bookRequestRepository.ReturnRequest(clientId, bookId);
+                return Ok(mapper.Map<BookRequestDto>(bookRequest));
+            }
+            catch (GlobalException e)
+            {
+                return StatusCode(403, e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new GlobalException($"in BookRequestController: {e}");
+                throw;
+            }
+        }
+
+        [HttpPut("OverdueRequest/{clientId:Guid}/{bookId:Guid}")]
+        public async Task<ActionResult<BookRequestDto>> OverdueRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId)
+        {
+            try
+            {
+                var bookRequest = await bookRequestRepository.OverdueRequest(clientId, bookId);
+                return Ok(mapper.Map<BookRequestDto>(bookRequest));
+            }
+            catch (GlobalException e)
+            {
+                return StatusCode(403, e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new GlobalException($"in BookRequestController: {e}");
+                throw;
+            }
+        }
     }
 }

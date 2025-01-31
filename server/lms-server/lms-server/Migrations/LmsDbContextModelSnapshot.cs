@@ -275,22 +275,29 @@ namespace lms_server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("AcceptedReturnDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateApproved")
+                    b.Property<DateTime?>("DateApproved")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateRequested")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateReturned")
+                    b.Property<DateTime?>("DateReturned")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -334,7 +341,7 @@ namespace lms_server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a8dbc2ca-857d-4b99-8e1c-df5e8282b9a8"),
+                            Id = new Guid("a176b927-e88c-4253-a567-3074fb337117"),
                             Address = "1234 PL Manzi St",
                             EmailAddress = "Zamdile.Mkhize@gmail.com",
                             LastName = "Mkhize",
@@ -344,7 +351,7 @@ namespace lms_server.Migrations
                         },
                         new
                         {
-                            Id = new Guid("31392fee-e2db-4e15-97b8-6d7e1af6f148"),
+                            Id = new Guid("81e620f7-984c-4043-9c21-95c152eab6f7"),
                             Address = "1234 PL RELX St",
                             EmailAddress = "Sanele.Mkhize@gmail.com",
                             LastName = "Mkhize",

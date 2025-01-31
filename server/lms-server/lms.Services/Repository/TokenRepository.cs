@@ -37,11 +37,12 @@ namespace lms.Services.Repository
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-    };
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("ClientId", user.Email.ToString())
+            };
 
 
             var roles = await userManager.GetRolesAsync(user);
@@ -79,9 +80,6 @@ namespace lms.Services.Repository
 
             return tokenString;
         }
-
-
-
     }
 }
 

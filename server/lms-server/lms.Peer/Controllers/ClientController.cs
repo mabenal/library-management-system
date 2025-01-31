@@ -1,11 +1,19 @@
-﻿using AutoMapper;
-using lms.Abstractions.Models;
-using lms.Abstractions.Models.DTO;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using lms.Abstractions.Interfaces;
+using AutoMapper;
+using lms.Abstractions.Models.DTO;
+using lms.Abstractions.Models;
+using lms.Abstractions.Exceptions;
 
 namespace lms_server.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ClientController : Controller
     {
         private readonly IClientRepository clientsRepository;
@@ -22,12 +30,12 @@ namespace lms_server.Controllers
         {
             try
             {
-                var clients = await clientsRepository.GellAllClientsAsync();
+                var clients = await clientsRepository.GetAllClientsAsync();
                 return Ok(mapper.Map<List<ClientDto>>(clients));
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"in clientsController: {e}");
+                throw new GlobalException($"in clientsController: {e}");
                 throw;
             }
         }
@@ -37,7 +45,7 @@ namespace lms_server.Controllers
         {
             try
             {
-                var client = await clientsRepository.GetClientByID(id);
+                var client = await clientsRepository.GetClientById(id);
                 return Ok(mapper.Map<ClientDto>(client));
             }
             catch (Exception e)
@@ -45,7 +53,6 @@ namespace lms_server.Controllers
                 Console.WriteLine($"in clientsController:  {e}");
                 throw;
             }
-
         }
 
         [HttpPut("UpdateClient/{id:Guid}")]
@@ -53,48 +60,27 @@ namespace lms_server.Controllers
         {
             try
             {
-                var clientdetails = mapper.Map<Client>(client);
-
-                clientdetails = await clientsRepository.UpdateClientDetails(id, clientdetails);
-
-                if(clientdetails == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    var clientDto = mapper.Map<ClientDto>(clientdetails);
-
-                    return Ok(clientDto);
-                }
- 
+                var updatedClient = await clientsRepository.UpdateClientDetails(id, mapper.Map<Client>(client));
+                return Ok(mapper.Map<ClientDto>(updatedClient));
             }
             catch (Exception e)
             {
-                Console.WriteLine($"in clientsController:  {e}");
+                throw new GlobalException($"in clientsController: {e}");
                 throw;
             }
         }
-        
+
         [HttpDelete("DeleteClient/{id:Guid}")]
         public async Task<ActionResult<ClientDto>> DeleteClient([FromRoute] Guid id)
         {
             try
             {
-                var client = await clientsRepository.DeleteClientAsync(id);
-
-                if(client == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return Ok(mapper.Map<ClientDto>(client));
-                }
+                var deletedClient = await clientsRepository.DeleteClientAsync(id);
+                return Ok(mapper.Map<ClientDto>(deletedClient));
             }
             catch (Exception e)
             {
-                Console.WriteLine($"in clientsController:  {e}");
+                throw new GlobalException($"in clientsController: {e}");
                 throw;
             }
         }

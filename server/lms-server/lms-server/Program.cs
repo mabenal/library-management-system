@@ -13,8 +13,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers(); // Add this line to include controllers from lms.Peer
+builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -32,8 +31,8 @@ builder.Services.AddSwaggerGen(c =>
         Name = "Authorization",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        Scheme ="Bearer",
-        BearerFormat = "JWT" 
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
 
 
     });
@@ -67,7 +66,7 @@ builder.Services.AddSingleton(configurationManager);
 builder.Services.AddDbContext<LmsDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("LmsDbConnectionString"),
-        b => b.MigrationsAssembly("lms-server")); // Specify the migrations assembly
+        b => b.MigrationsAssembly("lms-server"));
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
@@ -86,7 +85,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>() 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<LmsDbContext>()
     .AddDefaultTokenProviders();
 
@@ -103,9 +102,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        ValidIssuer = configurationManager.GetJwtIssuer(),
+        ValidAudience = configurationManager.GetJwtAudience(),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationManager.GetJwtKey()))
     };
 });
 builder.Services.AddAuthorization();
@@ -124,49 +123,53 @@ using (var scope = app.Services.CreateScope())
     await bookImportService.ImportBooksAsync(filePath);
 }
 
-    //add the user roles to the DB and seed an admin user
-    using (var scope = app.Services.CreateScope())
+//add the user roles to the DB and seed an admin user
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+    string[] roleNames = { "client", "librarian", "admin" };
+    foreach (var roleName in roleNames)
     {
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-        string[] roleNames = { "client", "librarian", "admin" };
-        foreach (var roleName in roleNames)
+        var roleExist = await roleManager.RoleExistsAsync(roleName);
+        if (!roleExist)
         {
-            var roleExist = await roleManager.RoleExistsAsync(roleName);
-            if (!roleExist)
-            {
-                await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
-            }
+            await roleManager.CreateAsync(new IdentityRole<Guid>(roleName));
         }
+    }
 
-        var adminUser = await userManager.FindByEmailAsync("admin@lms.com");
-        if (adminUser == null)
+    var adminUser = await userManager.FindByEmailAsync("admin@lms.com");
+    if (adminUser == null)
+    {
+        var user = new ApplicationUser { UserName = "admin@lms.com", Email = "admin@lms.com" };
+        var result = await userManager.CreateAsync(user, "LmsDefaultAdmin@123");
+
+        if (result.Succeeded)
         {
-            var user = new ApplicationUser { UserName = "admin@lms.com", Email = "admin@lms.com" };
-            var result = await userManager.CreateAsync(user, "LmsDefaultAdmin@123");
              await userManager.AddToRoleAsync(user, "admin");
 
         }
     }
+}
 
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
     {
-        app.UseSwagger();
-        app.UseSwaggerUI(c =>
-        {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "lms-server v1");
-        });
-    }
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "lms-server v1");
+    });
+}
 
-    app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
-    app.UseCors("AllowAllOrigins"); // Enable CORS
+app.UseCors("AllowAllOrigins"); // Enable CORS
 
-    app.UseAuthorization();
+app.UseAuthorization();
 
-    app.MapControllers();
+app.MapControllers();
 
-    app.Run();
+app.Run();
 
