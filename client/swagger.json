@@ -269,6 +269,18 @@
         }
       }
     },
+    "/api/Account/GetAllUsers": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/BookRequest/GetAllBookRequests": {
       "get": {
         "tags": [
@@ -354,6 +366,202 @@
         "parameters": [
           {
             "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/BookRequest/CancelRequest/{clientId}/{bookId}": {
+      "put": {
+        "tags": [
+          "BookRequest"
+        ],
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/BookRequest/ApproveRequest/{clientId}/{bookId}": {
+      "put": {
+        "tags": [
+          "BookRequest"
+        ],
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/BookRequest/ReturnRequest/{clientId}/{bookId}": {
+      "put": {
+        "tags": [
+          "BookRequest"
+        ],
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/BookRequest/OverdueRequest/{clientId}/{bookId}": {
+      "put": {
+        "tags": [
+          "BookRequest"
+        ],
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "bookId",
             "in": "path",
             "required": true,
             "schema": {
@@ -641,7 +849,7 @@
         }
       }
     },
-    "/GetAllClients": {
+    "/api/Client/GetAllClients": {
       "get": {
         "tags": [
           "Client"
@@ -670,7 +878,7 @@
         }
       }
     },
-    "/GetClient/{id}": {
+    "/api/Client/GetClient/{id}": {
       "get": {
         "tags": [
           "Client"
@@ -710,7 +918,7 @@
         }
       }
     },
-    "/UpdateClient/{id}": {
+    "/api/Client/UpdateClient/{id}": {
       "put": {
         "tags": [
           "Client"
@@ -769,7 +977,7 @@
         }
       }
     },
-    "/DeleteClient/{id}": {
+    "/api/Client/DeleteClient/{id}": {
       "delete": {
         "tags": [
           "Client"
@@ -833,6 +1041,7 @@
           "author",
           "category",
           "description",
+          "id",
           "isbn",
           "numberOfCopies",
           "pageCount",
@@ -843,6 +1052,10 @@
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "isbn": {
             "minLength": 1,
             "type": "string"
@@ -888,7 +1101,11 @@
       },
       "BookRequestDto": {
         "required": [
-          "status"
+          "bookId",
+          "clientId",
+          "dateRequested",
+          "status",
+          "title"
         ],
         "type": "object",
         "properties": {
@@ -896,17 +1113,28 @@
             "minLength": 1,
             "type": "string"
           },
-          "dateApproved": {
-            "type": "string",
-            "format": "date-time"
+          "title": {
+            "minLength": 1,
+            "type": "string"
           },
           "dateRequested": {
             "type": "string",
             "format": "date-time"
           },
+          "acceptedReturnDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dateApproved": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "dateReturned": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "clientId": {
             "type": "string",
@@ -921,6 +1149,8 @@
       },
       "ChangePasswordRequestDto": {
         "required": [
+          "currentPassword",
+          "newPassword",
           "username"
         ],
         "type": "object",
@@ -931,13 +1161,13 @@
             "format": "email"
           },
           "currentPassword": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "newPassword": {
+            "minLength": 1,
             "type": "string",
-            "format": "password",
-            "nullable": true
+            "format": "password"
           }
         },
         "additionalProperties": false
@@ -946,6 +1176,7 @@
         "required": [
           "address",
           "emailAddress",
+          "id",
           "lastName",
           "name",
           "password",
@@ -953,6 +1184,10 @@
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "name": {
             "minLength": 1,
             "type": "string"
@@ -1051,19 +1286,22 @@
           },
           "email": {
             "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "format": "email"
           },
           "address": {
             "minLength": 1,
             "type": "string"
           },
           "phoneNumber": {
-            "minLength": 1,
+            "maxLength": 10,
+            "minLength": 10,
             "type": "string"
           },
           "password": {
             "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "format": "password"
           },
           "confirmPassword": {
             "minLength": 1,
