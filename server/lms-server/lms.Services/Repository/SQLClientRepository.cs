@@ -1,7 +1,10 @@
-﻿using lms.Abstractions.Models;
-using lms.Abstractions.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using lms.Abstractions.Data;
 using lms.Abstractions.Interfaces;
+using lms.Abstractions.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace lms_server.Repository
 {
@@ -14,12 +17,12 @@ namespace lms_server.Repository
             this.dbContext = dbContext;
         }
 
-        public async Task<List<Client>> GellAllClientsAsync()
+        public async Task<List<Client>> GetAllClientsAsync()
         {
             return await dbContext.Clients.ToListAsync();
         }
 
-        public async Task<Client> GetClientByID(Guid id)
+        public async Task<Client?> GetClientById(Guid id)
         {
             return await dbContext.Clients.FindAsync(id);
         }
@@ -32,36 +35,30 @@ namespace lms_server.Repository
             {
                 return null;
             }
-            else
-            {
-                clientToUpdate.Name = client.Name;
-                clientToUpdate.LastName = client.LastName;
-                clientToUpdate.EmailAddress = client.EmailAddress;
-                clientToUpdate.Password = client.Password;
-                clientToUpdate.Address = client.Address;
-                clientToUpdate.PhoneNumber = client.PhoneNumber;
-            }
+
+            clientToUpdate.Name = client.Name;
+            clientToUpdate.LastName = client.LastName;
+            clientToUpdate.EmailAddress = client.EmailAddress;
+            clientToUpdate.Password = client.Password;
+            clientToUpdate.Address = client.Address;
+            clientToUpdate.PhoneNumber = client.PhoneNumber;
 
             await dbContext.SaveChangesAsync();
             return clientToUpdate;
         }
 
-        public async Task<Client> DeleteClientAsync(Guid id)
+        public async Task<Client?> DeleteClientAsync(Guid id)
         {
-            var client = dbContext.Clients.Find(id);
+            var clientToDelete = await dbContext.Clients.FindAsync(id);
 
-            if (client == null)
+            if (clientToDelete == null)
             {
                 return null;
             }
-            else
-            {
-                dbContext.Clients.Remove(client);
-                await dbContext.SaveChangesAsync();
-            }
 
-            return client;
+            dbContext.Clients.Remove(clientToDelete);
+            await dbContext.SaveChangesAsync();
+            return clientToDelete;
         }
-
     }
 }

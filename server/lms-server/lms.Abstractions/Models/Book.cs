@@ -15,5 +15,8 @@ namespace lms.Abstractions.Models
         public string? Thumbnail { get; set; }
         public int NumberOfCopies { get; set; }
         public int PageCount { get; set; }
+
+        [NotMapped]
+        public string Availability => NumberOfCopies > 0 ? "Available" : "Unavailable";
     }
 }

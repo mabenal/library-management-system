@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace lms.Abstractions.Exceptions
 {
-    public class GoblalException: Exception
+    public class GlobalException: Exception
     {
-        public GoblalException(string message) :base(message)
+        public GlobalException(string message) :base(message)
         {
         }
     }

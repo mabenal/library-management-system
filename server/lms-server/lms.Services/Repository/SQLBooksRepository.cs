@@ -37,7 +37,7 @@ namespace lms.Services.Repository
             var bookExists = await dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == book.ISBN);
             if(bookExists !=null)
             {
-                throw new GoblalException("Book with the same ISBN already exists");
+                throw new GlobalException("Book with the same ISBN already exists");
             }
             await dbContext.Books.AddAsync(book);
             await dbContext.SaveChangesAsync();
