@@ -1251,6 +1251,9 @@
         "additionalProperties": false
       },
       "LoginResponseDto": {
+        "required": [
+          "userRoles"
+        ],
         "type": "object",
         "properties": {
           "token": {
@@ -1259,6 +1262,13 @@
           },
           "username": {
             "type": "string",
+            "nullable": true
+          },
+          "userRoles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           }
         },
@@ -1277,10 +1287,12 @@
         "type": "object",
         "properties": {
           "name": {
+            "maxLength": 255,
             "minLength": 1,
             "type": "string"
           },
           "lastName": {
+            "maxLength": 255,
             "minLength": 1,
             "type": "string"
           },
