@@ -105,7 +105,7 @@ namespace lms.Tests.ControllerTests
             };
 
             _userManagerMock.Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-                .ThrowsAsync(new Exception("Test exception"));
+                .ThrowsAsync(new GlobalException("Test exception"));
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _controller.RegisterNewUser(registerDto));
@@ -129,6 +129,9 @@ namespace lms.Tests.ControllerTests
             _signInManagerMock.Setup(x => x.PasswordSignInAsync(user, loginDto.Password, false, false))
                 .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
 
+            _userManagerMock.Setup(x => x.GetRolesAsync(user))
+                .ReturnsAsync(new List<string> { "admin" });
+
             _tokenRepositoryMock.Setup(x => x.CreateJWTTokenAsync(user))
                 .ReturnsAsync("fake-jwt-token");
 
@@ -140,56 +143,58 @@ namespace lms.Tests.ControllerTests
             var response = Assert.IsType<LoginResponseDto>(okResult.Value);
             Assert.Equal("fake-jwt-token", response.Token);
             Assert.Equal(loginDto.UserName, response.Username);
+            Assert.Contains("admin", response.UserRoles);
         }
 
-        //[Fact]
-        //public async Task Login_ReturnsNotFound_WhenUserNotFound()
-        //{
-        //    // Arrange
-        //    var loginDto = new LoginDto
-        //    {
-        //        UserName = "test@example.com",
-        //        Password = "Password123!"
-        //    };
+        [Fact]
+        public async Task Login_ReturnsNotFound_WhenUserNotFound()
+        {
+            // Arrange
+            var loginDto = new LoginDto
+            {
+                UserName = "test@example.com",
+                Password = "Password123!"
+            };
 
-        //    _userManagerMock.Setup(x => x.FindByNameAsync(loginDto.UserName))
-        //        .ReturnsAsync((ApplicationUser)null);
+            _userManagerMock.Setup(x => x.FindByNameAsync(loginDto.UserName))
+                .ReturnsAsync((ApplicationUser)null);
 
-        //    // Act
-        //    var result = await _controller.Login(loginDto);
+            // Act
+            var result = await _controller.Login(loginDto);
 
-        //    // Assert
-        //    var actionResult = Assert.IsType<ActionResult<LoginResponseDto>>(result);
-        //    var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
-        //    Assert.Equal("User not found", notFoundResult.Value);
-        //}
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<LoginResponseDto>>(result);
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
+            var problemDetails = Assert.IsType<ProblemDetails>(notFoundResult.Value);
+            Assert.Equal("An internal server error occurred. Please try again later.", problemDetails.Title);
+        }
 
-        //[Fact]
-        //public async Task Login_ReturnsBadRequest_WhenInvalidCredentials()
-        //{
-        //    // Arrange
-        //    var loginDto = new LoginDto
-        //    {
-        //        UserName = "test@example.com",
-        //        Password = "Password123!"
-        //    };
+        [Fact]
+        public async Task Login_ReturnsBadRequest_WhenInvalidCredentials()
+        {
+            // Arrange
+            var loginDto = new LoginDto
+            {
+                UserName = "test@example.com",
+                Password = "Password123!"
+            };
 
-        //    var user = new ApplicationUser { UserName = loginDto.UserName };
+            var user = new ApplicationUser { UserName = loginDto.UserName };
 
-        //    _userManagerMock.Setup(x => x.FindByNameAsync(loginDto.UserName))
-        //        .ReturnsAsync(user);
+            _userManagerMock.Setup(x => x.FindByNameAsync(loginDto.UserName))
+                .ReturnsAsync(user);
 
-        //    _signInManagerMock.Setup(x => x.PasswordSignInAsync(user, loginDto.Password, false, false))
-        //        .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
+            _signInManagerMock.Setup(x => x.PasswordSignInAsync(user, loginDto.Password, false, false))
+                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
 
-        //    // Act
-        //    var result = await _controller.Login(loginDto);
+            // Act
+            var result = await _controller.Login(loginDto);
 
-        //    // Assert
-        //    var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
-        //    var actualValue = badRequestResult.Value as IDictionary<string, object>;
-        //    Assert.Equal("Invalid credentials", actualValue["Message"]);
-        //}
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            var problemDetails = Assert.IsType<ProblemDetails>(badRequestResult.Value);
+            Assert.Equal("An internal server error occurred. Please try again later.", problemDetails.Title);
+        }
 
         [Fact]
         public async Task Login_ThrowsGlobalException()
@@ -202,7 +207,7 @@ namespace lms.Tests.ControllerTests
             };
 
             _userManagerMock.Setup(x => x.FindByNameAsync(loginDto.UserName))
-                .ThrowsAsync(new Exception("Test exception"));
+                .ThrowsAsync(new GlobalException("Test exception"));
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _controller.Login(loginDto));
@@ -235,26 +240,27 @@ namespace lms.Tests.ControllerTests
             Assert.True(response.isSuccessful);
         }
 
-        //[Fact]
-        //public async Task AssignRole_ReturnsNotFound_WhenUserNotFound()
-        //{
-        //    // Arrange
-        //    var roleDto = new RoleDto
-        //    {
-        //        UserId = Guid.NewGuid(),
-        //        Role = "admin"
-        //    };
+        [Fact]
+        public async Task AssignRole_ReturnsNotFound_WhenUserNotFound()
+        {
+            // Arrange
+            var roleDto = new RoleDto
+            {
+                UserId = Guid.NewGuid(),
+                Role = "admin"
+            };
 
-        //    _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
-        //        .ReturnsAsync((ApplicationUser)null);
+            _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
+                .ReturnsAsync((ApplicationUser)null);
 
-        //    // Act
-        //    var result = await _controller.AssignRole(roleDto);
+            // Act
+            var result = await _controller.AssignRole(roleDto);
 
-        //    // Assert
-        //    var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
-        //    Assert.Equal("{ Message = \"User not found\" }", notFoundResult.Value);
-        //}
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            var problemDetails = Assert.IsType<ProblemDetails>(notFoundResult.Value);
+            Assert.Equal("User not found", problemDetails.Title);
+        }
 
         [Fact]
         public async Task AssignRole_ThrowsGlobalException()
@@ -295,31 +301,62 @@ namespace lms.Tests.ControllerTests
             var result = await _controller.RemoveRole(roleDto);
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var response = Assert.IsType<AccountActionResponseDto>(okResult.Value);
             Assert.True(response.isSuccessful);
         }
 
-        //[Fact]
-        //public async Task RemoveRole_ReturnsNotFound_WhenUserNotFound()
-        //{
-        //    // Arrange
-        //    var roleDto = new RoleDto
-        //    {
-        //        UserId = Guid.NewGuid(),
-        //        Role = "admin"
-        //    };
+        [Fact]
+        public async Task RemoveRole_ReturnsNotFound_WhenUserNotFound()
+        {
+            // Arrange
+            var roleDto = new RoleDto
+            {
+                UserId = Guid.NewGuid(),
+                Role = "admin"
+            };
 
-        //    _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
-        //        .ReturnsAsync((ApplicationUser)null);
+            _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
+                .ReturnsAsync((ApplicationUser)null);
 
-        //    // Act
-        //    var result = await _controller.RemoveRole(roleDto);
+            // Act
+            var result = await _controller.RemoveRole(roleDto);
 
-        //    // Assert
-        //    var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
-        //    Assert.Equal("User not found", notFoundResult.Value);
-        //}
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            var problemDetails = Assert.IsType<ProblemDetails>(notFoundResult.Value);
+            Assert.Equal("User not found", problemDetails.Title);
+        }
+
+        [Fact]
+        public async Task RemoveRole_ReturnsBadRequest_WhenRoleRemovalFails()
+        {
+            // Arrange
+            var roleDto = new RoleDto
+            {
+                UserId = Guid.NewGuid(),
+                Role = "admin"
+            };
+
+            var user = new ApplicationUser { Id = roleDto.UserId };
+
+            _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
+                .ReturnsAsync(user);
+
+            var identityResult = IdentityResult.Failed(new IdentityError { Description = "Role removal failed" });
+            _userManagerMock.Setup(x => x.RemoveFromRoleAsync(user, roleDto.Role))
+                .ReturnsAsync(identityResult);
+
+            // Act
+            var result = await _controller.RemoveRole(roleDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            var response = Assert.IsType<AccountActionResponseDto>(badRequestResult.Value);
+            Assert.False(response.isSuccessful);
+            Assert.Single(response.errors);
+            Assert.Equal("Role removal failed", response.errors.First().Description);
+        }
 
         [Fact]
         public async Task RemoveRole_ThrowsGlobalException()
@@ -429,7 +466,7 @@ namespace lms.Tests.ControllerTests
             };
 
             _userManagerMock.Setup(x => x.FindByNameAsync(changePasswordDto.Username))
-                .ThrowsAsync(new Exception("Test exception"));
+                .ThrowsAsync(new GlobalException("Test exception"));
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _controller.ChangePassword(changePasswordDto));
@@ -480,7 +517,7 @@ namespace lms.Tests.ControllerTests
             var userId = Guid.NewGuid();
 
             _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString()))
-                .ThrowsAsync(new Exception("Test exception"));
+                .ThrowsAsync(new GlobalException("Test exception"));
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _controller.DeleteUser(userId));
@@ -526,7 +563,7 @@ namespace lms.Tests.ControllerTests
         public async Task GetAllUsers_ThrowsGlobalException()
         {
             // Arrange
-            _userManagerMock.Setup(x => x.Users).Throws(new Exception("Test exception"));
+            _userManagerMock.Setup(x => x.Users).Throws(new GlobalException("Test exception"));
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _controller.GetAllUsers());
