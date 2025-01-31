@@ -13,21 +13,22 @@ export class ChangePasswordComponent implements OnInit {
   newPassword: string = '';
   confirmNewPassword: string = '';
   errorMessage: string = '';
+  username: string = '';
 
   constructor(private authService:AuthService, private router:Router) { }
 
   ngOnInit(): void {}
 
-  async onSubmit(){
+  async changePassword(){
     const changePasswordRequestPayload :ChangePasswordRequestDto= {
-      username: 'username', //TODO: get username from local storage
+      username: this.username, 
       newPassword: this.newPassword,
       currentPassword: this.currentPassword
     }
     let changePasswordResponse: AccountActionResponseDto;
     try {
       changePasswordResponse = await this.authService.changePassword(changePasswordRequestPayload);
-
+      alert("The password has been changed successfully");
       this.router.navigate(['/login']);
      } catch (error) {
       this.errorMessage = "user password change failed"

@@ -28,7 +28,6 @@ export class AuthService {
   register(registerDTO: RegisterDto):Promise<RegisterResponseDto>{
     return this.client.register(registerDTO).toPromise().then((response: RegisterResponseDto | undefined) => {
       if (response?.succeeded) {
-        console.log('successfully registered');
         return response;
       } else {
         throw new Error('Registration failed');
@@ -38,9 +37,9 @@ export class AuthService {
   }
 
   changePassword(changePasswordRequestDto:ChangePasswordRequestDto):Promise<AccountActionResponseDto>{
-    return this.client.changePassword(changePasswordRequestDto).toPromise().then((response)=>{
+    return this.client.changePassword(changePasswordRequestDto).toPromise().then((response:AccountActionResponseDto|undefined)=>{
       if(response?.isSuccessful){
-        console.log('password changed successfully');
+        return response;
       }
       {
           throw new Error('password change failed');

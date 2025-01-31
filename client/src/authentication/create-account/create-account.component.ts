@@ -36,6 +36,7 @@ export class CreateAccountComponent implements OnInit {
     let registerResponse: RegisterResponseDto;
     try {
       registerResponse = await this.authService.register(registerDto);
+      alert("The user has been registered successfully");
       this.router.navigate(['/login']);
     } catch (error) {
       this.errorMessage = "user registration failed"
