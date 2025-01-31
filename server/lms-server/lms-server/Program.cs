@@ -145,11 +145,8 @@ using (var scope = app.Services.CreateScope())
         {
             var user = new ApplicationUser { UserName = "admin@lms.com", Email = "admin@lms.com" };
             var result = await userManager.CreateAsync(user, "LmsDefaultAdmin@123");
+             await userManager.AddToRoleAsync(user, "admin");
 
-            if (result.Succeeded)
-            {
-
-            }
         }
     }
 

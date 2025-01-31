@@ -25,9 +25,11 @@ import { SearchResultsComponent } from '../lms-contents/search-results/search-re
 import { SettingsComponent } from '../lms-contents/settings/settings.component';
 import { UserGroupingComponent } from '../lms-contents/user-grouping/user-grouping.component';
 import { HistoryComponent } from '../lms-contents/history/history.component';
-import { LoginComponent } from '../authentication/lms-contents/login/login.component';
+import { LoginComponent } from '../authentication/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from 'src/shared-components/book-list-view/footer/footer.component';
+import { CreateAccountComponent } from 'src/authentication/create-account/create-account.component';
+import { ChangePasswordComponent } from 'src/authentication/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { FooterComponent } from 'src/shared-components/book-list-view/footer/foo
     HistoryComponent,
     LoginComponent,
     TruncatePipe,
-    FooterComponent
+    FooterComponent,
+    CreateAccountComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

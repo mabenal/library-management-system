@@ -5,10 +5,10 @@ namespace lms.Abstractions.Models.DTO
     public class RegisterDto
     {
         [Required]
-        [Range(1, 255, ErrorMessage = "Please enter name between 1 and 255 characters")]
+        [StringLength(255, MinimumLength = 1, ErrorMessage = "Please enter name between 1 and 255 characters")]
         public required string Name { get; set; }
         [Required]
-        [Range(1, 255, ErrorMessage = "Please enter last name between 1 and 255 characters")]
+        [StringLength(255, MinimumLength = 1, ErrorMessage = "Please enter name between 1 and 255 characters")]
 
         public required string LastName { get; set; }
         [Required]

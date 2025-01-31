@@ -1,0 +1,40 @@
+<div class="register-form-container">
+    <div class="register-form">
+        <form (ngSubmit)="createAccount()">
+            <div class="input-group">
+                <label for="name">Name</label>
+                <input class="form-control small-input" type="text" id="name" name="name" [(ngModel)]="name" placeholder="Name" required>
+            </div>
+            <div class="input-group">
+                <label for="lastName">Last Name</label>
+                <input class="form-control small-input" type="text" id="lastName" name="lastName" [(ngModel)]="lastName" placeholder="Last Name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input class="form-control small-input" type="email" id="email" name="email" [(ngModel)]="emailAddress" placeholder="Email" required>
+            </div>
+            <div class="input-group">
+                <label for="address">Address</label>
+                <input class="form-control small-input" type="text" id="address" name="address" [(ngModel)]="address" placeholder="Address">
+            </div>
+            <div class="input-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input class="form-control small-input" type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="phoneNumber" placeholder="Phone Number">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input class="form-control small-input" type="password" id="password" name="password" [(ngModel)]="password" placeholder="Password" required>
+            </div>
+            <div class="input-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input class="form-control small-input" type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmPassword"
+                    placeholder="Confirm Password" required>
+            </div>
+            <button type="submit" class="submit-button">Create Account</button>
+        </form>
+        <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+        <div class="links">
+            Already have an account? <a routerLink="/login">Login</a>
+        </div>
+    </div>
+</div>
