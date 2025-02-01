@@ -12,10 +12,10 @@ namespace lms.Services.Repository
 {
     public class SQLBooksRepository : IBooksRepository
     {
-        private readonly LmsDbContext dbContext;
+        private readonly ILmsDbContext dbContext;
         private readonly ILogger<SQLBooksRepository> _logger;
 
-        public SQLBooksRepository(LmsDbContext dbContext, ILogger<SQLBooksRepository> logger)
+        public SQLBooksRepository(ILmsDbContext dbContext, ILogger<SQLBooksRepository> logger)
         {
             this.dbContext = dbContext;
             this._logger = logger;
@@ -100,16 +100,15 @@ namespace lms.Services.Repository
         {
             var book = await dbContext.Books.FindAsync(id);
 
-            if (book == null) {
-
+            if (book == null)
+            {
                 return null;
-
             }
-            dbContext.Remove(book);
-           await dbContext.SaveChangesAsync();
+
+            dbContext.Books.Remove(book);
+            await dbContext.SaveChangesAsync();
 
             return book;
-           
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using lms.Abstractions.Data;
+using lms.Abstractions.Interfaces;
 using lms.Abstractions.Models.States;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,28 +49,28 @@ namespace lms.Abstractions.Models
             _state = state;
         }
 
-        public async Task Approve(LmsDbContext dbContext)
+        public async Task Approve(ILmsDbContext dbContext)
         {
             await _state.Approve(this, dbContext);
             dbContext.BookRequests.Update(this);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task Cancel(LmsDbContext dbContext)
+        public async Task Cancel(ILmsDbContext dbContext)
         {
             await _state.Cancel(this, dbContext);
             dbContext.BookRequests.Update(this);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task Return(LmsDbContext dbContext)
+        public async Task Return(ILmsDbContext dbContext)
         {
             await _state.Return(this, dbContext);
             dbContext.BookRequests.Update(this);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task MarkAsOverdue(LmsDbContext dbContext)
+        public async Task MarkAsOverdue(ILmsDbContext dbContext)
         {
             await _state.MarkAsOverdue(this, dbContext);
             dbContext.BookRequests.Update(this);

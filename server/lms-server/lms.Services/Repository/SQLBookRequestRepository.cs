@@ -13,9 +13,9 @@ namespace lms.Services.Repository
 {
     public class SQLBookRequestRepository : IBookRequestRepository
     {
-        private readonly LmsDbContext dbContext;
+        private readonly ILmsDbContext dbContext;
 
-        public SQLBookRequestRepository(LmsDbContext dbContext)
+        public SQLBookRequestRepository(ILmsDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -47,7 +47,7 @@ namespace lms.Services.Repository
             bookRequest.Status = "Pending";
             bookRequest.DateRequested = DateTime.Now;
             bookRequest.DateReturned = null;
-            bookRequest.DateApproved = null; 
+            bookRequest.DateApproved = null;
 
             await dbContext.BookRequests.AddAsync(bookRequest);
             await dbContext.SaveChangesAsync();
