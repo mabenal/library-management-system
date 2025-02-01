@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class TopNavigatorComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -17,4 +17,7 @@ export class TopNavigatorComponent implements OnInit {
     return true;
   }
 
+  logout(){
+    this.authService.clearToken();
+  }
 }

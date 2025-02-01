@@ -12,11 +12,13 @@ import { HistoryComponent } from '../lms-contents/history/history.component';
 import { LoginComponent } from '../authentication/login/login.component';
 import { CreateAccountComponent } from 'src/authentication/create-account/create-account.component';
 import { ChangePasswordComponent } from 'src/authentication/change-password/change-password.component';
+import { UpdateProfileComponent } from 'src/authentication/update-profile/update-profile.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'change-password', component: ChangePasswordComponent },
   { path: 'create-account', component: CreateAccountComponent},
+  { path: 'update-profile', component: UpdateProfileComponent },
   { path: 'search-results', component: SearchResultsComponent },
   { path: 'books', component: BooksComponent },
   { path: 'clients', component: UserGroupingComponent },

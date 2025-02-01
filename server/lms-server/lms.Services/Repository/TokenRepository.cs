@@ -38,10 +38,10 @@ namespace lms.Services.Repository
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim("ClientId", user.Email.ToString())
+                new(JwtRegisteredClaimNames.Sub, user.UserName),
+                new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new (ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new ("ClientId", user.Email.ToString())
             };
 
 
