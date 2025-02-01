@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Net.WebSockets;
+using Microsoft.AspNetCore.Http;
 
 namespace lms.Peer.Controllers
 {
@@ -60,10 +61,13 @@ namespace lms.Peer.Controllers
                     return BadRequest(registrationResult.Errors);
                 }
             }
+            catch (GlobalException ex)
+            {
+                throw new GlobalException($"in accountController: {ex}");
+            }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Error in AccountController: {ex}");
-                return StatusCode(500, new { Message = "An internal server error occurred. Please try again later." });
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An internal server error occurred. Please try again later." });
             }
         }
 
@@ -95,84 +99,132 @@ namespace lms.Peer.Controllers
                         return Ok(loginResponseObject);
                     }
 
-                    return BadRequest(new { Message = "Invalid credentials" });
+                    var userproblemDetails = new ProblemDetails
+                    {
+                        Status = StatusCodes.Status500InternalServerError,
+                        Title = "An internal server error occurred. Please try again later."
+                    };
+
+                    return BadRequest(userproblemDetails);
                 }
 
-                return NotFound(new { Message = "User not found" });
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An internal server error occurred. Please try again later."
+                };
+
+                return NotFound(problemDetails);
+            }
+            catch (GlobalException ex)
+            {
+                throw new GlobalException($"in accountController: {ex}");
             }
             catch (Exception ex)
             {
-                throw new GlobalException($"Error in AccountController: {ex}");
-                return StatusCode(500, new { Message = "An error occurred during login" });
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An internal server error occurred. Please try again later."
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
+
         [Authorize(Roles = "admin")]
-        [HttpPut("AssignRole")]
+        [HttpPost("AssignRole")]
         public async Task<ActionResult<AccountActionResponseDto>> AssignRole([FromBody] RoleDto assignRoleDto)
         {
-           try{
-             var user = await userManager.FindByIdAsync(assignRoleDto.UserId.ToString());
-            if (user == null)
+            try
             {
-                return NotFound(new { Message = "User not found" });
+                var user = await userManager.FindByIdAsync(assignRoleDto.UserId.ToString());
+                if (user == null)
+                {
+                    var problemDetails = new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Title = "User not found"
+                    };
+                    return NotFound(problemDetails);
+                }
+
+                var result = await userManager.AddToRoleAsync(user, assignRoleDto.Role);
+                var assignRoleResponse = new AccountActionResponseDto
+                {
+                    isSuccessful = result.Succeeded,
+                    errors = result.Errors
+                };
+
+                if (result.Succeeded)
+                {
+                    return Ok(assignRoleResponse);
+                }
+
+                return BadRequest(assignRoleResponse);
             }
-
-            var result = await userManager.AddToRoleAsync(user, assignRoleDto.Role);
-
-            var assignRoleResponse = new AccountActionResponseDto
+            catch (GlobalException ex)
             {
-                isSuccessful = result.Succeeded,
-                errors=result.Errors
-            };
-
-            if (result.Succeeded)
-            {
-                return Ok(assignRoleResponse);
+                throw new GlobalException($"in accountController: {ex}");
             }
-
-            return BadRequest(assignRoleResponse);
-
-           }catch(Exception ex)
-           {
-                return StatusCode(500, new { Message = "An error occurred during assigning a role to a user" });
-           }
+            catch (Exception ex)
+            {
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An internal server error occurred. Please try again later."
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
+            }
         }
-        [Authorize(Roles ="admin")]
+
+        [Authorize(Roles = "admin")]
         [HttpPut("RemoveRole")]
-        public async Task<IActionResult> RemoveRole([FromBody] RoleDto roleModel)
+        public async Task<ActionResult<AccountActionResponseDto>> RemoveRole([FromBody] RoleDto roleModel)
         {
-          try{
-              var user = await userManager.FindByIdAsync(roleModel.UserId.ToString());
-            if (user == null)
+            try
             {
-                return NotFound(new { Message = "User not found" });
+                var user = await userManager.FindByIdAsync(roleModel.UserId.ToString());
+                if (user == null)
+                {
+                    var problemDetails = new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Title = "User not found"
+                    };
+                    return NotFound(problemDetails);
+                }
+
+                var result = await userManager.RemoveFromRoleAsync(user, roleModel.Role);
+                var response = new AccountActionResponseDto
+                {
+                    isSuccessful = result.Succeeded,
+                    errors = result.Errors
+                };
+
+                if (result.Succeeded)
+                {
+                    return Ok(response);
+                }
+
+                return BadRequest(response);
             }
-            var result = await userManager.RemoveFromRoleAsync(user, roleModel.Role);
-
-
-            var removeRoleResponse = new AccountActionResponseDto
+            catch (GlobalException ex)
             {
-                isSuccessful = result.Succeeded,
-                errors = result.Errors
-            };
-
-            if (result.Succeeded)
-            {
-                return Ok(removeRoleResponse);
+                throw new GlobalException($"in accountController: {ex}");
             }
-
-            return BadRequest(removeRoleResponse);
-          }
-          catch (Exception ex)
-          {
-                return StatusCode(500, new { Message = "An error occurred during removing a user from role" });
-        
-          }
-
+            catch (Exception ex)
+            {
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An internal server error occurred. Please try again later."
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
+            }
         }
 
         [HttpPut("ChangePassword")]
-        
+
         public async Task<ActionResult<AccountActionResponseDto>> ChangePassword([FromBody] ChangePasswordRequestDto changePasswordRequestDto)
         {
             try
@@ -203,11 +255,13 @@ namespace lms.Peer.Controllers
 
 
             }
+            catch (GlobalException ex)
+            {
+                throw new GlobalException($"in accountController: {ex}");
+            }
             catch (Exception ex)
             {
-            
-            return StatusCode(500, new { Message = "An error occured when changing password" });
-
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occured when changing password" });
             }
         }
 
@@ -241,10 +295,13 @@ namespace lms.Peer.Controllers
                 return BadRequest(changePasswordResponse);
 
             }
+            catch (GlobalException ex)
+            {
+                throw new GlobalException($"in accountController: {ex}");
+            }
             catch (Exception ex)
             {
-            return StatusCode(500, new { Message = "An error occurred when deleting userd" });
-
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occurred when deleting userd" });
             }
         }
 
@@ -252,21 +309,24 @@ namespace lms.Peer.Controllers
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
-            try 
-            { 
+            try
+            {
                 var allUsers = await userManager.Users.ToListAsync();
 
-            if (allUsers != null)
-            {
-                 return Ok(allUsers);
-            }
+                if (allUsers == null || !allUsers.Any())
+                {
+                    return NotFound();
+                }
 
-            return NotFound();
+                return Ok(allUsers);
+            }
+            catch (GlobalException ex)
+            {
+                throw new GlobalException($"in accountController: {ex}");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An error occurred when getting all users" });
-
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occurred when getting all users" });
             }
         }
 
@@ -304,9 +364,13 @@ namespace lms.Peer.Controllers
                 return Ok(updateProfileResponse);
 
             }
+            catch (GlobalException ex)
+            {
+                throw new GlobalException($"in accountController: {ex}");
+            }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An error occurred while trying to update profile", Error = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occurred when getting all users" });
             }
         }
 
@@ -325,10 +389,13 @@ namespace lms.Peer.Controllers
                 }
                 return NotFound();
             }
-            catch(Exception ex)
+            catch (GlobalException ex)
             {
-                return StatusCode(500, new { Message="", Error= ex.Message  });
-
+                throw new GlobalException($"in accountController: {ex}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occurred when getting all users" });
             }
         }   
 

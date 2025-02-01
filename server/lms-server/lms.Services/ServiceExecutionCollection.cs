@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using lms_server.Repository;
+using lms.Abstractions.Data;
 
 namespace lms.Services
 {
@@ -20,10 +21,11 @@ namespace lms.Services
                 .AddScoped<IBooksRepository, SQLBooksRepository>()
                 .AddScoped<IClientRepository, SQLClientRepository>()
                 .AddScoped<IBookRequestRepository, SQLBookRequestRepository>()
-                .AddScoped<ITokenRepository, TokenRepository>();
+                .AddScoped<ITokenRepository, TokenRepository>()
+                .AddScoped<ILmsDbContext, LmsDbContext>();
 
-                // Register state classes
-                services.AddScoped<PendingState>();
+            // Register state classes
+            services.AddScoped<PendingState>();
                 services.AddScoped<ApprovedState>();
                 services.AddScoped<CancelledState>();
                 services.AddScoped<ReturnState>();

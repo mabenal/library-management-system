@@ -71,7 +71,6 @@ namespace lms.Peer.Controllers
             catch (Exception e)
             {
                 throw new GlobalException($"in booksController: {e}");
-                throw;
             }
         }
 

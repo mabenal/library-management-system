@@ -10,9 +10,9 @@ namespace lms_server.Repository
 {
     public class SQLClientRepository : IClientRepository
     {
-        private readonly LmsDbContext dbContext;
+        private readonly ILmsDbContext dbContext;
 
-        public SQLClientRepository(LmsDbContext dbContext)
+        public SQLClientRepository(ILmsDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
