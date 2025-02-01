@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { AccountActionResponseDto, ChangePasswordRequestDto, LoginDto, LoginResponseDto, RegisterDto, RegisterResponseDto } from 'auto/autolmsclient-abstractions';
+import { AccountActionResponseDto, ApplicationUser, ChangePasswordRequestDto, LoginDto, LoginResponseDto, RegisterDto, RegisterResponseDto, UpdateUserRequestDto } from 'auto/autolmsclient-abstractions';
 import { IClient } from 'auto/autolmsclient-abstractions';
 @Injectable({
   providedIn: 'root'
@@ -45,6 +45,28 @@ export class AuthService {
           throw new Error('password change failed');
       }
     })}
+
+    updateUserProfile(id: string, updateUserProfile:UpdateUserRequestDto):Promise<AccountActionResponseDto>{
+      return this.client.updateProfile(id, updateUserProfile).toPromise().then((response:AccountActionResponseDto |undefined)=>{
+        if(response?.isSuccessful){
+          return response;
+        }
+        {
+            throw new Error('user profile update failed');
+        }
+      })}
+
+
+    getUserProfile(id:string):Promise<ApplicationUser>{
+      return this.client.getProfile(id).toPromise().then((response:ApplicationUser |undefined)=>{
+        if(response !== undefined){
+          return response;
+        }
+        {
+            throw new Error('get user profile failed'); 
+        }
+      })}
+    
 
   isLoggedIn(): boolean {
     return this.loggedIn.value;

@@ -30,6 +30,7 @@ import { CreateAccountComponent } from 'src/authentication/create-account/create
 import { ChangePasswordComponent } from 'src/authentication/change-password/change-password.component';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from 'src/authentication/store/state/user.state';
+import { UpdateProfileComponent } from 'src/authentication/update-profile/update-profile.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { UserState } from 'src/authentication/store/state/user.state';
     TruncatePipe,
     FooterComponent,
     CreateAccountComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    UpdateProfileComponent
   ],
   imports: [
     NgxsModule.forRoot([UserState]),

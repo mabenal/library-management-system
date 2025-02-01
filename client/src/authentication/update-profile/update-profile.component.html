@@ -1,0 +1,28 @@
+<div class="update-form-container">
+    <div class="update-form">
+        <form (ngSubmit)="updateProfile()">
+            <div class="input-group">
+                <label for="name">Name</label>
+                <input class="form-control small-input" type="text" id="name" name="name" [(ngModel)]="name" placeholder="Name" required>
+            </div>
+            <div class="input-group">
+                <label for="lastName">Last Name</label>
+                <input class="form-control small-input" type="text" id="lastName" name="lastName" [(ngModel)]="lastName" placeholder="Last Name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input  disabled="true" class="form-control small-input" type="email" id="email" name="email" [(ngModel)]="emailAddress" placeholder="Email" >
+            </div>
+            <div class="input-group">
+                <label for="address">Address</label>
+                <input class="form-control small-input" type="text" id="address" name="address" [(ngModel)]="address" placeholder="Address">
+            </div>
+            <div class="input-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input class="form-control small-input" type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="phoneNumber" placeholder="Phone Number">
+            </div>
+            <button type="submit" class="submit-button">Update Profile</button>
+        </form>
+        <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    </div>
+</div>

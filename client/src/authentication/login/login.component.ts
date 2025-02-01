@@ -24,7 +24,7 @@ export class LoginComponent {
   async onSubmit() {
     try {
       const user = await this.authService.login(this.username, this.password);
-       this.store.dispatch(new SetUser(user?.username || '', user?.userRoles || []));  
+       this.store.dispatch(new SetUser(user?.username || '', user?.userRoles || [], user?.userID || ''));  
       this.router.navigate(['/books']);
     } catch (error) {
       this.errorMessage = 'Invalid username or password.';
