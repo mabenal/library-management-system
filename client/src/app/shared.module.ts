@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Client, API_BASE_URL } from 'auto/autolmsclient-module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +31,9 @@ import { ChangePasswordComponent } from 'src/authentication/change-password/chan
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from 'src/authentication/store/state/user.state';
 import { UpdateProfileComponent } from 'src/authentication/update-profile/update-profile.component';
+import { CookieService } from 'ngx-cookie-service';
+import { TokenInterceptor } from 'src/interceptors/token.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -69,8 +72,10 @@ import { UpdateProfileComponent } from 'src/authentication/update-profile/update
     BooksService,
     AuthService,
     Client,
+    CookieService ,
     { provide: 'IClient', useClass: Client },
-    { provide: API_BASE_URL, useValue: 'https://localhost:7025' }
+    { provide: API_BASE_URL, useValue: 'https://localhost:7025' },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor , multi:true}
   ],
   bootstrap: [AppComponent]
 })
