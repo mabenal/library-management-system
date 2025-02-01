@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Net.WebSockets;
 
 namespace lms.Peer.Controllers
 {
@@ -85,8 +87,9 @@ namespace lms.Peer.Controllers
                         {
 
                              Token =  token,
-                             Username = loginObject.UserName,
-                             UserRoles = userRoles.ToList()
+                             Username = user.UserName,
+                             UserRoles = userRoles.ToList(),
+                             UserID= user.Id.ToString()
                         };
 
                         return Ok(loginResponseObject);
@@ -267,6 +270,69 @@ namespace lms.Peer.Controllers
             }
         }
 
+        [HttpPut("UpdateProfile/{id:Guid}")]
+        public async Task<ActionResult<AccountActionResponseDto>> UpdateUserProfile([FromBody] UpdateUserRequestDto updateUserRequestDto, [FromRoute] Guid id)
+        {
+            try
+            {
+                if (updateUserRequestDto == null)
+                {
+                    return BadRequest(new { Message = "Invalid user data" });
+                }
+
+                var user = await userManager.FindByIdAsync(id.ToString());
+                if (user == null)
+                {
+                    return NotFound(new { Message = "User not found" });
+                }
+
+                user.Name = updateUserRequestDto.Name;
+                user.LastName = updateUserRequestDto.LastName;
+                user.PhoneNumber = updateUserRequestDto.PhoneNumber;
+                user.Address = updateUserRequestDto.Address;
+
+                var result = await userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(new { Message = "Failed to update user profile", Errors = result.Errors });
+                }
+                var updateProfileResponse = new AccountActionResponseDto
+                {
+                    isSuccessful = result.Succeeded,
+                    errors = result.Errors
+                };
+                return Ok(updateProfileResponse);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while trying to update profile", Error = ex.Message });
+            }
+        }
+
+
+
+        [HttpGet("GetProfile/{id:Guid}")]
+        public async Task<ActionResult<ApplicationUser>> GetUserProfile([FromRoute] Guid id)
+        {
+            try
+            {
+                var user = await userManager.FindByIdAsync(id.ToString());
+
+                if(user != null)
+                {
+                    return Ok(user);
+                }
+                return NotFound();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { Message="", Error= ex.Message  });
+
+            }
+        }   
 
     }
+
+
 }

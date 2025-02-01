@@ -12,6 +12,8 @@ namespace lms.Abstractions.Models.DTO
 
         public  string?  Username { get; set; }
 
+        public string? UserID { get; set; }
+
         public required List<string> UserRoles { get; set; }
 
         //public int ExpiresIn { get; set; }
