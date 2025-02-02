@@ -1,14 +1,12 @@
-﻿using lms.Abstractions.Interfaces;
+﻿using lms.Abstractions.Exceptions;
+using lms.Abstractions.Interfaces;
 using lms.Abstractions.Models;
 using lms.Abstractions.Models.DTO;
-using lms.Abstractions.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using System.Net.WebSockets;
-using Microsoft.AspNetCore.Http;
 
 namespace lms.Peer.Controllers
 {
@@ -18,14 +16,16 @@ namespace lms.Peer.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private SignInManager<ApplicationUser> signInManager;
+        private readonly ILmsDbContext dbContext;
 
         public ITokenRepository tokenRepository { get; set; }
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ITokenRepository tokenRepository)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ITokenRepository tokenRepository, ILmsDbContext dbContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.tokenRepository = tokenRepository;
+            this.dbContext = dbContext;
         }
 
         [HttpPost("Register")]
@@ -54,6 +54,20 @@ namespace lms.Peer.Controllers
                 if (registrationResult.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, "client");
+
+                    var client = new Client
+                    {
+                        Id = user.Id,
+                        Name = user.Name,
+                        LastName = user.LastName,
+                        EmailAddress = user.Email,
+                        Password = registerModel.Password,
+                        Address = user.Address,
+                        PhoneNumber = user.PhoneNumber
+                    };
+
+                    await dbContext.Clients.AddAsync(client);
+                    await dbContext.SaveChangesAsync();
                     return Ok(registerResponse);
                 }
                 else
@@ -67,7 +81,12 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An internal server error occurred. Please try again later." });
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An internal server error occurred. Please try again later.",
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
@@ -93,7 +112,7 @@ namespace lms.Peer.Controllers
                              Token =  token,
                              Username = user.UserName,
                              UserRoles = userRoles.ToList(),
-                             UserID= user.Id.ToString()
+                             UserID = user.Id.ToString()
                         };
 
                         return Ok(loginResponseObject);
@@ -252,8 +271,6 @@ namespace lms.Peer.Controllers
                 }
 
                 return BadRequest(result);
-
-
             }
             catch (GlobalException ex)
             {
@@ -261,7 +278,12 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occured when changing password" });
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An error occured when changing password",
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
@@ -301,7 +323,12 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occurred when deleting userd" });
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An error occurred when deleting user",
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
@@ -326,7 +353,12 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occurred when getting all users" });
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An error occurred when getting all users",
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
 
@@ -337,13 +369,23 @@ namespace lms.Peer.Controllers
             {
                 if (updateUserRequestDto == null)
                 {
-                    return BadRequest(new { Message = "Invalid user data" });
+                    var problemDetails = new ProblemDetails
+                    {
+                        Status = StatusCodes.Status400BadRequest,
+                        Title = "Invalid user data",
+                    };
+                    return BadRequest(problemDetails);
                 }
 
                 var user = await userManager.FindByIdAsync(id.ToString());
                 if (user == null)
                 {
-                    return NotFound(new { Message = "User not found" });
+                    var problemDetails = new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Title = "User not found",
+                    };
+                    return NotFound(problemDetails);
                 }
 
                 user.Name = updateUserRequestDto.Name;
@@ -354,7 +396,13 @@ namespace lms.Peer.Controllers
                 var result = await userManager.UpdateAsync(user);
                 if (!result.Succeeded)
                 {
-                    return BadRequest(new { Message = "Failed to update user profile", Errors = result.Errors });
+                    var problemDetails = new ProblemDetails
+                    {
+                        Status = StatusCodes.Status304NotModified,
+                        Title = "Failed to update user profile",
+                        Detail = result?.Errors?.FirstOrDefault()?.Description
+                    };
+                    return BadRequest(problemDetails);
                 }
                 var updateProfileResponse = new AccountActionResponseDto
                 {
@@ -370,11 +418,14 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occurred when getting all users" });
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An error occurred when updating user profile"
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }
-
-
 
         [HttpGet("GetProfile/{id:Guid}")]
         public async Task<ActionResult<ApplicationUser>> GetUserProfile([FromRoute] Guid id)
@@ -395,7 +446,12 @@ namespace lms.Peer.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails { Title = "An error occurred when getting all users" });
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "An error occurred when getting user profile"
+                };
+                return StatusCode(StatusCodes.Status500InternalServerError, problemDetails);
             }
         }   
 

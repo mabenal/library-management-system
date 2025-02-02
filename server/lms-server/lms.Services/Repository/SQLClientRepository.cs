@@ -27,6 +27,11 @@ namespace lms_server.Repository
             return await dbContext.Clients.FindAsync(id);
         }
 
+        public async Task<Client?> GetClientbyEmail(string client)
+        {
+            return await dbContext.Clients.FirstOrDefaultAsync(c => c.EmailAddress == client);
+        }
+
         public async Task<Client?> UpdateClientDetails(Guid id, Client client)
         {
             var clientToUpdate = await dbContext.Clients.FindAsync(id);

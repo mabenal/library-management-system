@@ -11,5 +11,6 @@ namespace lms.Abstractions.Interfaces
         Task<Client?> GetClientById(Guid id);
         Task<Client?> UpdateClientDetails(Guid id, Client client);
         Task<Client?> DeleteClientAsync(Guid id);
+        Task<Client?> GetClientbyEmail(string client);
     }
 }

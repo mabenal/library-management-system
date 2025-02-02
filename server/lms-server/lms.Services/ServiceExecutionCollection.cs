@@ -18,6 +18,7 @@ namespace lms.Services
         {
             services
                 .AddScoped<BookImportService>()
+                .AddScoped<IUserService, UserService>()
                 .AddScoped<IBooksRepository, SQLBooksRepository>()
                 .AddScoped<IClientRepository, SQLClientRepository>()
                 .AddScoped<IBookRequestRepository, SQLBookRequestRepository>()

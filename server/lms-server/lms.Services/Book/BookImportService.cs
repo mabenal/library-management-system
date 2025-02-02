@@ -1,4 +1,5 @@
 ﻿using lms.Abstractions.Data;
+using lms.Abstractions.Interfaces;
 using lms.Abstractions.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -8,9 +9,9 @@ namespace lms.Services
 {
     public class BookImportService
     {
-        private readonly LmsDbContext _dbContext;
+        private readonly ILmsDbContext _dbContext;
 
-        public BookImportService(LmsDbContext dbContext)
+        public BookImportService(ILmsDbContext dbContext)
         {
             _dbContext = dbContext;
         }

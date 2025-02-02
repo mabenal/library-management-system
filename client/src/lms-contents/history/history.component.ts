@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BookRequestDto } from 'auto/autolmsclient-abstractions';
-import { BooksService } from 'src/services/books.services';
+import { RequestService } from 'src/services/request.service';
 
 @Component({
   selector: 'app-history',
@@ -13,7 +13,7 @@ export class HistoryComponent implements OnInit {
   showPopup: boolean = false;
   selectedRequest: any;
 
-  constructor(private bookService: BooksService) { }
+  constructor(private requestService: RequestService) { }
 
   ngOnInit(): void {
     this.getRequests();
@@ -21,7 +21,11 @@ export class HistoryComponent implements OnInit {
 
   async getRequests() {
     try {
-      this.requests = await this.bookService.getAllbookRequests().toPromise();
+      const response = await this.requestService.getbookRequestByClient().toPromise();
+      if (response) {
+        this.requests = response;
+        console.log('Book requests:', response);
+      }
     } catch (error) {
       console.error('Error getting book requests:', error);
     }
