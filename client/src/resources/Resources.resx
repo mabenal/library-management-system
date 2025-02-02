@@ -81,4 +81,91 @@
   <data name="display_text_number_of_copies" xml:space="preserve">
     <value>Number of Copies:</value>
   </data>
+  <data name="display_text_date_requested" xml:space="preserve">
+    <value>Date Requested</value>
+  </data>
+  <data name="display_text_date_approved" xml:space="preserve">
+    <value>Date Approved</value>
+  </data>
+  <data name="display_text_date_returned" xml:space="preserve">
+    <value>Date Returned</value>
+  </data>
+  <data name="display_text_status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="display_text_cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="display_text_cancel_prompt" xml:space="preserve">
+    <value>Are you sure you want to cancel this request?</value>
+  </data>
+  <data name="display_text_yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="display_text_no" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="display_text_latest_books" xml:space="preserve">
+    <value>Our latest offering</value>
+  </data>
+  <data name="display_text_exact_match" xml:space="preserve">
+    <value>Exact Match</value>
+  </data>
+  <data name="display_text_search_results" xml:space="preserve">
+    <value>Search Results for </value>
+  </data>
+  <data name="display_text_ascending" xml:space="preserve">
+    <value>Ascending</value>
+  </data>
+  <data name="display_text_descending" xml:space="preserve">
+    <value>Descending</value>
+  </data>
+  <data name="display_text_no_results" xml:space="preserve">
+    <value>Can't find results for </value>
+  </data>
+  <data name="display_text_lms" xml:space="preserve">
+    <value>Library Management System</value>
+  </data>
+  <data name="display_text_lorem" xml:space="preserve">
+    <value>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</value>
+  </data>
+  <data name="display_text_members" xml:space="preserve">
+    <value>Members</value>
+  </data>
+  <data name="display_text_view_all" xml:space="preserve">
+    <value>View all</value>
+  </data>
+  <data name="display_text_cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="display_text_cancel_prompt" xml:space="preserve">
+    <value>Are you sure you want to cancel this request?</value>
+  </data>
+  <data name="display_text_books" xml:space="preserve">
+    <value>Books</value>
+  </data>
+  <data name="display_text_clients" xml:space="preserve">
+    <value>Clients</value>
+  </data>
+  <data name="display_text_inventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="display_text_request_management" xml:space="preserve">
+    <value>Request Management</value>
+  </data>
+  <data name="display_text_history" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="display_text_login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="display_text_register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="display_text_sign_out" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+    <data name="display_text_contact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
 </root>

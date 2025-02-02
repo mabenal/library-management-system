@@ -9,11 +9,11 @@
                 </div>
             </div>
         </div>
-        <button class="view-all-btn" (click)="viewAllClick()">View All</button>
+        <button class="view-all-btn" (click)="viewAllClick()">{{ displayConstants.ViewAll }}</button>
     </div>
     <ng-template #noResults>
         <div class="no-results">
-            Can't find results for "{{ searchTerm }}"
+            {{ displayConstants.NoResults }} "{{ searchTerm }}"
         </div>
     </ng-template>
-  </div>
+</div>

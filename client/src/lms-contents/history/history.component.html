@@ -1,5 +1,5 @@
 <div class="request-list">
-    <h3>All Requests</h3>
+    <h3>{{ displayConstants.History }}</h3>
 </div>
 
 <div class="request-list-items">
@@ -11,38 +11,38 @@
             <span class="request-header">{{ request.title }}</span>
         </div>
         <div class="request-item">
-            <span class="label">Date Requested</span>
+            <span class="label">{{ displayConstants.DateRequested }}</span>
             <span class="label">{{ request.dateRequested | date: 'yyyy-MM-dd' }}</span>
         </div>
         <div class="request-item">
-            <span class="label">Date Approved</span>
+            <span class="label">{{ displayConstants.DateApproved }}</span>
             <span class="label">{{ request.dateApproved | date: 'yyyy-MM-dd' }}</span>
         </div>
         <div class="request-item">
-            <span class="label">Date Returned</span>
+            <span class="label">{{ displayConstants.DateReturned }}</span>
             <span class="label">{{ request.dateReturned | date: 'yyyy-MM-dd' }}</span>
         </div>
         <div class="request-item">
-            <span class="label">Status</span>
+            <span class="label">{{ displayConstants.Status }}</span>
             <span class="label">{{ request.status }}</span>
         </div>
         <div class="action-buttons">
             <button *ngIf="request.status == 'Pending'" type="button" class="btn btn-dark"
-                (click)="cancelRequest(request)">Cancel</button>
+                (click)="cancelRequest(request)">{{ displayConstants.Cancel }}</button>
         </div>
     </div>
     <div *ngIf="showPopup" class="cancel-popup">
         <div class="popup-content">
-            <div class="popup-header">
-                <span class="close" (click)="closePopup()">&times;</span>
-            </div>
-            <div class="popup-body">
-                <p>Are you sure you want to cancel this request?</p>
-            </div>
-            <div class="popup-footer">
-                <button type="button" class="btn btn-danger" style="width: 140px;" (click)="confirmCancel()">Yes</button>
-                <button type="button" class="btn btn-secondary" style="width: 140px;" (click)="closePopup()">No</button>
-            </div>
+          <div class="popup-header">
+            <span class="close" (click)="closePopup()">&times;</span>
+          </div>
+          <div class="popup-body">
+            <p>{{ displayConstants.CancelPrompt }}</p>
+          </div>
+          <div class="popup-footer">
+            <button type="button" class="btn btn-danger" style="width: 140px;" (click)="confirmCancel()">{{ displayConstants.Yes }}</button>
+            <button type="button" class="btn btn-secondary" style="width: 140px;" (click)="closePopup()">{{ displayConstants.No }}</button>
+          </div>
         </div>
-    </div>
+      </div>
 </div>

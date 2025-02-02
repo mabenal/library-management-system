@@ -14,8 +14,8 @@ export class RequestService {
         return this.client.getBookRequestsByClient();
     }
 
-    cancelRequest(query: string): Observable<any> {
-        return this.client.cancelRequest(query);
+    cancelRequest(bookId: string): Observable<any> {
+        return this.client.cancelRequest(bookId);
     }
 
     returnRequest(query: string): Observable<any> {
