@@ -10,7 +10,7 @@
                 <div class="custom-nav-item">
                     <a class="custom-nav-link" routerLink="/books">{{ displayConstants.Books }}</a>
                 </div>
-                <div class="custom-nav-item">
+                <div class="custom-nav-item" *ngIf="isLoggedIn()">
                     <a class="custom-nav-link" routerLink="/history">{{ displayConstants.History }}</a>
                 </div>
             </div>
@@ -22,10 +22,10 @@
                     <div class="login-info" *ngIf="!isLoggedIn()">
                         <div class="navbar-login">
                             <span class="login-item">
-                                <a class="btn btn-primary me-2" href="#">{{ displayConstants.Login }}</a>
+                                <a class="btn btn-primary me-2" routerLink="/login">{{ displayConstants.Login }}</a>
                             </span>
                             <span class="login-item">
-                                <a class="btn btn-secondary" href="#">{{ displayConstants.Register }}</a>
+                                <a (click)="register()" class="btn btn-secondary" >{{ displayConstants.Register }}</a>
                             </span>
                         </div>
                     </div>
@@ -69,10 +69,10 @@
                     <div class="login-info" *ngIf="!isLoggedIn()">
                         <div class="navbar-login">
                             <span class="login-item">
-                                <a class="btn btn-primary me-2" href="#">{{ displayConstants.Login }}</a>
+                                <a class="btn btn-primary me-2" routerLink="/login">{{ displayConstants.Login }}</a>
                             </span>
                             <span class="login-item">
-                                <a class="btn btn-secondary" href="#">{{ displayConstants.Register }}</a>
+                                <a (click)="register()" class="btn btn-secondary">{{ displayConstants.Register }}</a>
                             </span>
                         </div>
                     </div>
