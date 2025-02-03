@@ -34,6 +34,7 @@ import { UpdateProfileComponent } from 'src/authentication/update-profile/update
 import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptor } from 'src/interceptors/token.interceptor';
 import { RequestService } from 'src/services/request.service';
+import { AuthGuardService } from 'src/services/auth-guard.service';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { RequestService } from 'src/services/request.service';
   providers: [
     BooksService,
     AuthService,
+    AuthGuardService,
     RequestService,
     Client,
     CookieService ,
