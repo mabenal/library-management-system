@@ -2,7 +2,7 @@
     <h3>{{ displayConstants.History }}</h3>
 </div>
 
-<div class="request-list-items">
+<div class="request-list-items" *ngIf="requests.length > 0; else noRequests">
     <div class="request-items" *ngFor="let request of requests; let i = index">
         <div class="index">
             {{i + 1}}
@@ -12,15 +12,15 @@
         </div>
         <div class="request-item">
             <span class="label">{{ displayConstants.DateRequested }}</span>
-            <span class="label">{{ request.dateRequested | date: 'yyyy-MM-dd' }}</span>
+            <span class="label">{{ request.dateRequested ? (request.dateRequested | date: 'yyyy-MM-dd') : '-' }}</span>
         </div>
         <div class="request-item">
             <span class="label">{{ displayConstants.DateApproved }}</span>
-            <span class="label">{{ request.dateApproved | date: 'yyyy-MM-dd' }}</span>
+            <span class="label">{{ request.dateApproved ? (request.dateApproved | date: 'yyyy-MM-dd') : '-' }}</span>
         </div>
         <div class="request-item">
             <span class="label">{{ displayConstants.DateReturned }}</span>
-            <span class="label">{{ request.dateReturned | date: 'yyyy-MM-dd' }}</span>
+            <span class="label">{{ request.dateReturned ? (request.dateReturned | date: 'yyyy-MM-dd') : '-' }}</span>
         </div>
         <div class="request-item">
             <span class="label">{{ displayConstants.Status }}</span>
@@ -46,3 +46,8 @@
         </div>
       </div>
 </div>
+<ng-template #noRequests>
+    <div class="no-requests">
+        <span>{{ displayConstants.NoRequests }}</span>
+    </div>
+</ng-template>
