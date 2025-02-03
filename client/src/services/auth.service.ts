@@ -73,6 +73,19 @@ export class AuthService {
     })
   }
 
+  deleteUser(id: string): void {
+    this.client.deleteUser(id).subscribe((response: AccountActionResponseDto | undefined) => {
+      if (response?.isSuccessful) {
+        this.loggedIn.next(false);
+        this.userRole = null;
+        this.router.navigate(['/login']);
+      }
+      else {
+        throw new Error('delete user failed');
+      }
+    })
+  }
+
   isLoggedIn(): boolean {
     return this.cookieService.check(this.tokenKey);
   }
