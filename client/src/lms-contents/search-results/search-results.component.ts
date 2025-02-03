@@ -19,6 +19,19 @@ export class SearchResultsComponent implements OnInit {
   exactMatch: boolean = false;
   sortOrder: string = 'asc';
 
+  pageCountOptions: { value: string, label: string }[] = [
+    { value: '', label: 'Any Pages' },
+    { value: '0-100', label: '0-100' },
+    { value: '101-200', label: '101-200' },
+    { value: '201-300', label: '201-300' },
+    { value: '301-400', label: '301-400' },
+    { value: '401+', label: '401+' }
+  ];
+  sortOptions: { value: string, label: string }[] = [
+    { value: 'asc', label: 'Ascending' },
+    { value: 'desc', label: 'Descending' }
+  ];
+
   constructor(private route: ActivatedRoute, private booksService: BooksService) { }
 
   ngOnInit(): void {

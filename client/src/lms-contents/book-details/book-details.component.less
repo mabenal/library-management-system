@@ -1,0 +1,89 @@
+@import '../../styles.less';
+
+.book-details-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  max-width: 1145px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.book-details {
+  display: flex;
+  flex-direction: row;
+  width: 730px;
+  height: fit-content;
+  background-color: @white-color;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .image-container {
+    width: 210px;
+    height: 295px;
+    margin-right: 20px;
+  }
+
+  .book-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .details-container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 500px;
+  }
+
+  .label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+
+    span {
+      background-color: @white-color;
+      padding: 5px 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-end;
+
+    button {
+      width: 105px;
+      height: 35px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: @primary-color;
+      color: white;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .cancel-button {
+      background-color: @danger-color;
+    }
+  }
+
+  .toggle-description {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.similar-books {
+  padding-left: 20px;
+  max-width: 35%;
+}

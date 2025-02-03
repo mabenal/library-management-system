@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { DisplayConstants } from 'src/constants/constants';
 
@@ -9,6 +9,8 @@ import { DisplayConstants } from 'src/constants/constants';
 })
 export class TopNavigatorComponent implements OnInit {
   displayConstants = DisplayConstants;
+  menuOpen = false;
+  searchOpen = false;
 
   constructor(private authService: AuthService) { }
 
@@ -19,7 +21,15 @@ export class TopNavigatorComponent implements OnInit {
     return true;
   }
 
-  logout(){
+  logout() {
     this.authService.clearToken();
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  toggleSearch() {
+    this.searchOpen = !this.searchOpen;
   }
 }

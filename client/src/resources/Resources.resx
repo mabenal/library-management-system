@@ -165,7 +165,10 @@
   <data name="display_text_sign_out" xml:space="preserve">
     <value>Sign out</value>
   </data>
-    <data name="display_text_contact" xml:space="preserve">
+  <data name="display_text_contact" xml:space="preserve">
     <value>Contact</value>
+  </data>
+  <data name="display_text_delete_profile" xml:space="preserve">
+    <value>Are you sure you want to delete your profile?</value>
   </data>
 </root>

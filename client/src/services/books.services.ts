@@ -13,4 +13,8 @@ export class BooksService {
     searchBooks(query: string): Observable<any> {
         return this.client.searchBooks(query);
     }
+
+    getBook(id: string): Observable<any> {
+        return this.client.getBook(id);
+    }
 }

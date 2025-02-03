@@ -27,7 +27,7 @@ export class LoginComponent {
       const user = await this.authService.login(this.username, this.password);
       this.store.dispatch(new SetUser(user.username ?? '', user.userRoles ?? [], user.userID ?? ''));
       this.authService.setToken(user.token ?? '');
-      this.router.navigate(['/change-password']);
+      this.router.navigate(['/books']);
     } catch (error) {
       this.errorMessage = 'Invalid username or password.';
     }

@@ -6,7 +6,7 @@ import { DashboardComponent } from '../lms-contents/dashboard/dashboard.componen
 import { InventoryComponent } from '../lms-contents/inventory/inventory.component';
 import { RequestManagementComponent } from '../lms-contents/request-management/request-management.component';
 import { SearchResultsComponent } from '../lms-contents/search-results/search-results.component';
-import { SettingsComponent } from '../lms-contents/settings/settings.component';
+import { BookDetailsComponent } from '../lms-contents/book-details/book-details.component';
 import { UserGroupingComponent } from '../lms-contents/user-grouping/user-grouping.component';
 import { HistoryComponent } from '../lms-contents/history/history.component';
 import { LoginComponent } from '../authentication/login/login.component';
@@ -27,10 +27,10 @@ const routes: Routes = [
   { path: 'request-management', component: RequestManagementComponent, canActivate: [AuthGuardService] },
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuardService] },
   { path: 'account', component: AccountComponent , canActivate: [AuthGuardService]},
-  { path: 'settings', component: SettingsComponent , canActivate: [AuthGuardService]},
+  { path: 'book/:id', component: BookDetailsComponent , canActivate: [AuthGuardService]},
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' } // Wildcard route for a 404 page
+  { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({
