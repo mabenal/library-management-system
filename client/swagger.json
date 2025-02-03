@@ -103,7 +103,7 @@
       }
     },
     "/api/Account/AssignRole": {
-      "put": {
+      "post": {
         "tags": [
           "Account"
         ],
@@ -176,7 +176,24 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountActionResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountActionResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountActionResponseDto"
+                }
+              }
+            }
           }
         }
       }
@@ -457,21 +474,10 @@
         }
       }
     },
-    "/api/BookRequest/GetBookRequestsByClientId/{clientId}": {
+    "/api/BookRequest/GetBookRequestsByClient": {
       "get": {
         "tags": [
           "BookRequest"
-        ],
-        "parameters": [
-          {
-            "name": "clientId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -497,21 +503,12 @@
         }
       }
     },
-    "/api/BookRequest/CancelRequest/{clientId}/{bookId}": {
+    "/api/BookRequest/CancelRequest/{bookId}": {
       "put": {
         "tags": [
           "BookRequest"
         ],
         "parameters": [
-          {
-            "name": "clientId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
           {
             "name": "bookId",
             "in": "path",
@@ -595,21 +592,12 @@
         }
       }
     },
-    "/api/BookRequest/ReturnRequest/{clientId}/{bookId}": {
+    "/api/BookRequest/ReturnRequest/{bookId}": {
       "put": {
         "tags": [
           "BookRequest"
         ],
         "parameters": [
-          {
-            "name": "clientId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
           {
             "name": "bookId",
             "in": "path",
@@ -644,21 +632,12 @@
         }
       }
     },
-    "/api/BookRequest/OverdueRequest/{clientId}/{bookId}": {
+    "/api/BookRequest/OverdueRequest/{bookId}": {
       "put": {
         "tags": [
           "BookRequest"
         ],
         "parameters": [
-          {
-            "name": "clientId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
           {
             "name": "bookId",
             "in": "path",
@@ -1275,25 +1254,22 @@
       },
       "BookRequestDto": {
         "required": [
-          "bookId",
-          "clientId",
-          "dateRequested",
-          "status",
-          "title"
+          "bookId"
         ],
         "type": "object",
         "properties": {
           "status": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "title": {
-            "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "dateRequested": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "acceptedReturnDate": {
             "type": "string",
@@ -1312,7 +1288,8 @@
           },
           "clientId": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": true
           },
           "bookId": {
             "type": "string",

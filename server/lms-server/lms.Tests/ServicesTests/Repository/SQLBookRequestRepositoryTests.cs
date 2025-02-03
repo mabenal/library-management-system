@@ -59,7 +59,37 @@ namespace lms.Tests.ServicesTests.Repository
             var bookRequests = new List<BookRequest> { existingBookRequest }.AsQueryable().BuildMockDbSet();
 
             _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
-            _dbContextMock.Setup(db => db.BookRequests.FirstOrDefaultAsync(It.IsAny<Expression<Func<BookRequest, bool>>>(), default)).ReturnsAsync(existingBookRequest);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<GlobalException>(() => _repository.AddNewRequest(bookRequest));
+        }
+
+        [Fact]
+        public async Task AddNewRequest_ShouldThrowException_WhenBookDoesNotExist()
+        {
+            // Arrange
+            var client = new Client { Id = Guid.NewGuid(), Name = "Test Client" };
+            var bookRequest = BookRequest.CreatePendingRequest("Test Book", DateTime.Now, DateTime.Now.AddDays(15), client, new Book { Id = Guid.NewGuid() });
+            var bookRequests = new List<BookRequest>().AsQueryable().BuildMockDbSet();
+
+            _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
+            _dbContextMock.Setup(db => db.Books.FindAsync(bookRequest.BookId)).ReturnsAsync((Book)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<GlobalException>(() => _repository.AddNewRequest(bookRequest));
+        }
+
+        [Fact]
+        public async Task AddNewRequest_ShouldThrowException_WhenNoAvailableCopies()
+        {
+            // Arrange
+            var client = new Client { Id = Guid.NewGuid(), Name = "Test Client" };
+            var book = new Book { Id = Guid.NewGuid(), Title = "Test Book", NumberOfCopies = 0 };
+            var bookRequest = BookRequest.CreatePendingRequest("Test Book", DateTime.Now, DateTime.Now.AddDays(15), client, book);
+            var bookRequests = new List<BookRequest>().AsQueryable().BuildMockDbSet();
+
+            _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
+            _dbContextMock.Setup(db => db.Books.FindAsync(bookRequest.BookId)).ReturnsAsync(book);
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _repository.AddNewRequest(bookRequest));
@@ -94,7 +124,6 @@ namespace lms.Tests.ServicesTests.Repository
             var bookRequests = new List<BookRequest> { bookRequest }.AsQueryable().BuildMockDbSet();
 
             _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
-            _dbContextMock.Setup(db => db.BookRequests.Where(It.IsAny<Expression<Func<BookRequest, bool>>>()).ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(bookRequests.Object.ToList());
 
             // Act
             var result = await _repository.GetBookRequestsByClientId(client.Id);
@@ -116,7 +145,6 @@ namespace lms.Tests.ServicesTests.Repository
             var bookRequests = new List<BookRequest> { bookRequest }.AsQueryable().BuildMockDbSet();
 
             _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
-            _dbContextMock.Setup(db => db.BookRequests.SingleOrDefaultAsync(It.IsAny<Expression<Func<BookRequest, bool>>>(), default)).ReturnsAsync(bookRequest);
 
             // Act
             var result = await _repository.ApproveRequest(client.Id, book.Id);
@@ -133,7 +161,9 @@ namespace lms.Tests.ServicesTests.Repository
             // Arrange
             var clientId = Guid.NewGuid();
             var bookId = Guid.NewGuid();
-            _dbContextMock.Setup(db => db.BookRequests.SingleOrDefaultAsync(It.IsAny<Expression<Func<BookRequest, bool>>>(), default)).ReturnsAsync((BookRequest)null);
+            var bookRequests = new List<BookRequest>().AsQueryable().BuildMockDbSet();
+
+            _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _repository.ApproveRequest(clientId, bookId));
@@ -150,7 +180,6 @@ namespace lms.Tests.ServicesTests.Repository
             var bookRequests = new List<BookRequest> { bookRequest }.AsQueryable().BuildMockDbSet();
 
             _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
-            _dbContextMock.Setup(db => db.BookRequests.SingleOrDefaultAsync(It.IsAny<Expression<Func<BookRequest, bool>>>(), default)).ReturnsAsync(bookRequest);
 
             // Act
             var result = await _repository.CancelRequest(client.Id, book.Id);
@@ -167,7 +196,9 @@ namespace lms.Tests.ServicesTests.Repository
             // Arrange
             var clientId = Guid.NewGuid();
             var bookId = Guid.NewGuid();
-            _dbContextMock.Setup(db => db.BookRequests.SingleOrDefaultAsync(It.IsAny<Expression<Func<BookRequest, bool>>>(), default)).ReturnsAsync((BookRequest)null);
+            var bookRequests = new List<BookRequest>().AsQueryable().BuildMockDbSet();
+
+            _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _repository.CancelRequest(clientId, bookId));
@@ -184,7 +215,6 @@ namespace lms.Tests.ServicesTests.Repository
             var bookRequests = new List<BookRequest> { bookRequest }.AsQueryable().BuildMockDbSet();
 
             _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
-            _dbContextMock.Setup(db => db.BookRequests.SingleOrDefaultAsync(It.IsAny<Expression<Func<BookRequest, bool>>>(), default)).ReturnsAsync(bookRequest);
 
             // Act
             var result = await _repository.ReturnRequest(client.Id, book.Id);
@@ -204,7 +234,6 @@ namespace lms.Tests.ServicesTests.Repository
             var bookRequests = new List<BookRequest>().AsQueryable().BuildMockDbSet();
 
             _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
-            _dbContextMock.Setup(db => db.BookRequests.SingleOrDefaultAsync(It.IsAny<Expression<Func<BookRequest, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync((BookRequest)null);
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _repository.ReturnRequest(clientId, bookId));
@@ -221,7 +250,6 @@ namespace lms.Tests.ServicesTests.Repository
             var bookRequests = new List<BookRequest> { bookRequest }.AsQueryable().BuildMockDbSet();
 
             _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
-            _dbContextMock.Setup(db => db.BookRequests.SingleOrDefaultAsync(It.IsAny<Expression<Func<BookRequest, bool>>>(), default)).ReturnsAsync(bookRequest);
 
             // Act
             var result = await _repository.OverdueRequest(client.Id, book.Id);
@@ -238,7 +266,9 @@ namespace lms.Tests.ServicesTests.Repository
             // Arrange
             var clientId = Guid.NewGuid();
             var bookId = Guid.NewGuid();
-            _dbContextMock.Setup(db => db.BookRequests.SingleOrDefaultAsync(It.IsAny<Expression<Func<BookRequest, bool>>>(), default)).ReturnsAsync((BookRequest)null);
+            var bookRequests = new List<BookRequest>().AsQueryable().BuildMockDbSet();
+
+            _dbContextMock.Setup(db => db.BookRequests).Returns(bookRequests.Object);
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _repository.OverdueRequest(clientId, bookId));

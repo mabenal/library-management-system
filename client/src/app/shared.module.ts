@@ -33,6 +33,7 @@ import { UserState } from 'src/authentication/store/state/user.state';
 import { UpdateProfileComponent } from 'src/authentication/update-profile/update-profile.component';
 import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptor } from 'src/interceptors/token.interceptor';
+import { RequestService } from 'src/services/request.service';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { TokenInterceptor } from 'src/interceptors/token.interceptor';
   providers: [
     BooksService,
     AuthService,
+    RequestService,
     Client,
     CookieService ,
     { provide: 'IClient', useClass: Client },

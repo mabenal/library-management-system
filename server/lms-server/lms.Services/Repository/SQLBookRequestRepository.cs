@@ -43,7 +43,6 @@ namespace lms.Services.Repository
             var bookTitle = bookEntity.Title;
 
             bookRequest.Title = bookTitle;
-            bookEntity.NumberOfCopies--;
             bookRequest.Status = "Pending";
             bookRequest.DateRequested = DateTime.Now;
             bookRequest.DateReturned = null;
@@ -72,12 +71,12 @@ namespace lms.Services.Repository
 
             if (bookRequestToApprove == null && !bookstatus)
             {
-                return null;
+                throw new GlobalException("Book request not in pending state.");
             }
 
             bookRequestToApprove.DateApproved = DateTime.Now;
             bookRequestToApprove.AcceptedReturnDate = DateTime.Now.AddDays(15);
-            await bookRequestToApprove.Approve(dbContext);
+            bookRequestToApprove.Approve(dbContext);
             await dbContext.SaveChangesAsync();
             return bookRequestToApprove;
         }
@@ -118,7 +117,7 @@ namespace lms.Services.Repository
 
             if (bookRequestToOverdue == null)
             {
-                return null;
+                throw new GlobalException("Book request is not overdue.");
             }
 
             await bookRequestToOverdue.MarkAsOverdue(dbContext);

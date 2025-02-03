@@ -38,7 +38,8 @@ namespace lms.Abstractions.Models
                 DateRequested = dateRequested,
                 AcceptedReturnDate = acceptedReturnDate,
                 Client = client,
-                Book = book
+                Book = book,
+                _state = new PendingState()
             };
             bookRequest.SetState(new PendingState());
             return bookRequest;

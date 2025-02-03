@@ -118,10 +118,18 @@ namespace lms.Tests.ServicesTests.Repository
             var book = new Book { Id = Guid.NewGuid(), Title = "Test Book", ISBN = "1234567890" };
             var existingBook = new Book { Id = Guid.NewGuid(), Title = "Existing Book", ISBN = "1234567890" };
             var books = new List<Book> { existingBook }.AsQueryable();
-            var dbSetMock = CreateDbSetMock(books);
+            var dbSetMock = new Mock<DbSet<Book>>();
+
+            var asyncQueryProviderMock = new Mock<IAsyncQueryProvider>();
+            asyncQueryProviderMock.Setup(m => m.ExecuteAsync<Task<Book>>(It.IsAny<Expression>(), It.IsAny<CancellationToken>()))
+                                  .ReturnsAsync(books.FirstOrDefault());
+
+            dbSetMock.As<IQueryable<Book>>().Setup(m => m.Provider).Returns(asyncQueryProviderMock.Object);
+            dbSetMock.As<IQueryable<Book>>().Setup(m => m.Expression).Returns(books.Expression);
+            dbSetMock.As<IQueryable<Book>>().Setup(m => m.ElementType).Returns(books.ElementType);
+            dbSetMock.As<IQueryable<Book>>().Setup(m => m.GetEnumerator()).Returns(books.GetEnumerator());
 
             _dbContextMock.Setup(db => db.Books).Returns(dbSetMock.Object);
-            _dbContextMock.Setup(db => db.Books.FirstOrDefaultAsync(It.IsAny<Expression<Func<Book, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(existingBook);
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _repository.AddNewBook(book));
@@ -132,7 +140,14 @@ namespace lms.Tests.ServicesTests.Repository
         {
             // Arrange
             var books = new List<Book> { new Book { Id = Guid.NewGuid(), Title = "Test Book", Author = "Author" } }.AsQueryable();
-            var dbSetMock = CreateDbSetMock(books);
+            var dbSetMock = new Mock<DbSet<Book>>();
+
+            dbSetMock.As<IQueryable<Book>>().Setup(m => m.Provider).Returns(new TestAsyncQueryProvider<Book>(books.Provider));
+            dbSetMock.As<IQueryable<Book>>().Setup(m => m.Expression).Returns(books.Expression);
+            dbSetMock.As<IQueryable<Book>>().Setup(m => m.ElementType).Returns(books.ElementType);
+            dbSetMock.As<IQueryable<Book>>().Setup(m => m.GetEnumerator()).Returns(books.GetEnumerator());
+            dbSetMock.As<IAsyncEnumerable<Book>>().Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>()))
+                      .Returns(new TestAsyncEnumerator<Book>(books.GetEnumerator()));
 
             _dbContextMock.Setup(db => db.Books).Returns(dbSetMock.Object);
 

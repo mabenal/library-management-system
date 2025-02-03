@@ -33,7 +33,6 @@ namespace lms.Services.Repository
 
         public async Task<Book> AddNewBook(Book book)
         {
-            //Checkn if the ISBN is already in the database
             var bookExists = await dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == book.ISBN);
             if(bookExists !=null)
             {

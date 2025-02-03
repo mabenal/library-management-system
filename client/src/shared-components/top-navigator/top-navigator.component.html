@@ -13,19 +13,19 @@
                 </div>
                 <div class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/books">Books</a>
+                        <a class="nav-link" routerLink="/books">{{ displayConstants.Books }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/clients">Clients</a>
+                        <a class="nav-link" routerLink="/clients">{{ displayConstants.Clients }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/inventory">Inventory</a>
+                        <a class="nav-link" routerLink="/inventory">{{ displayConstants.Inventory }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/request-management">Request Management</a>
+                        <a class="nav-link" routerLink="/request-management">{{ displayConstants.RequestManagement }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/history">History</a>
+                        <a class="nav-link" routerLink="/history">{{ displayConstants.History }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" routerLink="/settings">Settings</a>
@@ -39,10 +39,10 @@
                 <div class="login-info" *ngIf="!isLoggedIn()">
                     <div class="navbar-login">
                         <span class="login-item">
-                            <a class="btn btn-primary me-2" href="#">Login</a>
+                            <a class="btn btn-primary me-2" href="#">{{ displayConstants.Login }}</a>
                         </span>
                         <span class="login-item">
-                            <a class="btn btn-secondary" href="#">Register</a>
+                            <a class="btn btn-secondary" href="#">{{ displayConstants.Register }}</a>
                         </span>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                             <a class="btn" routerLink="/account"><i class="bi bi-person-circle"></i></a>
                         </span>
                         <span class="login-item">
-                            <a class="btn btn-secondary" (click)="logout()" href="#">Sign out</a>
+                            <a class="btn btn-secondary" (click)="logout()" href="#">{{ displayConstants.SignOut }}</a>
                         </span>
                     </div>
                 </div>

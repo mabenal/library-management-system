@@ -9,7 +9,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 2;
 }
 
@@ -54,18 +54,15 @@ button {
 }
 
 button.pending {
-  background-color: @warning-color; /* Warning color */
-  cursor: not-allowed;
+  background-color: @warning-color;
 }
 
 button.approved {
-  background-color: @success-color; /* Success color */
-  cursor: not-allowed;
+  background-color: @success-color;
 }
 
 button:disabled {
   background-color: @disabled-color;
-  cursor: not-allowed;
 }
 
 .book-details {

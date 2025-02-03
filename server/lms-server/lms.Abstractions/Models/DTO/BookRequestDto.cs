@@ -9,18 +9,14 @@ namespace lms.Abstractions.Models.DTO
 {
     public class BookRequestDto
     {
-        [Required]
         public string? Status { get; set; }
-        [Required]
         public string? Title { get; set; }
-        [Required]
-        public DateTime DateRequested { get; set; }
+        public DateTime? DateRequested { get; set; }
         public DateTime? AcceptedReturnDate { get; set; }
         public DateTime? DateApproved { get; set; }
         public DateTime? DateReturned { get; set; }
+        public Guid? ClientId { get; set; }
 
-        [Required]
-        public Guid ClientId { get; set; }
         [Required]
         public Guid BookId { get; set; }
     }

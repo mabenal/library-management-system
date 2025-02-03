@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef, OnDestroy, HostListener } from '@angular/core';
 import { BehaviorSubject, Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BookDto } from 'auto/autolmsclient-abstractions';
+import { BookDto, BookRequestDto } from 'auto/autolmsclient-abstractions';
+import { RequestService } from 'src/services/request.service';
 
 enum ButtonState {
   Request = 'request',
@@ -25,7 +26,7 @@ export class BookDetailsModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   showFullDescription = false;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef, private requestService: RequestService) { }
 
   ngOnInit(): void {
     this.subscription = this.buttonState
@@ -62,6 +63,20 @@ export class BookDetailsModalComponent implements OnInit, OnDestroy {
 
   handleButtonClick() {
     this.buttonState.next(ButtonState.Pending);
+
+    const bookRequest: BookRequestDto = {
+      bookId: this.book.id
+    };
+
+    this.requestService.addNewRequest(bookRequest).subscribe(
+      response => {
+        this.buttonState.next(ButtonState.Approved);
+      },
+      error => {
+        console.error('Error sending book request:', error);
+        this.buttonState.next(ButtonState.Request);
+      }
+    );
   }
 
   closeModal() {
