@@ -1,0 +1,28 @@
+<div class="update-form-container">
+  <div class="update-form">
+    <form (ngSubmit)="updateClient()">
+      <div class="input-group">
+        <label for="name">Name</label>
+        <input class="form-control small-input" type="text" id="name" name="name" [(ngModel)]="client.name" placeholder="Name" required>
+      </div>
+      <div class="input-group">
+        <label for="lastName">Last Name</label>
+        <input class="form-control small-input" type="text" id="lastName" name="lastName" [(ngModel)]="client.lastName" placeholder="Last Name" required>
+      </div>
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input class="form-control small-input" type="email" id="email" name="email" [(ngModel)]="client.emailAddress" placeholder="Email" disabled>
+      </div>
+      <div class="input-group">
+        <label for="address">Address</label>
+        <input class="form-control small-input" type="text" id="address" name="address" [(ngModel)]="client.address" placeholder="Address">
+      </div>
+      <div class="input-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input class="form-control small-input" type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="client.phoneNumber" placeholder="Phone Number">
+      </div>
+      <button type="submit" class="submit-button">Update Client</button>
+    </form>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IClient, ClientDto } from 'auto/autolmsclient-abstractions';
 import { BooksService } from 'src/services/books.services'; 
 import { DisplayConstants } from 'src/constants/constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-grouping',
@@ -13,7 +14,7 @@ export class UserGroupingComponent implements OnInit {
   clients: ClientDto[] = []; 
   selectedClient: ClientDto | null = null;
 
-  constructor(private bookService: BooksService) { }
+  constructor(private bookService: BooksService, private router: Router) { }
 
   ngOnInit(): void {
     this.addClient();
@@ -40,5 +41,8 @@ deleteClient(id: string) {
   } catch (error) {
     console.error('Error deleting client', error);
   }
+}
+editClient(id: string): void {
+  this.router.navigate(['/update-client', id]);
 }
 }

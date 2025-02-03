@@ -35,6 +35,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptor } from 'src/interceptors/token.interceptor';
 import { RequestService } from 'src/services/request.service';
 import { AuthGuardService } from 'src/services/auth-guard.service';
+import {UpdateClientComponent} from 'src/lms-contents/update-client/update-client.component';
 
 
 @NgModule({
@@ -61,7 +62,9 @@ import { AuthGuardService } from 'src/services/auth-guard.service';
     FooterComponent,
     CreateAccountComponent,
     ChangePasswordComponent,
-    UpdateProfileComponent
+    UpdateProfileComponent,
+    UpdateClientComponent
+    
   ],
   imports: [
     NgxsModule.forRoot([UserState]),

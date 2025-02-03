@@ -14,6 +14,7 @@ import { CreateAccountComponent } from 'src/authentication/create-account/create
 import { ChangePasswordComponent } from 'src/authentication/change-password/change-password.component';
 import { UpdateProfileComponent } from 'src/authentication/update-profile/update-profile.component';
 import { AuthGuardService } from 'src/services/auth-guard.service';
+import { UpdateClientComponent } from 'src/lms-contents/update-client/update-client.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent , canActivate: [AuthGuardService]},
   { path: 'settings', component: SettingsComponent , canActivate: [AuthGuardService]},
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService] },
+  { path: 'update-client/:id', component: UpdateClientComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' } // Wildcard route for a 404 page
 ];
