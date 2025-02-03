@@ -27,7 +27,6 @@ namespace lms.Peer.Controllers
             this.httpClient = httpClient;
         }
 
-        [Authorize(Roles = "client,librarian")]
         [HttpGet("SearchBooks/{query}")]
         public async Task<ActionResult<BookDto>> SearchBooks([FromRoute] string query)
         {
