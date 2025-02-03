@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { BookDto } from 'auto/autolmsclient-abstractions';
 import { BooksService } from 'src/services/books.services';
 import { DisplayConstants } from 'src/constants/constants';
@@ -18,7 +17,7 @@ export class BooksComponent implements OnInit {
   latestBooks: BookDto[] = [];
   filterCategory: string | null = null;
 
-  constructor(private bookService: BooksService, private router: Router) {}
+  constructor(private bookService: BooksService) {}
 
   ngOnInit(): void {
     this.fetchBooks();
@@ -39,8 +38,14 @@ export class BooksComponent implements OnInit {
     this.filterCategory = category;
   }
 
-  navigateToBookDetails(book: BookDto) {
-    this.router.navigate(['/book', book.id]);
+  showBookDetailsModal(book: BookDto) {
+    this.selectedBook = book;
+    this.showModal = true;
+  }
+
+  closeBookDetailsModal() {
+    this.selectedBook = null;
+    this.showModal = false;
   }
 
   getlatestBooks(): BookDto[] {

@@ -3,13 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { BookDto, BookRequestDto } from 'auto/autolmsclient-abstractions';
 import { RequestService } from 'src/services/request.service';
 import { BooksService } from 'src/services/books.services';
-import { BehaviorSubject } from 'rxjs';
 import { DisplayConstants } from 'src/constants/constants';
 
 enum ButtonState {
-  Request = 'request',
-  Pending = 'pending',
-  Approved = 'approved'
+  Request = 'Request',
+  Pending = 'Pending',
+  Approved = 'Approved'
 }
 
 @Component({
@@ -22,9 +21,10 @@ export class BookDetailsComponent implements OnInit {
   @Input() displayConstants: any = DisplayConstants;
   @Input() books: BookDto[] = [];
   buttonTitle = 'Request';
-  buttonState = new BehaviorSubject<ButtonState>(ButtonState.Request);
+  buttonState: ButtonState = ButtonState.Request;
   showFullDescription = false;
   similarBooks: BookDto[] = [];
+  showCancelButton = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -65,7 +65,7 @@ export class BookDetailsComponent implements OnInit {
   }
 
   handleButtonClick() {
-    this.buttonState.next(ButtonState.Pending);
+    this.buttonState = ButtonState.Pending;
 
     const bookRequest: BookRequestDto = {
       bookId: this.book.id
@@ -73,11 +73,11 @@ export class BookDetailsComponent implements OnInit {
 
     this.requestService.addNewRequest(bookRequest).subscribe(
       (response: any) => {
-        this.buttonState.next(ButtonState.Approved);
+        this.buttonState = ButtonState.Approved;
       },
       (error: any) => {
         console.error('Error sending book request:', error);
-        this.buttonState.next(ButtonState.Request);
+        this.buttonState = ButtonState.Request;
       }
     );
   }
@@ -93,6 +93,24 @@ export class BookDetailsComponent implements OnInit {
   }
 
   private checkPendingRequest() {
-    // Logic to check if there is a pending request for this book by the logged-in user
+    if (!this.book) {
+      return;
+    }
+
+    this.requestService.getBookRequestsByClient().subscribe(
+      (requests: BookRequestDto[]) => {
+        const pendingRequest = requests.find(request => request.bookId === this.book.id && request.status === 'Pending');
+        if (pendingRequest) {
+          this.buttonState = ButtonState.Pending;
+          this.buttonTitle = 'Pending...';
+          this.showCancelButton = true;
+        } else {
+          this.showCancelButton = false;
+        }
+      },
+      (error: any) => {
+        console.error('Error fetching book requests:', error);
+      }
+    );
   }
 }

@@ -1,6 +1,6 @@
-<app-book-details *ngIf="selectedBook" [book]="selectedBook" [displayConstants]="displayConstants"></app-book-details>
+<app-book-details-modal *ngIf="showModal && selectedBook" [book]="selectedBook!" [displayConstants]="displayConstants" (close)="closeBookDetailsModal()"></app-book-details-modal>
 <div class="main-container">
   <app-category-filter [books]="books" (filteredBooksChange)="updateFilteredBooks($event.filteredBooks, $event.category)"></app-category-filter>
-  <app-latest-books *ngIf="!filterCategory" [latestBooks]="latestBooks" (showBookDetails)="navigateToBookDetails($event)"></app-latest-books>
-  <app-book-list-view [books]="filteredBooks" [displayConstants]="displayConstants" (showBookDetails)="navigateToBookDetails($event)"></app-book-list-view>
+  <app-latest-books *ngIf="!filterCategory" [latestBooks]="latestBooks" (showBookDetails)="showBookDetailsModal($event)"></app-latest-books>
+  <app-book-list-view [books]="filteredBooks" [displayConstants]="displayConstants" (showBookDetails)="showBookDetailsModal($event)" [heading]="'Explore Our Collection'"></app-book-list-view>
 </div>

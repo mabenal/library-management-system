@@ -20,13 +20,12 @@
           </span>
         </p>
         <div class="button-container">
-          <button (click)="handleButtonClick()" [ngClass]="buttonState.value">{{ buttonTitle }}</button>
-          <button *ngIf="buttonState.value === 'pending'" (click)="handleCancelButtonClick()" class="cancel-button">Cancel</button>
+          <button (click)="handleButtonClick()" [ngClass]="buttonState">{{ buttonTitle }}</button>
+          <button *ngIf="buttonState === 'Pending'" (click)="handleCancelButtonClick()" class="cancel-button">Cancel</button>
         </div>
       </div>
     </div>
     <div class="similar-books">
-      <h3>Similar Books</h3>
-      <app-book-list-view [books]="similarBooks" [displayConstants]="displayConstants" [enablePagination]="false"></app-book-list-view>
+      <app-book-list-view [books]="similarBooks" [displayConstants]="displayConstants" [enablePagination]="false" [heading]="'Similar Books'"></app-book-list-view>
     </div>
   </div>
