@@ -13,4 +13,12 @@ export class BooksService {
     searchBooks(query: string): Observable<any> {
         return this.client.searchBooks(query);
     }
+
+    allClients(): Observable<any> {  
+        return this.client.getAllClients();
+    }
+
+    deleteClient(id: string): Observable<any> {
+        return this.client.deleteClient(id);
+    }
 }

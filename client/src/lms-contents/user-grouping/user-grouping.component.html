@@ -1,1 +1,36 @@
-<p>user-grouping works!</p>
+<div class="client-list d-flex justify-content-between align-items-center">
+    <h3>Clients</h3>
+    <i class="bi bi-person-add fs-2
+    "></i>
+</div>
+
+<div class="client-list-items">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let client of clients; let i = index" [class.table-active]="client === selectedClient" (click)="selectClient(client)">
+                <td>{{ i + 1 }}</td>
+                <td>{{ client.name }}</td>
+                <td>{{ client.lastName }}</td>
+                <td>{{ client.address }}</td>
+                <td>{{ client.phoneNumber }}</td>
+                <td> <button class="btn btn-primary btn-sm me-2">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-danger btn-sm" >
+                    <i class="bi bi-trash" (click)="deleteClient(client.id)" ></i>
+                </button></td>
+            </tr>
+            
+        </tbody>
+    </table>
+</div>
