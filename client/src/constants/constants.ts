@@ -38,9 +38,6 @@ export enum DisplayConstants {
   /** @constant display_text_cancel_prompt */
   CancelPrompt = "Are you sure you want to cancel this request?",
 
-  /** @constant display_text_delete_profile_prompt */
-  DeleteProfile = "Are you sure you want to delete your profile?",
-
   /** @constant display_text_yes */
   Yes = "Yes",
 
@@ -103,4 +100,7 @@ export enum DisplayConstants {
 
   /** @constant display_text_contact */
   Contact = "Contact",
+
+  /** @constant display_text_delete_profile */
+  DeleteProfile = "Are you sure you want to delete your profile?",
 }

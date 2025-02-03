@@ -22,7 +22,7 @@ export class HistoryComponent implements OnInit {
 
   async getRequests() {
     try {
-      const response = await this.requestService.getbookRequestByClient().toPromise();
+      const response = await this.requestService.getBookRequestsByClient().toPromise();
       if (response) {
         this.requests = response;
       }
