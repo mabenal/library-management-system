@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuardService] },
   { path: 'account', component: AccountComponent , canActivate: [AuthGuardService]},
   { path: 'book/:id', component: BookDetailsComponent , canActivate: [AuthGuardService]},
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService], data: { roles: ['admin', 'librarian'] } },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
 ];

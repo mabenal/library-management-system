@@ -1,61 +1,63 @@
-<div class="account-details">
-    <h2>User Account Details</h2>
-    <div class="information">
-        <div class="left-side">
-            <i class="bi bi-person-fill" style="font-size: 9em; display: flex;"></i>
+<div class="account">
+    <div class="account-details">
+        <h2>User Account Details</h2>
+        <div class="information">
+            <div class="left-side">
+                <i class="bi bi-person-fill" style="font-size: 9em; display: flex;"></i>
+            </div>
+            <div class="right-side">
+                <div class="account-info">
+                    <label for="username">Username:</label>
+                    <span id="username">{{ user?.userName }}</span>
+                </div>
+
+                <div class="account-info">
+                    <label for="firstName">First Name:</label>
+                    <span id="firstName">{{ user?.name }}</span>
+                </div>
+
+                <div class="account-info">
+                    <label for="lastName">Last Name:</label>
+                    <span id="lastName">{{ user?.lastName }}</span>
+                </div>
+
+                <div class="account-info">
+                    <label for="role">Address:</label>
+                    <span id="role">{{ user?.address }}</span>
+                </div>
+
+                <div class="account-info">
+                    <label for="email">Email:</label>
+                    <span id="email">{{ user?.email }}</span>
+                </div>
+
+                <div class="account-info">
+                    <label for="phone">Phone:</label>
+                    <span id="phone">{{ user?.phoneNumber }}</span>
+                </div>
+            </div>
         </div>
-        <div class="right-side">
-            <div class="account-info">
-                <label for="username">Username:</label>
-                <span id="username">{{ user?.userName }}</span>
-            </div>
-
-            <div class="account-info">
-                <label for="firstName">First Name:</label>
-                <span id="firstName">{{ user?.name }}</span>
-            </div>
-
-            <div class="account-info">
-                <label for="lastName">Last Name:</label>
-                <span id="lastName">{{ user?.lastName }}</span>
-            </div>
-
-            <div class="account-info">
-                <label for="role">Address:</label>
-                <span id="role">{{ user?.address }}</span>
-            </div>
-
-            <div class="account-info">
-                <label for="email">Email:</label>
-                <span id="email">{{ user?.email }}</span>
-            </div>
-
-            <div class="account-info">
-                <label for="phone">Phone:</label>
-                <span id="phone">{{ user?.phoneNumber }}</span>
-            </div>
+        <div class="button-group">
+            <button (click)="updateProfile()" class="update-button">Update Profile</button>
+            <button (click)="changePassword()" class="update-button">Change Password </button>
+            <button (click)="deleteProfile()" class="delete-button">Delete Profile</button>
         </div>
     </div>
-    <div class="button-group">
-        <button (click)="updateProfile()" class="update-button">Update Profile</button>
-        <button (click)="changePassword()" class="update-button">Change Password </button>
-        <button (click)="deleteProfile()" class="delete-button">Delete Profile</button>
-    </div>
-</div>
 
-<div *ngIf="showPopup" class="cancel-popup">
-    <div class="popup-content">
-        <div class="popup-header">
-            <span class="close" (click)="closePopup()">&times;</span>
-        </div>
-        <div class="popup-body">
-            <p>{{ displayConstants.DeleteProfile }}</p>
-        </div>
-        <div class="popup-footer">
-            <button type="button" class="btn btn-danger" style="width: 140px;" (click)="confirmDeleteProfile()">{{
-                displayConstants.Yes }}</button>
-            <button type="button" class="btn btn-secondary" style="width: 140px;" (click)="closePopup()">{{
-                displayConstants.No }}</button>
+    <div *ngIf="showPopup" class="cancel-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <span class="close" (click)="closePopup()">&times;</span>
+            </div>
+            <div class="popup-body">
+                <p>{{ displayConstants.DeleteProfile }}</p>
+            </div>
+            <div class="popup-footer">
+                <button type="button" class="btn btn-danger" style="width: 140px;" (click)="confirmDeleteProfile()">{{
+                    displayConstants.Yes }}</button>
+                <button type="button" class="btn btn-secondary" style="width: 140px;" (click)="closePopup()">{{
+                    displayConstants.No }}</button>
+            </div>
         </div>
     </div>
 </div>

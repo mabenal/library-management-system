@@ -27,7 +27,13 @@ export class LoginComponent {
       const user = await this.authService.login(this.username, this.password);
       this.store.dispatch(new SetUser(user.username ?? '', user.userRoles ?? [], user.userID ?? ''));
       this.authService.setToken(user.token ?? '');
-      this.router.navigate(['/books']);
+
+      if (user.userRoles?.includes("admin") || user.userRoles?.includes("librarian")) {
+        this.router.navigate(['/dashboard']);
+        return;
+      } else {
+        this.router.navigate(['/books']);
+      }
     } catch (error) {
       this.errorMessage = 'Invalid username or password.';
     }

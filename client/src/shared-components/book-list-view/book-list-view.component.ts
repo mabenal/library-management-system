@@ -8,6 +8,7 @@ import { BookDto } from 'auto/autolmsclient-abstractions';
   styleUrls: ['./book-list-view.component.less']
 })
 export class BookListViewComponent implements OnInit {
+  @Input() heading: string = '';
   @Input() books: BookDto[] = [];
   @Input() displayConstants: any;
   @Input() enablePagination: boolean = true;
@@ -21,8 +22,13 @@ export class BookListViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onShowBookDetails(book: BookDto) {
-    this.router.navigate(['/book', book.id]);
+  onShowBookDetails(book: BookDto, event: Event) {
+    event.stopPropagation();
+    this.showBookDetails.emit(book);
+  }
+
+  onNavigatetoBookDetails(book: BookDto) {
+    this.router.navigate([`/book/${book.id}`]);
   }
 
   get paginatedBooks(): BookDto[] {
