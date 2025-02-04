@@ -1,5 +1,7 @@
+<h3 class="heading">🔮{{heading}}</h3>
+<p class="label">Browse through our extensive collection of books and find your next read!</p>
 <div class="book-list">
-  <div class="book-item" *ngFor="let book of paginatedBooks; let i = index" (click)="onShowBookDetails(book)">
+  <div class="book-item" *ngFor="let book of paginatedBooks; let i = index" (click)="onNavigatetoBookDetails(book)">
     <div class="book-left">
       <img src={{book.thumbnail}} alt="Book Image"/>
     </div>
@@ -12,7 +14,7 @@
         <span>{{ book.pageCount }} Pages</span>
       </div>
       <div>
-        <button type="button" class="btn btn-dark">{{ displayConstants.ShowBookDetails }}</button>
+        <button type="button" class="btn btn-dark" (click)="onShowBookDetails(book, $event)">{{ displayConstants.ShowBookDetails }}</button>
       </div>
     </div>
   </div>

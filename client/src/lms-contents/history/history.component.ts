@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { RequestService } from 'src/services/request.service';
 import { BookRequestDto } from 'auto/autolmsclient-abstractions';
 import { DisplayConstants } from 'src/constants/constants';
@@ -14,7 +14,7 @@ export class HistoryComponent implements OnInit {
   selectedRequest: BookRequestDto | null = null;
   displayConstants = DisplayConstants;
 
-  constructor(private requestService: RequestService) { }
+  constructor(@Inject('IClient') private requestService: RequestService) { }
 
   ngOnInit(): void {
     this.getRequests();
@@ -22,7 +22,7 @@ export class HistoryComponent implements OnInit {
 
   async getRequests() {
     try {
-      const response = await this.requestService.getbookRequestByClient().toPromise();
+      const response = await this.requestService.getBookRequestsByClient().toPromise();
       if (response) {
         this.requests = response;
       }

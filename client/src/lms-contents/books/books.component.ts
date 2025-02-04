@@ -14,7 +14,7 @@ export class BooksComponent implements OnInit {
   displayConstants: typeof DisplayConstants = DisplayConstants;
   books: BookDto[] = [];
   filteredBooks: BookDto[] = [];
-  pickOfTheWeekBooks: BookDto[] = [];
+  latestBooks: BookDto[] = [];
   filterCategory: string | null = null;
 
   constructor(private bookService: BooksService) {}
@@ -23,12 +23,11 @@ export class BooksComponent implements OnInit {
     this.fetchBooks();
   }
 
-  // Fetches the list of books from the service
   async fetchBooks() {
     try {
       this.books = await this.bookService.books().toPromise();
       this.filteredBooks = this.books;
-      this.pickOfTheWeekBooks = this.getPickOfTheWeekBooks();
+      this.latestBooks = this.getlatestBooks();
     } catch (error) {
       console.error('Error fetching books:', error);
     }
@@ -39,19 +38,17 @@ export class BooksComponent implements OnInit {
     this.filterCategory = category;
   }
 
-  openModal(book: BookDto) {
-    if (book) {
-      this.selectedBook = book;
-      this.showModal = true;
-    }
+  showBookDetailsModal(book: BookDto) {
+    this.selectedBook = book;
+    this.showModal = true;
   }
 
-  closeModal() {
+  closeBookDetailsModal() {
+    this.selectedBook = null;
     this.showModal = false;
   }
 
-  // Returns the last three books from the list
-  getPickOfTheWeekBooks(): BookDto[] {
-    return this.books.slice(-3).reverse();
+  getlatestBooks(): BookDto[] {
+    return this.books.slice(-12).reverse();
   }
 }

@@ -10,7 +10,7 @@ export class RequestService {
         return this.client.addNewRequest(bookRequest);
     }
 
-    getbookRequestByClient(): Observable<any> {
+    getBookRequestsByClient(): Observable<any> { // Corrected method name
         return this.client.getBookRequestsByClient();
     }
 
@@ -26,7 +26,7 @@ export class RequestService {
         return this.client.overdueRequest(query);
     }
 
-    getAllbookRequests(): Observable<any> {
+    getAllBookRequests(): Observable<any> {
         return this.client.getAllBookRequests();
     }
 }

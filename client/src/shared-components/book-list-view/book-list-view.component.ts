@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BookDto } from 'auto/autolmsclient-abstractions';
 
 @Component({
@@ -7,21 +8,27 @@ import { BookDto } from 'auto/autolmsclient-abstractions';
   styleUrls: ['./book-list-view.component.less']
 })
 export class BookListViewComponent implements OnInit {
+  @Input() heading: string = '';
   @Input() books: BookDto[] = [];
   @Input() displayConstants: any;
-  @Input() enablePagination: boolean = true; // Add this line
+  @Input() enablePagination: boolean = true;
   @Output() showBookDetails = new EventEmitter<BookDto>();
 
   currentPage: number = 1;
   itemsPerPage: number = 15;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  onShowBookDetails(book: BookDto) {
+  onShowBookDetails(book: BookDto, event: Event) {
+    event.stopPropagation();
     this.showBookDetails.emit(book);
+  }
+
+  onNavigatetoBookDetails(book: BookDto) {
+    this.router.navigate([`/book/${book.id}`]);
   }
 
   get paginatedBooks(): BookDto[] {

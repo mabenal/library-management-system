@@ -27,4 +27,7 @@ export class BooksService {
     getClient(id: string): Observable<any> {
         return this.client.getClient(id);
     }
+    getBook(id: string): Observable<any> {
+        return this.client.getBook(id);
+    }
 }

@@ -11,20 +11,39 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 2;
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 0px !important;
+
+  span {
+    background-color: @white-color;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .modal-content {
   background-color: @modal-content-background-color;
-  border-radius: 10px;
-  padding: 20px;
-  width: 720px;
-  max-width: 100%;
+  border-radius: 5px;
+  width: 90%;
+  max-width: 700px;
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   position: relative;
   display: flex;
   flex-direction: column;
+  padding: 20px;
 }
 
 .close {
@@ -36,9 +55,9 @@
 }
 
 .book-image {
-  width: 200px;
+  width: 100%;
   height: auto;
-  max-height: 1080px;
+  max-height: 300px;
   object-fit: cover;
 }
 
@@ -69,8 +88,42 @@ button:disabled {
   display: flex;
   flex-direction: column;
 
-  div {
-    padding: 10px;
+  .image-container {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .details-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 5px;
+  }
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: flex-end;
+  align-items: center;
+
+  button {
+    width: 105px;
+    height: 35px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: @primary-color;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0px !important;
+  }
+
+  .cancel-button {
+    background-color: @danger-color;
   }
 }
 
@@ -83,9 +136,20 @@ button:disabled {
 @media (min-width: 768px) {
   .book-details {
     flex-direction: row;
+
+    .image-container {
+      width: 200px;
+      margin-right: 20px;
+    }
+
+    .details-container {
+      width: calc(100% - 220px);
+    }
   }
 
-  .book-image {
-    margin-right: 20px;
+  .button-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
   }
 }

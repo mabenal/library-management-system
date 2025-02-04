@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef, OnDestroy, HostListener } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectorRef, OnDestroy, HostListener, Inject } from '@angular/core';
 import { BehaviorSubject, Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BookDto, BookRequestDto } from 'auto/autolmsclient-abstractions';
@@ -26,7 +26,7 @@ export class BookDetailsModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   showFullDescription = false;
 
-  constructor(private cdr: ChangeDetectorRef, private requestService: RequestService) { }
+  constructor(private cdr: ChangeDetectorRef, @Inject('IClient')private requestService: RequestService) { }
 
   ngOnInit(): void {
     this.subscription = this.buttonState

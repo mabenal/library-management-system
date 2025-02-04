@@ -1,39 +1,33 @@
 <div class="search-results">
+  <h3 class="heading">Search Results for "{{ searchTerm }}"</h3>
+  <p class="label">{{ searchResults.length }} books found in {{ searchTime }} seconds</p>
+
   <div class="search-results-header">
-    <div class="header-left">
-      <h1>Search Results for "{{ searchTerm }}"</h1>
-      <p>{{ searchResults.length }} books found in {{ searchTime }} seconds</p>
-    </div>
-    <div class="header-right">
-      <label>
+    <div class="search-filters">
+      <label class="exact-match-label">
         <input type="checkbox" (change)="toggleExactMatch($event)">
-        Exact Match
+        <span>Exact<br>Match</span>
       </label>
       <label>
         <select (change)="filterByPageCount($event)">
-          <option value="">Any</option>
-          <option value="0-100">0-100</option>
-          <option value="101-200">101-200</option>
-          <option value="201-300">201-300</option>
-          <option value="301-400">301-400</option>
-          <option value="401+">401+</option>
+          <option *ngFor="let option of pageCountOptions" [value]="option.value">{{ option.label }}</option>
         </select>
       </label>
       <label>
         <select (change)="filterByYear($event)">
-          <option value="">Any</option>
+          <option value="">Any Year</option>
           <option *ngFor="let year of publicationYears" [value]="year">{{ year }}</option>
         </select>
       </label>
       <label>
         Sort By:
         <select (change)="sortResults($event)">
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
+          <option *ngFor="let option of sortOptions" [value]="option.value">{{ option.label }}</option>
         </select>
       </label>
     </div>
   </div>
+  
   <div *ngIf="searchResults.length > 0; else noResults">
     <div *ngFor="let book of paginatedResults">
       <div class="book">

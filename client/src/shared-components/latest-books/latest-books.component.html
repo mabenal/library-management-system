@@ -1,0 +1,8 @@
+<h3 class="heading">🌟New additions to the family</h3>
+<p class="label">Check out our latest additions and discover new books to enjoy!</p>
+<div class="latest-books-container">
+  <div class="book-item" *ngFor="let book of latestBooks" (click)="onShowBookDetails(book)">
+    <div class="book-title">{{ book.title }}</div>
+    <img [src]="book.thumbnail" alt="Book Image" class="book-image">
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="book-details-container">
+    <div class="book-details">
+      <div class="image-container">
+        <img [src]="book.thumbnail" alt="Book Image" class="book-image">
+      </div>
+      <div class="details-container">
+        <h2>{{ book.title }}</h2>
+        <p class="label" ><strong>{{ book.author }}</strong></p>
+        <div class="label">
+          <span>{{ book.category }}</span>
+          <span>{{ book.yearPublished | date }}</span>
+          <span>{{ book.isbn }}</span>
+        </div>
+        <p>
+          <strong>{{ displayConstants.Description }}</strong>
+          <span *ngIf="!showFullDescription">{{ book.description | truncate: 75 }}</span>
+          <span *ngIf="showFullDescription">{{ book.description }}</span>
+          <span *ngIf="book.description && book.description.split(' ').length > 75" (click)="toggleFullDescription()" class="toggle-description">
+            {{ showFullDescription ? 'See Less' : 'See More' }}
+          </span>
+        </p>
+        <div class="button-container">
+          <button (click)="handleButtonClick()" [ngClass]="buttonState">{{ buttonTitle }}</button>
+          <button *ngIf="buttonState === 'Pending'" (click)="handleCancelButtonClick()" class="cancel-button">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="similar-books">
+      <app-book-list-view [books]="similarBooks" [displayConstants]="displayConstants" [enablePagination]="false" [heading]="'Similar Books'"></app-book-list-view>
+    </div>
+  </div>

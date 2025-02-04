@@ -1,4 +1,3 @@
-
 using lms.Abstractions.Data;
 using lms.Abstractions.Mappings;
 using Microsoft.EntityFrameworkCore;
@@ -33,13 +32,10 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT"
-
-
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-
             new OpenApiSecurityScheme
             {
                 Reference= new OpenApiReference
@@ -51,22 +47,27 @@ builder.Services.AddSwaggerGen(c =>
                 Name= JwtBearerDefaults.AuthenticationScheme,
                 In= ParameterLocation.Header,
             },
-             new List<string>()
-
+            new List<string>()
         }
-
-        });
-
+    });
 });
+
+
 
 // Use Singleton for ConfigurationManager
 var configurationManager = lms.Abstractions.ConfigurationManager.GetInstance(builder.Configuration);
 builder.Services.AddSingleton(configurationManager);
-
 builder.Services.AddDbContext<LmsDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LmsDbConnectionString"),
-        b => b.MigrationsAssembly("lms-server"));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("LmsDbConnectionString"),
+        sqlOptions => sqlOptions
+            .EnableRetryOnFailure(
+                maxRetryCount: 3,  // Retry 3 times before failing
+                maxRetryDelay: TimeSpan.FromSeconds(10),  // 10 seconds delay between retries
+                errorNumbersToAdd: null) // Optionally add specific error numbers to retry on
+            .MigrationsAssembly("lms-server")
+    );
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
@@ -109,13 +110,16 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 
-
-
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
-// Execute BookImportService on startup
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<LmsDbContext>();
+    dbContext.Database.Migrate();
+}
+
 using (var scope = app.Services.CreateScope())
 {
     var bookImportService = scope.ServiceProvider.GetRequiredService<BookImportService>();
@@ -123,7 +127,7 @@ using (var scope = app.Services.CreateScope())
     await bookImportService.ImportBooksAsync(filePath);
 }
 
-//add the user roles to the DB and seed an admin user
+// Add the user roles to the DB and seed an admin user
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
@@ -147,8 +151,7 @@ using (var scope = app.Services.CreateScope())
 
         if (result.Succeeded)
         {
-             await userManager.AddToRoleAsync(user, "admin");
-
+            await userManager.AddToRoleAsync(user, "admin");
         }
     }
 }
@@ -172,4 +175,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
