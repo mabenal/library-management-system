@@ -9,7 +9,10 @@
     "test": "ng test",
     "genConstants": "node generate.constants.js",
     "genOverride": "node override.js",
-    "genClient": "typescriptclientgen generate -i ./swagger.json -n lmsclient"
+    "genClient": "npm run genClientModels && npm run genClientMethods && npm run genImport",
+    "genClientModels": "npx nswag run nswag-models.json",
+    "genClientMethods": "npx nswag run nswag-methods.json",
+    "genImport": "node import.service.js"
   },
   "private": true,
   "dependencies": {
@@ -33,7 +36,6 @@
     "@angular-devkit/build-angular": "^14.2.13",
     "@angular/cli": "~14.2.13",
     "@angular/compiler-cli": "^14.2.0",
-    "@ln/typescriptclientgen": "^1.0.5",
     "@types/jasmine": "~4.0.0",
     "@types/node": "^12.20.55",
     "jasmine-core": "~4.3.0",
@@ -41,6 +43,7 @@
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.0.0"
+    "karma-jasmine-html-reporter": "~2.0.0",
+    "nswag": "^14.2.0"
   }
 }
