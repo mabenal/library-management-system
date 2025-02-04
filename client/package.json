@@ -9,10 +9,7 @@
     "test": "ng test",
     "genConstants": "node generate.constants.js",
     "genOverride": "node override.js",
-    "genClient": "npm run genClientModels && npm run genClientMethods && npm run genImport",
-    "genClientModels": "npx nswag run nswag-models.json",
-    "genClientMethods": "npx nswag run nswag-methods.json",
-    "genImport": "node import.service.js"
+    "genClient": "npx nswag run nswag.json"
   },
   "private": true,
   "dependencies": {

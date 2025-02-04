@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { Client, API_BASE_URL } from 'auto/autolmsclient-module';
+import { Client, API_BASE_URL } from 'auto/autolmsclient-abstractions';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BooksService } from '../services/books.services';
