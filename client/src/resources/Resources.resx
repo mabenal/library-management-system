@@ -171,4 +171,7 @@
   <data name="display_text_delete_profile" xml:space="preserve">
     <value>Are you sure you want to delete your profile?</value>
   </data>
+    <data name="display_text_no_requests" xml:space="preserve">
+    <value>No requests found.</value>
+  </data>
 </root>
