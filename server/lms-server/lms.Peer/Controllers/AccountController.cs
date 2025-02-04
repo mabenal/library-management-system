@@ -176,6 +176,16 @@ namespace lms.Peer.Controllers
 
                 if (result.Succeeded)
                 {
+                    if(assignRoleDto.Role !="Client")
+                    {
+                        var client = await dbContext.Clients.FindAsync(user.Id);
+                        if(client != null)
+                        {
+                            dbContext.Clients.Remove(client);
+                            await dbContext.SaveChangesAsync();
+                        }
+
+                    }
                     return Ok(assignRoleResponse);
                 }
 
