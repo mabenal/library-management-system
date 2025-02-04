@@ -11,9 +11,6 @@ export enum DisplayConstants {
   /** @constant display_text_year_published */
   YearPublished = "Year Published:",
 
-  /** @constant display_no_request_message */
-  NoRequests = "No requests found.",
-
   /** @constant display_text_isbn */
   Isbn = "ISBN:",
 
@@ -106,4 +103,7 @@ export enum DisplayConstants {
 
   /** @constant display_text_delete_profile */
   DeleteProfile = "Are you sure you want to delete your profile?",
+
+  /** @constant display_text_no_requests */
+  NoRequests = "No requests found.",
 }
