@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { IClient, ClientDto } from 'auto/autolmsclient-abstractions';
+import { IClient, ClientDto, BookDto } from 'auto/autolmsclient-abstractions';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -29,5 +29,11 @@ export class BooksService {
     }
     getBook(id: string): Observable<any> {
         return this.client.getBook(id);
+    }
+    removeBook(id: string): Observable<any> {
+        return this.client.removeBook(id);
+    }
+    updateBook(id: string, body: BookDto): Observable<any> {
+        return this.client.updateBook(id, body);
     }
 }

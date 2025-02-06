@@ -1,0 +1,31 @@
+<div class="update-form-container">
+    <div class="update-form">
+      <form (ngSubmit)="updateBook()">
+        <div class="input-group">
+          <label for="title">Title</label>
+          <input class="form-control small-input" type="text" id="title" name="title" [(ngModel)]="book.title" placeholder="Title" required>
+        </div>
+        <div class="input-group">
+          <label for="author">Author</label>
+          <input class="form-control small-input" type="text" id="author" name="author" [(ngModel)]="book.author" placeholder="Author" required>
+        </div>
+        <div class="input-group">
+          <label for="yearPublished">Year Published</label>
+          <input class="form-control small-input" type="text" id="yearPublished" name="yearPublished" [(ngModel)]="book.yearPublished" placeholder="Year Published" required>
+        </div>
+        <div class="input-group">
+          <label for="publisher">Publisher</label>
+          <input class="form-control small-input" type="text" id="publisher" name="publisher" [(ngModel)]="book.publisher" placeholder="Publisher" required>
+        </div>
+        <div class="input-group">
+          <label for="description">Description</label>
+          <textarea class="form-control small-input" id="description" name="description" [(ngModel)]="book.description" placeholder="Description" required></textarea>
+        </div>
+        <div class="input-group">
+          <label for="category">Category</label>
+          <input class="form-control small-input" type="text" id="category" name="category" [(ngModel)]="book.category" placeholder="Category" required>
+        </div>
+        <button type="submit" class="submit-button">Update Book</button>
+      </form>
+    </div>
+  </div>

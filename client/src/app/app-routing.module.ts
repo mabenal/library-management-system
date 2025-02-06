@@ -15,6 +15,8 @@ import { ChangePasswordComponent } from 'src/authentication/change-password/chan
 import { UpdateProfileComponent } from 'src/authentication/update-profile/update-profile.component';
 import { AuthGuardService } from 'src/services/auth-guard.service';
 import { UpdateClientComponent } from 'src/lms-contents/update-client/update-client.component';
+import { AdminBookViewComponent } from '../lms-contents/dashboard/admin-book-view/admin-book-view.component';
+import { UpdateBookComponent } from 'src/lms-contents/dashboard/update-book/update-book.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -30,7 +32,9 @@ const routes: Routes = [
   { path: 'account', component: AccountComponent , canActivate: [AuthGuardService]},
   { path: 'update-client/:id', component: UpdateClientComponent, canActivate: [AuthGuardService] },
   { path: 'book/:id', component: BookDetailsComponent , canActivate: [AuthGuardService]},
+  { path: '/update-book/:id', component: UpdateBookComponent, canActivate: [AuthGuardService] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService], data: { roles: ['admin', 'librarian'] } },
+  { path: 'all-books', component: AdminBookViewComponent, canActivate: [AuthGuardService] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
 ];
