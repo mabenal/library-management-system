@@ -10,14 +10,14 @@ import { TopNavigatorComponent } from '../shared-components/top-navigator/top-na
 import { BookDetailsModalComponent } from '../shared-components//book-details-modal/book-details-modal.component';
 import { BookListViewComponent } from '../shared-components//book-list-view/book-list-view.component';
 import { BookSearchComponent } from '../shared-components/book-search/book-search.component';
-import { PaginationComponent } from '../shared-components/book-list-view/pagination/pagination.component';
+import { PaginationComponent } from '../shared-components/pagination/pagination.component';
 import { CategoryFilterComponent } from '../shared-components/category-filter/category-filter.component';
+import { CancellationPromptComponent } from '../shared-components/cancellation-prompt/cancellation-prompt.component';
 import { TruncatePipe } from '../lms-contents/book-details/truncate.pipe';
 import { SearchResultsOverlayComponent } from '../shared-components/search-results-overlay/search-results-overlay.component';
 import { AccountComponent } from '../lms-contents/account/account.component';
 import { BooksComponent } from '../lms-contents/books/books.component';
 import { DashboardComponent } from '../lms-contents/dashboard/dashboard.component';
-import { InventoryComponent } from '../lms-contents/inventory/inventory.component';
 import { RequestManagementComponent } from '../lms-contents/request-management/request-management.component';
 import { SearchResultsComponent } from '../lms-contents/search-results/search-results.component';
 import { BookDetailsComponent } from 'src/lms-contents/book-details/book-details.component';
@@ -25,7 +25,7 @@ import { UserGroupingComponent } from '../lms-contents/user-grouping/user-groupi
 import { HistoryComponent } from '../lms-contents/history/history.component';
 import { LoginComponent } from '../authentication/login/login.component';
 import { FormsModule } from '@angular/forms';
-import { FooterComponent } from 'src/shared-components/book-list-view/footer/footer.component';
+import { FooterComponent } from 'src/shared-components/footer/footer.component';
 import { CreateAccountComponent } from 'src/authentication/create-account/create-account.component';
 import { ChangePasswordComponent } from 'src/authentication/change-password/change-password.component';
 import { LatestBooksComponent } from 'src/shared-components/latest-books/latest-books.component';
@@ -36,9 +36,12 @@ import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptor } from 'src/interceptors/token.interceptor';
 import { RequestService } from 'src/services/request.service';
 import { AuthGuardService } from 'src/services/auth-guard.service';
+import { UserRoleService } from 'src/services/user-role.service';
+import { BookRequestStateService } from 'src/services/book-request-state.service';
 import { UpdateClientComponent } from 'src/lms-contents/update-client/update-client.component';
 import { AdminBookViewComponent } from '../lms-contents/dashboard/admin-book-view/admin-book-view.component';
 import { UpdateBookComponent} from 'src/lms-contents/dashboard/update-book/update-book.component';
+import { ClientService } from 'src/services/client.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,6 @@ import { UpdateBookComponent} from 'src/lms-contents/dashboard/update-book/updat
     AccountComponent,
     BooksComponent,
     DashboardComponent,
-    InventoryComponent,
     RequestManagementComponent,
     SearchResultsComponent,
     BookDetailsComponent,
@@ -69,8 +71,8 @@ import { UpdateBookComponent} from 'src/lms-contents/dashboard/update-book/updat
     LatestBooksComponent,
     UpdateClientComponent,
     AdminBookViewComponent,
-    UpdateBookComponent
-    
+    UpdateBookComponent,
+    CancellationPromptComponent
   ],
   imports: [
     NgxsModule.forRoot([UserState]),
@@ -85,7 +87,10 @@ import { UpdateBookComponent} from 'src/lms-contents/dashboard/update-book/updat
     AuthGuardService,
     RequestService,
     Client,
-    CookieService ,
+    CookieService,
+    UserRoleService,
+    ClientService,
+    BookRequestStateService,
     { provide: 'IClient', useClass: Client },
     { provide: API_BASE_URL, useValue: 'https://localhost:7025' },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor , multi:true}

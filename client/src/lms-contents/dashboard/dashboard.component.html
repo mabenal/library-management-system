@@ -1,46 +1,14 @@
 <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-3">
-        <div class="card text-white bg-primary mb-3">
-          <div class="card-header">Books</div>
-          <div class="card-body">
-            <h5 class="card-title">Manage Books</h5>
-            <p class="card-text">View and manage all books.</p>
-            <a routerLink="/all-books" class="btn btn-light">Go to Books</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-success mb-3">
-          <div class="card-header">Clients</div>
-          <div class="card-body">
-            <h5 class="card-title">Manage Clients</h5>
-            <p class="card-text">View and manage all clients.</p>
-            <a href="/clients" class="btn btn-light">Go to Clients</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-warning mb-3">
-          <div class="card-header">Book Requests</div>
-          <div class="card-body">
-            <h5 class="card-title">Manage Book Requests</h5>
-            <p class="card-text">View and manage all book requests.</p>
-            <a href="/book-requests" class="btn btn-light">Go to Book Requests</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card text-white bg-danger mb-3">
-          <div class="card-header">Other</div>
-          <div class="card-body">
-            <h5 class="card-title">Other Management</h5>
-            <p class="card-text">Additional management options.</p>
-            <a href="/other" class="btn btn-light">Go to Other</a>
-          </div>
+  <div class="row">
+    <div class="col-md-3" *ngFor="let card of cards">
+      <div class="card text-white mb-3" [ngClass]="card.buttonClass">
+        <div class="card-header">{{ card.title }}</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ card.subTitle }}</h5>
+          <p class="card-text">{{ card.text }}</p>
+          <a [routerLink]="[card.buttonLink]" class="btn btn-light">{{ card.buttonText }}</a>
         </div>
       </div>
     </div>
-    <app-user-grouping></app-user-grouping>
-    <app-admin-book-view [books]="books"></app-admin-book-view>
   </div>
+</div>

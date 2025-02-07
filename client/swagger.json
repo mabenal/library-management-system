@@ -543,6 +543,55 @@
         }
       }
     },
+    "/api/BookRequest/CancelRequestByClient/{clientId}/{bookId}": {
+      "put": {
+        "tags": [
+          "BookRequest"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRequestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/BookRequest/ApproveRequest/{clientId}/{bookId}": {
       "put": {
         "tags": [
@@ -1194,7 +1243,6 @@
           "author",
           "category",
           "description",
-          "id",
           "isbn",
           "numberOfCopies",
           "pageCount",

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BooksService } from 'src/services/books.services';
-import { BookDto } from 'auto/autolmsclient-abstractions';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,24 +7,43 @@ import { BookDto } from 'auto/autolmsclient-abstractions';
 })
 export class DashboardComponent implements OnInit {
 
-  books: BookDto[] = [];
+  cards = [
+    {
+      title: 'Books',
+      subTitle: 'Manage Books',
+      text: 'View and manage all books.',
+      buttonText: 'Go to Books',
+      buttonLink: '/all-books',
+      buttonClass: 'bg-primary'
+    },
+    {
+      title: 'Clients',
+      subTitle: 'Manage Clients',
+      text: 'View and manage all clients.',
+      buttonText: 'Go to Clients',
+      buttonLink: '/clients',
+      buttonClass: 'bg-success'
+    },
+    {
+      title: 'Book Requests',
+      subTitle: 'Manage Book Requests',
+      text: 'View and manage all book requests.',
+      buttonText: 'Go to Book Requests',
+      buttonLink: '/request-management',
+      buttonClass: 'bg-warning'
+    },
+    {
+      title: 'Other',
+      subTitle: 'Other Management',
+      text: 'Additional management options.',
+      buttonText: 'Go to Other',
+      buttonLink: '/other',
+      buttonClass: 'bg-danger'
+    }
+  ];
 
-  constructor(private booksService: BooksService) { }
+  constructor() { }
 
-  ngOnInit(): void {
-    this.fetchBooks();
-  }
-
-  fetchBooks(): void {
-    this.booksService.books().subscribe(
-      (books) => {
-        this.books = books;
-        console.log('Fetched books:', this.books); // Log the fetched books to the console
-      },
-      (error) => {
-        console.error('Error fetching books:', error);
-      }
-    );
-  }
+  ngOnInit(): void { }
 
 }

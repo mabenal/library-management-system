@@ -23,13 +23,10 @@ export class CategoryFilterComponent implements OnInit {
   }
 
   onToggleCategory(category: string) {
-    // Clear the previous filter
     this.selectedCategories = [];
 
-    // Add the newly selected category
     this.selectedCategories.push(category);
 
-    // Filter the books
     this.filterBooks();
   }
 

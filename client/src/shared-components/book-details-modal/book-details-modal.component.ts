@@ -62,12 +62,17 @@ export class BookDetailsModalComponent implements OnInit, OnDestroy {
   }
 
   handleButtonClick() {
+    if (!this.book.id) {
+      console.error('Book ID is undefined');
+      return;
+    }
+  
     this.buttonState.next(ButtonState.Pending);
-
+  
     const bookRequest: BookRequestDto = {
       bookId: this.book.id
     };
-
+  
     this.requestService.addNewRequest(bookRequest).subscribe(
       response => {
         this.buttonState.next(ButtonState.Approved);

@@ -33,8 +33,8 @@ export class BookSearchComponent implements OnInit {
   }
 
   onSubmit(event: Event, term: string): void {
-    event.preventDefault(); // Prevent the default form submission behavior
-    this.searchTerm = term; // Ensure the search term is set
+    event.preventDefault();
+    this.searchTerm = term;
     this.search(this.searchTerm);
     this.showOverlay = false;
     this.router.navigate(['/search-results'], { queryParams: { q: this.searchTerm } });

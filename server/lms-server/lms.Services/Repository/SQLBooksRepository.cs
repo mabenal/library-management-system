@@ -78,7 +78,7 @@ namespace lms.Services.Repository
                 return null;
             }
 
-                bookToUpdate.Id = book.Id;
+                bookToUpdate.Id = id;
                 bookToUpdate.Title = book.Title;
                 bookToUpdate.Author = book.Author;
                 bookToUpdate.Description = book.Description;

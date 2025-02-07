@@ -9,7 +9,6 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
-  private userRole: string | null = null;
   private tokenKey = 'authToken';
 
 
@@ -61,7 +60,6 @@ export class AuthService {
     })
   }
 
-
   getUserProfile(id: string): Promise<ApplicationUser> {
     return this.client.getProfile(id).toPromise().then((response: ApplicationUser | undefined) => {
       if (response !== undefined) {
@@ -77,7 +75,6 @@ export class AuthService {
     this.client.deleteUser(id).subscribe((response: AccountActionResponseDto | undefined) => {
       if (response?.isSuccessful) {
         this.loggedIn.next(false);
-        this.userRole = null;
         this.router.navigate(['/login']);
       }
       else {
@@ -90,17 +87,13 @@ export class AuthService {
     return this.cookieService.check(this.tokenKey);
   }
 
-
-  getUserRole(): string | null {
-    return this.userRole;
-  }
-
   setToken(token: string): void {
     this.cookieService.set(this.tokenKey, token, {
       secure: true,
       sameSite: 'Strict',
     });
   }
+
   getToken(): string {
     return this.cookieService.get(this.tokenKey);
   }
@@ -111,7 +104,6 @@ export class AuthService {
 
   logout() {
     this.loggedIn.next(false);
-    this.userRole = null;
     this.router.navigate(['/login']);
   }
 }

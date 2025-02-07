@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientDto } from 'auto/autolmsclient-abstractions';
-import { BooksService } from 'src/services/books.services';
+import { ClientService } from 'src/services/client.service';
 
 @Component({
   selector: 'app-update-client',
@@ -21,7 +21,7 @@ export class UpdateClientComponent implements OnInit {
   errorMessage: string = '';
 
   constructor(
-    private clientService: BooksService,
+    private clientService: ClientService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -45,7 +45,7 @@ export class UpdateClientComponent implements OnInit {
     this.clientService.updateClient(this.client.id, this.client).subscribe(
       updatedClient => {
         alert('Client updated successfully');
-        this.router.navigate(['/dashboard']); // Navigate to the clients list or another appropriate page
+        this.router.navigate(['/dashboard']);
       },
       error => {
         console.error('Error updating client:', error);

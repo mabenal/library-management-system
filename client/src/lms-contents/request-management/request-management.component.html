@@ -1,1 +1,62 @@
-<p>request-management works!</p>
+<div class="main-container">
+    <div class="request-list">
+        <div class="heading-section">
+            <h2 class="heading">Book Requests</h2>
+            <button class="btn btn-success add-request-btn">
+                Add new request <i class="bi bi-plus-circle fs-2"></i>
+            </button>
+        </div>
+        <div class="table-controls">
+            <input type="text" class="form-control mb-3 search-input" placeholder="Search for requests..." (input)="filterRequests($event)">
+            <div class="pagination-controls">
+                <span class="btn btn-secondary first" (click)="changePage(1)" aria-label="First Page">
+                    &laquo;&laquo; First
+                </span>
+                <span class="btn btn-secondary" (click)="changePage(currentPage - 1)" aria-label="Previous Page">
+                    &laquo; Prev
+                </span>
+                <input type="input" class="current-page-input" [(ngModel)]="currentPage" (keydown.enter)="changePage(currentPage)">
+                <span class="total-pages">{{ totalPages }}</span>
+                <span class="btn btn-secondary" (click)="changePage(currentPage + 1)" aria-label="Next Page">
+                    Next &raquo;
+                </span>
+                <span class="btn btn-secondary last" (click)="changePage(totalPages)" aria-label="Last Page">
+                    Last &raquo;&raquo;
+                </span>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th (click)="sortRequests('clientId')">Client ID</th>
+                        <th (click)="sortRequests('bookId')">Book ID</th>
+                        <th (click)="sortRequests('title')">Title</th>
+                        <th (click)="sortRequests('status')">Status</th>
+                        <th (click)="sortRequests('dateRequested')">Date Requested</th>
+                        <th (click)="sortRequests('acceptedReturnDate')">Accepted Return Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let request of paginatedRequests; let i = index" [class.table-active]="request === selectedRequest" (click)="selectRequest(request)">
+                        <td>{{ request.clientId }}</td>
+                        <td>{{ request.bookId }}</td>
+                        <td>{{ request.title }}</td>
+                        <td>{{ request.status }}</td>
+                        <td>{{ request.dateRequested | date }}</td>
+                        <td>{{ request.acceptedReturnDate | date }}</td>
+                        <td class="actions">
+                            <button *ngIf="request.status === 'Pending'" class="btn btn-primary btn-sm me-2" (click)="approveRequest(request.clientId, request.bookId)">
+                                Approve
+                            </button>
+                            <button class="btn btn-danger btn-sm" (click)="deleteRequest(request.clientId, request.bookId)">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

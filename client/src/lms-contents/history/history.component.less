@@ -1,124 +1,126 @@
 @import '../../styles.less';
 
+.history-container {
+  width: 1145px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .request-list h3 {
-    text-align: center;
-    color: #333;
+  text-align: left;
+  color: #333;
 }
 
 .request-list-items {
-    width: 80%;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
+  .request-items {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: @white-color;
+    height: 100px;
+    border-radius: 5px !important;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out;
 
-    .request-items {
-        display: flex;
-        margin-bottom: 20px;
-        background-color: @white-color;
-        height: 80px;
-        border-radius: 5px !important;
-        cursor: pointer;
-        transition: box-shadow 0.3s ease-in-out;
-
-        &:hover {
-            box-shadow: 0 0 10px #4285f4;
-        }
+    &:hover {
+      box-shadow: 0 0 10px #4285f4;
     }
+  }
 }
 
 .index {
-    width: 30px;
-    align-content: center;
-    padding: 8px;
+  width: 30px;
+  align-content: center;
+  padding: 8px;
 }
 
 .request-item {
-    flex: 3;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-left: 20px;
-    overflow: hidden;
-    line-height: 27px;
-    letter-spacing: .2px;
-    word-break: break-word;
-    align-content: center;
-    display: grid;
+  flex: 3;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 20px;
+  overflow: hidden;
+  line-height: 27px;
+  letter-spacing: .2px;
+  word-break: break-word;
+  align-content: center;
+  display: grid;
 }
 
-.action-buttons{
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  width: 120px;
+}
+
+.request-header {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.cancel-popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.no-requests {
+  display: flex;
+  text-align: center;
+  font-style: italic;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #333;
+}
+
+.popup-content {
+  background-color: @modal-content-background-color;
+  border-radius: 10px;
+  padding-left: 15px;
+  padding-bottom: 15px;
+  padding-right: 15px;
+  width: 400px;
+  height: 185px;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: grid;
+  gap: 15px;
+
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .close {
+      cursor: pointer;
+      font-size: 20px;
+      color: #333;
+      margin-left: auto;
+    }
+  }
+
+  .popup-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+  }
+
+  .popup-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    width: 120px;
-}
-
-.request-header {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-}
-
-.cancel-popup {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); //Semi-transparent background 
-    z-index: 2;
-}
-
-.no-requests{
-    display: flex;
-    text-align: center;
-    font-style: italic;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    color: #333;
-}
-.popup-content {
-    background-color: @modal-content-background-color;
-    border-radius: 10px;
-    padding-left: 15px;
-    padding-bottom: 15px;
-    padding-right: 15px;
-    width: 400px;
-    height: 185px;
-    overflow-y: auto;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    display: grid;
-    gap: 15px;
-
-    .popup-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .close {
-            cursor: pointer;
-            font-size: 20px;
-            color: #333;
-            margin-left: auto;
-        }
-    }
-    
-
-    .popup-body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #333;
-    }
-
-    .popup-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-    }
+  }
 }

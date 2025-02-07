@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountComponent } from '../lms-contents/account/account.component';
 import { BooksComponent } from '../lms-contents/books/books.component';
 import { DashboardComponent } from '../lms-contents/dashboard/dashboard.component';
-import { InventoryComponent } from '../lms-contents/inventory/inventory.component';
 import { RequestManagementComponent } from '../lms-contents/request-management/request-management.component';
 import { SearchResultsComponent } from '../lms-contents/search-results/search-results.component';
 import { BookDetailsComponent } from '../lms-contents/book-details/book-details.component';
@@ -24,19 +23,18 @@ const routes: Routes = [
   { path: 'create-account', component: CreateAccountComponent},
   { path: 'update-profile', component: UpdateProfileComponent, canActivate: [AuthGuardService] },
   { path: 'search-results', component: SearchResultsComponent },
-  { path: 'books', component: BooksComponent, canActivate: [AuthGuardService] },
+  { path: 'books', component: BooksComponent},
   { path: 'clients', component: UserGroupingComponent, canActivate: [AuthGuardService] },
-  { path: 'inventory', component: InventoryComponent, canActivate: [AuthGuardService] },
   { path: 'request-management', component: RequestManagementComponent, canActivate: [AuthGuardService] },
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuardService] },
   { path: 'account', component: AccountComponent , canActivate: [AuthGuardService]},
   { path: 'update-client/:id', component: UpdateClientComponent, canActivate: [AuthGuardService] },
   { path: 'book/:id', component: BookDetailsComponent , canActivate: [AuthGuardService]},
-  { path: '/update-book/:id', component: UpdateBookComponent, canActivate: [AuthGuardService] },
+  { path: 'update-book/:id', component: UpdateBookComponent, canActivate: [AuthGuardService] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService], data: { roles: ['admin', 'librarian'] } },
   { path: 'all-books', component: AdminBookViewComponent, canActivate: [AuthGuardService] },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' }
+  { path: '', redirectTo: '/books', pathMatch: 'full' },
+  { path: '**', redirectTo: '/books' }
 ];
 
 @NgModule({
