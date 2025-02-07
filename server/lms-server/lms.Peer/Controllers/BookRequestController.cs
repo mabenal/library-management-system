@@ -75,6 +75,7 @@ namespace lms.Peer.Controllers
             }
         }
 
+        [Authorize (Roles = "client")]
         [HttpGet("GetBookRequestsByClient")]
         public async Task<ActionResult<BookRequestDto>> GetBookRequestsByClient()
         {
@@ -95,6 +96,7 @@ namespace lms.Peer.Controllers
             }
         }
 
+        [Authorize (Roles = "client")]
         [HttpPut("CancelRequest/{bookId:Guid}")]
         public async Task<ActionResult<BookRequestDto>> CancelRequest([FromRoute] Guid bookId)
         {
@@ -119,7 +121,26 @@ namespace lms.Peer.Controllers
             }
         }
 
-        [Authorize (Roles = "librerian")]
+        [Authorize (Roles = "librarian")]
+        [HttpPut("CancelRequestByClient/{clientId:Guid}/{bookId:Guid}")]
+        public async Task<ActionResult<BookRequestDto>> CancelRequestByClient([FromRoute] Guid bookId, [FromRoute] Guid clientId)
+        {
+            try
+            {
+                var bookRequest = await bookRequestRepository.CancelRequest(clientId, bookId);
+                return Ok(mapper.Map<BookRequestDto>(bookRequest));
+            }
+            catch (GlobalException e)
+            {
+                return StatusCode(403, e.Message);
+            }
+            catch (Exception e)
+            {
+                throw new GlobalException($"in BookRequestController: {e}");
+            }
+        }
+
+        [Authorize (Roles = "librarian")]
         [HttpPut("ApproveRequest/{clientId:Guid}/{bookId:Guid}")]
         public async Task<ActionResult<BookRequestDto>> ApproveRequest([FromRoute] Guid clientId, [FromRoute] Guid bookId)
         {
@@ -139,6 +160,7 @@ namespace lms.Peer.Controllers
             }
         }
 
+        [Authorize (Roles = "client")]
         [HttpPut("ReturnRequest/{bookId:Guid}")]
         public async Task<ActionResult<BookRequestDto>> ReturnRequest([FromRoute] Guid bookId)
         {

@@ -1,31 +1,55 @@
-<div class="update-form-container">
-    <div class="update-form">
-      <form (ngSubmit)="updateBook()">
-        <div class="input-group">
-          <label for="title">Title</label>
-          <input class="form-control small-input" type="text" id="title" name="title" [(ngModel)]="book.title" placeholder="Title" required>
-        </div>
-        <div class="input-group">
-          <label for="author">Author</label>
-          <input class="form-control small-input" type="text" id="author" name="author" [(ngModel)]="book.author" placeholder="Author" required>
-        </div>
-        <div class="input-group">
-          <label for="yearPublished">Year Published</label>
-          <input class="form-control small-input" type="text" id="yearPublished" name="yearPublished" [(ngModel)]="book.yearPublished" placeholder="Year Published" required>
-        </div>
-        <div class="input-group">
-          <label for="publisher">Publisher</label>
-          <input class="form-control small-input" type="text" id="publisher" name="publisher" [(ngModel)]="book.publisher" placeholder="Publisher" required>
-        </div>
-        <div class="input-group">
-          <label for="description">Description</label>
-          <textarea class="form-control small-input" id="description" name="description" [(ngModel)]="book.description" placeholder="Description" required></textarea>
-        </div>
-        <div class="input-group">
-          <label for="category">Category</label>
-          <input class="form-control small-input" type="text" id="category" name="category" [(ngModel)]="book.category" placeholder="Category" required>
-        </div>
-        <button type="submit" class="submit-button">Update Book</button>
-      </form>
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="update-form-container">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <div class="update-form">
+        <form (ngSubmit)="saveBook()">
+          <div class="input-group">
+            <label for="title">Title</label>
+            <input class="form-control small-input" type="text" id="title" name="title" [(ngModel)]="book.title" placeholder="Title" required>
+          </div>
+          <div class="input-group">
+            <label for="author">Author</label>
+            <input class="form-control small-input" type="text" id="author" name="author" [(ngModel)]="book.author" placeholder="Author" required>
+          </div>
+          <div class="input-group">
+            <label for="yearPublished">Year Published</label>
+            <input class="form-control small-input" type="text" id="yearPublished" name="yearPublished" [(ngModel)]="book.yearPublished" placeholder="Year Published" required>
+          </div>
+          <div class="input-group">
+            <label for="publisher">Publisher</label>
+            <input class="form-control small-input" type="text" id="publisher" name="publisher" [(ngModel)]="book.publisher" placeholder="Publisher" required>
+          </div>
+          <div class="input-group">
+            <label for="description">Description</label>
+            <textarea class="form-control small-input" id="description" name="description" [(ngModel)]="book.description" placeholder="Description" required></textarea>
+          </div>
+          <div class="input-group">
+            <label for="category">Category</label>
+            <input class="form-control small-input" type="text" id="category" name="category" [(ngModel)]="book.category" placeholder="Category" required>
+          </div>
+          <div class="input-group">
+            <label for="isbn">ISBN</label>
+            <input class="form-control small-input" type="text" id="isbn" name="isbn" [(ngModel)]="book.isbn" placeholder="ISBN" [disabled]="!isAddMode" required>
+          </div>
+          <div class="input-group">
+            <label for="numberOfCopies">Thumbnail Link</label>
+            <input class="form-control small-input" type="text" id="numberOfCopies" name="numberOfCopies" [(ngModel)]="book.thumbnail" placeholder="Number of Copies" [disabled]="!isAddMode" required>
+          </div>
+          <div class="input-group flex-container">
+            <div class="flex-item">
+              <label for="numberOfCopies">Number of Copies</label>
+              <input class="form-control small-input" type="number" id="numberOfCopies" name="numberOfCopies" [(ngModel)]="book.numberOfCopies" placeholder="Number of Copies" [disabled]="!isAddMode" required>
+            </div>
+            <div class="flex-item">
+              <label for="pageCount">Page Count</label>
+              <input class="form-control small-input" type="number" id="pageCount" name="pageCount" [(ngModel)]="book.pageCount" placeholder="Page Count" [disabled]="!isAddMode" required>
+            </div>
+          </div>
+          <button type="submit" class="submit-button">{{ isAddMode ? 'Add Book' : 'Update Book' }}</button>
+        </form>
+        <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+      </div>
     </div>
   </div>
+</div>

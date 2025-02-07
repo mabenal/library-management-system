@@ -154,6 +154,34 @@ namespace lms.Tests.ControllerTests
         }
 
         [Fact]
+        public async Task AddBook_ReturnsBadRequest_WhenModelStateIsInvalid()
+        {
+            // Arrange
+            _controller.ModelState.AddModelError("Title", "Required");
+            var bookDto = new BookDto();
+
+            // Act
+            var result = await _controller.AddBook(bookDto);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<BookDto>>(result);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
+        }
+
+        [Fact]
+        public async Task AddBook_ThrowsGlobalException_WhenExceptionIsThrown()
+        {
+            // Arrange
+            var bookDto = new BookDto();
+            _booksRepositoryMock.Setup(repo => repo.AddNewBook(It.IsAny<Book>())).ThrowsAsync(new Exception("Test exception"));
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<GlobalException>(() => _controller.AddBook(bookDto));
+            Assert.Contains("in booksController", exception.Message);
+        }
+
+        [Fact]
         public async Task UpdateBook_ReturnsOkResult_WithBookDto()
         {
             // Arrange
@@ -201,6 +229,23 @@ namespace lms.Tests.ControllerTests
 
             // Act & Assert
             await Assert.ThrowsAsync<GlobalException>(() => _controller.UpdateBook(bookId, bookDto));
+        }
+
+        [Fact]
+        public async Task UpdateBook_ReturnsBadRequest_WhenModelStateIsInvalid()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            _controller.ModelState.AddModelError("Title", "Required");
+            var bookDto = new BookDto();
+
+            // Act
+            var result = await _controller.UpdateBook(id, bookDto);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<BookDto>>(result);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(actionResult.Result);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
         }
 
         [Fact]

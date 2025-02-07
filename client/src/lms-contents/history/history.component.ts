@@ -41,18 +41,8 @@ export class HistoryComponent implements OnInit {
     this.selectedRequest = null;
   }
 
-  confirmCancel(): void {
-    if (this.selectedRequest) {
-      this.requestService.cancelRequest(this.selectedRequest.bookId).subscribe(
-        response => {
-          this.selectedRequest!.status = 'Cancelled';
-          this.showPopup = false;
-          this.selectedRequest = null;
-        },
-        error => {
-          console.error('Error cancelling request:', error);
-        }
-      );
-    }
+  handleCancelled() {
+    this.showPopup = false;
+    this.selectedRequest = null;
   }
 }

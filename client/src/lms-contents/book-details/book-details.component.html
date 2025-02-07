@@ -1,7 +1,7 @@
-<div class="book-details-container">
+<div class="book-details-container" *ngIf="book">
     <div class="book-details">
       <div class="image-container">
-        <img [src]="book.thumbnail" alt="Book Image" class="book-image">
+        <img *ngIf="book.thumbnail" [src]="book.thumbnail" alt="{{ book.title }}" class="book-image">
       </div>
       <div class="details-container">
         <h2>{{ book.title }}</h2>
@@ -20,9 +20,10 @@
           </span>
         </p>
         <div class="button-container">
-          <button (click)="handleButtonClick()" [ngClass]="buttonState">{{ buttonTitle }}</button>
-          <button *ngIf="buttonState === 'Pending'" (click)="handleCancelButtonClick()" class="cancel-button">Cancel</button>
+          <button (click)="requestBook()" [ngClass]="buttonState" [disabled]="buttonState !== ButtonState.Request">{{ buttonTitle }}</button>
+          <button *ngIf="showCancelButton" (click)="cancelRequest()" class="cancel-button">Cancel</button>
         </div>
+        <app-cancellation-prompt *ngIf="showPopup" [request]="{ bookId: book.id! }" (close)="closePopup()" (cancelled)="cancelRequest()"></app-cancellation-prompt>
       </div>
     </div>
     <div class="similar-books">

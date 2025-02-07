@@ -10,12 +10,16 @@ export class RequestService {
         return this.client.addNewRequest(bookRequest);
     }
 
-    getBookRequestsByClient(): Observable<any> { // Corrected method name
+    getBookRequestsByClient(): Observable<any> { 
         return this.client.getBookRequestsByClient();
     }
 
     cancelRequest(bookId: string): Observable<any> {
         return this.client.cancelRequest(bookId);
+    }
+
+    cancelBookRequestByClient(clientId: string, bookId: string): Observable<any> {
+        return this.client.cancelRequestByClient(clientId, bookId);
     }
 
     returnRequest(query: string): Observable<any> {
@@ -28,5 +32,9 @@ export class RequestService {
 
     getAllBookRequests(): Observable<any> {
         return this.client.getAllBookRequests();
+    }
+
+    approveRequest(clientId: string, bookId: string): Observable<any> {
+        return this.client.approveRequest(clientId, bookId);
     }
 }

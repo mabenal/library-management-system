@@ -76,9 +76,13 @@ namespace lms.Peer.Controllers
 
         [Authorize(Roles = "librarian")]
         [HttpPost("AddBook")]
-        [ValidateModel]
         public async Task<ActionResult<BookDto>> AddBook([FromBody] BookDto bookDtoObject)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 var bookDomainModel = mapper.Map<Book>(bookDtoObject);
@@ -96,16 +100,18 @@ namespace lms.Peer.Controllers
             catch (Exception e)
             {
                 throw new GlobalException($"in booksController: {e}");
-                throw;
             }
-
-
         }
+        
         [Authorize(Roles = "librarian")]
         [HttpPut("UpdateBook/{id:Guid}")]
-        [ValidateModel]
         public async Task<ActionResult<BookDto>> UpdateBook([FromRoute] Guid id,[FromBody] BookDto book)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 var bookDomainModel = mapper.Map<Book>(book);

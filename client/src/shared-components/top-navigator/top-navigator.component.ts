@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { UserRoleService } from 'src/services/user-role.service';
 import { DisplayConstants } from 'src/constants/constants';
 import { Router } from '@angular/router';
 
@@ -12,10 +13,27 @@ export class TopNavigatorComponent implements OnInit {
   displayConstants = DisplayConstants;
   menuOpen = false;
   searchOpen = false;
+  userRoles: string[] = [];
 
-  constructor(private authService: AuthService,private router: Router) { }
+  constructor(private authService: AuthService,
+    private router: Router,
+    @Inject(UserRoleService) private userRoleService: UserRoleService ) { }
 
   ngOnInit(): void {
+    this.userRoles = this.userRoleService.getUserRoles();
+  }
+
+  navigateHome(): string {
+    if (this.userRoles?.includes('admin') || this.userRoles?.includes('librarian')) {
+       return '/dashboard';
+    }else{
+      return '/books';
+    }
+    
+  }
+
+  isAdminOrLibrarian(): boolean {
+    return this.userRoles.includes('admin') || this.userRoles.includes('librarian');
   }
 
   isLoggedIn(): boolean {

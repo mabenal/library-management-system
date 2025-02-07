@@ -1,40 +1,66 @@
-<table class="table table-bordered table-hover">
-    <thead>
-        <div class="card-header">Books</div>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Title</th>
-        <th scope="col">Author</th>
-        <th scope="col">ISBN</th>
-        <th scope="col">Category</th>
-        <th scope="col">Year Published</th>
-        <th scope="col">Available Copies</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody class="table table-hover">
-      <tr  *ngFor="let book of paginatedBooks; let i = index">
-        <th scope="row">{{ i + 1 }}</th>
-        <td>{{ book.title }}</td>
-        <td>{{ book.author }}</td>
-        <td>{{ book.isbn }}</td>
-        <td>{{ book.category }}</td>
-        <td>{{ book.yearPublished | date }}</td>
-        <td>{{ book.numberOfCopies }}</td>
-        <td >
-            <button class="btn btn-primary btn-sm me-2">
-                <i class="bi bi-pencil" (click)="editBook(book.id)" ></i>
-            </button>
-            <button class="btn btn-danger btn-sm" (click)="deleteBook(book.id)">
+<div class="main-container">
+  <div class="book-list">
+    <div class="heading-section">
+      <h2 class="heading">Books</h2>
+      <button class="btn btn-success add-book-btn" (click)="openAddModal()">
+        Add new book <i class="bi bi-plus-circle fs-2"></i>
+      </button>
+    </div>
+    <div class="table-controls">
+      <input type="text" class="form-control mb-3 search-input" placeholder="Search for books..." (input)="filterBooks($event)">
+      <div class="pagination-controls">
+        <span class="btn btn-secondary first" (click)="changePage(1)" aria-label="First Page">
+          &laquo;&laquo; First
+        </span>
+        <span class="btn btn-secondary" (click)="changePage(currentPage - 1)" aria-label="Previous Page">
+          &laquo; Prev
+        </span>
+        <input type="input" class="current-page-input" [(ngModel)]="currentPage" (keydown.enter)="changePage(currentPage)">
+        <span class="total-pages">{{ totalPages }}</span>
+        <span class="btn btn-secondary" (click)="changePage(currentPage + 1)" aria-label="Next Page">
+          Next &raquo;
+        </span>
+        <span class="btn btn-secondary last" (click)="changePage(totalPages)" aria-label="Last Page">
+          Last &raquo;&raquo;
+        </span>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <div class="card-header">Books</div>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col" (click)="sortBooks('title')">Title</th>
+            <th scope="col" (click)="sortBooks('author')">Author</th>
+            <th scope="col" (click)="sortBooks('isbn')">ISBN</th>
+            <th scope="col" (click)="sortBooks('category')">Category</th>
+            <th scope="col" (click)="sortBooks('yearPublished')">Year Published</th>
+            <th scope="col" (click)="sortBooks('numberOfCopies')">Available Copies</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table table-hover">
+          <tr *ngFor="let book of paginatedBooks; let i = index" [class.table-active]="book === selectedBook" (click)="selectBook(book)">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.category }}</td>
+            <td>{{ book.yearPublished | date }}</td>
+            <td>{{ book.numberOfCopies }}</td>
+            <td class="actions">
+              <button class="btn btn-primary btn-sm me-2" (click)="book.id ? openEditModal(book.id) : null">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="book.id ? deleteBook(book.id) : null">
                 <i class="bi bi-trash"></i>
-            </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <app-pagination
-  *ngIf="enablePagination"
-  [currentPage]="currentPage"
-  [totalPages]="totalPages"
-  (pageChange)="changePage($event)"
-></app-pagination>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <app-update-book *ngIf="showModal" [bookId]="selectedBookId" [isAddMode]="isAddMode" (close)="closeModal()"></app-update-book>
+</div>

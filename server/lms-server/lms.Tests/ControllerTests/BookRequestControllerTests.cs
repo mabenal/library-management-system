@@ -270,6 +270,59 @@ namespace lms.Tests.ControllerTests
         }
 
         [Fact]
+        public async Task CancelRequestByClient_ReturnsOkResult_WithBookRequestDto()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var bookId = Guid.NewGuid();
+            var bookRequest = BookRequest.CreatePendingRequest("Title", DateTime.Now, DateTime.Now.AddDays(7), new Client(), new Book());
+            var bookRequestDto = new BookRequestDto();
+
+            _bookRequestRepositoryMock.Setup(repo => repo.CancelRequest(clientId, bookId)).ReturnsAsync(bookRequest);
+            _mapperMock.Setup(m => m.Map<BookRequestDto>(bookRequest)).Returns(bookRequestDto);
+
+            // Act
+            var result = await _controller.CancelRequestByClient(bookId, clientId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsType<BookRequestDto>(okResult.Value);
+            Assert.Equal(bookRequestDto, returnValue);
+        }
+
+        [Fact]
+        public async Task CancelRequestByClient_ReturnsStatusCode403_WhenGlobalExceptionThrown()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var bookId = Guid.NewGuid();
+
+            _bookRequestRepositoryMock.Setup(repo => repo.CancelRequest(clientId, bookId)).ThrowsAsync(new GlobalException("Test exception"));
+
+            // Act
+            var result = await _controller.CancelRequestByClient(bookId, clientId);
+
+            // Assert
+            var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
+            Assert.Equal(403, statusCodeResult.StatusCode);
+            Assert.Equal("Test exception", statusCodeResult.Value);
+        }
+
+        [Fact]
+        public async Task CancelRequestByClient_ThrowsGlobalException()
+        {
+            // Arrange
+            var clientId = Guid.NewGuid();
+            var bookId = Guid.NewGuid();
+
+            _bookRequestRepositoryMock.Setup(repo => repo.CancelRequest(clientId, bookId)).ThrowsAsync(new Exception("Unexpected exception"));
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<GlobalException>(() => _controller.CancelRequestByClient(bookId, clientId));
+            Assert.Contains("in BookRequestController", exception.Message);
+        }
+
+        [Fact]
         public async Task ApproveRequest_ReturnsOkResult_WithBookRequestDto()
         {
             // Arrange

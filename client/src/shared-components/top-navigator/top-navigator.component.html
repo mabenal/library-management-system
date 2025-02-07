@@ -2,15 +2,15 @@
     <div class="header">
         <div class="nav-content">
             <div id="logo" class="nav-item">
-                <a class="nav-link active" aria-current="page" routerLink="/dashboard">
+                <a class="nav-link active" aria-current="page" [routerLink]="navigateHome()">
                     <img src="assets/LOGO_LMS.png" alt="LMS Logo" class="logo-image">
-                </a>
+                  </a>
             </div>
             <div class="custom-navbar-nav">
                 <div class="custom-nav-item">
                     <a class="custom-nav-link" routerLink="/books">{{ displayConstants.Books }}</a>
                 </div>
-                <div class="custom-nav-item" *ngIf="isLoggedIn()">
+                <div class="custom-nav-item" *ngIf="isLoggedIn() && !isAdminOrLibrarian()">
                     <a class="custom-nav-link" routerLink="/history">{{ displayConstants.History }}</a>
                 </div>
             </div>

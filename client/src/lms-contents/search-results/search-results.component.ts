@@ -46,10 +46,10 @@ export class SearchResultsComponent implements OnInit {
     if (this.searchTerm.trim()) {
       this.booksService.searchBooks(this.searchTerm).subscribe((results: BookDto[]) => {
         const endTime = performance.now();
-        this.searchTime = Number(((endTime - startTime) / 1000).toFixed(2)); // Ensure searchTime is a number
+        this.searchTime = Number(((endTime - startTime) / 1000).toFixed(2));
         this.searchResults = results;
         this.filteredResults = results;
-        this.publicationYears = [...new Set(results.map((book: BookDto) => parseInt(book.yearPublished)))].sort((a, b) => b - a); // Handle book type and ensure publicationYears is a number array
+        this.publicationYears = [...new Set(results.map((book: BookDto) => parseInt(book.yearPublished)))].sort((a, b) => b - a);
         this.sortResults();
       });
     }

@@ -4,12 +4,7 @@ import { BookDto, BookRequestDto } from 'auto/autolmsclient-abstractions';
 import { RequestService } from 'src/services/request.service';
 import { BooksService } from 'src/services/books.services';
 import { DisplayConstants } from 'src/constants/constants';
-
-enum ButtonState {
-  Request = 'Request',
-  Pending = 'Pending',
-  Approved = 'Approved'
-}
+import { BookRequestStateService, ButtonState } from 'src/services/book-request-state.service';
 
 @Component({
   selector: 'app-book-details',
@@ -25,11 +20,14 @@ export class BookDetailsComponent implements OnInit {
   showFullDescription = false;
   similarBooks: BookDto[] = [];
   showCancelButton = false;
+  showPopup: boolean = false;
+  public ButtonState = ButtonState;
 
   constructor(
     private route: ActivatedRoute,
     private booksService: BooksService,
-    private requestService: RequestService
+    private requestService: RequestService,
+    private bookRequestStateService: BookRequestStateService
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +42,7 @@ export class BookDetailsComponent implements OnInit {
       (book: BookDto) => {
         this.book = book;
         this.loadSimilarBooks();
-        this.checkPendingRequest();
+        this.checkRequestState();
       },
       (error: any) => {
         console.error('Error loading book details:', error);
@@ -64,13 +62,18 @@ export class BookDetailsComponent implements OnInit {
     this.showFullDescription = !this.showFullDescription;
   }
 
-  handleButtonClick() {
+  requestBook() {
+    if (!this.book.id) {
+      console.error('Book ID is undefined');
+      return;
+    }
+  
     this.buttonState = ButtonState.Pending;
-
+  
     const bookRequest: BookRequestDto = {
       bookId: this.book.id
     };
-
+  
     this.requestService.addNewRequest(bookRequest).subscribe(
       (response: any) => {
         this.buttonState = ButtonState.Approved;
@@ -83,7 +86,18 @@ export class BookDetailsComponent implements OnInit {
   }
 
   handleCancelButtonClick() {
-    // Logic to handle cancel request
+    this.showPopup = true;
+  }
+
+  closePopup() {
+    this.showPopup = false;
+  }
+
+  cancelRequest() {
+    this.showPopup = true;
+    this.buttonState = ButtonState.Request;
+    this.buttonTitle = 'Request';
+    this.showCancelButton = false;
   }
 
   private loadSimilarBooks() {
@@ -92,24 +106,19 @@ export class BookDetailsComponent implements OnInit {
       .slice(0, 10);
   }
 
-  private checkPendingRequest() {
-    if (!this.book) {
+  private checkRequestState() {
+    if (!this.book || !this.book.id) {
       return;
     }
 
-    this.requestService.getBookRequestsByClient().subscribe(
-      (requests: BookRequestDto[]) => {
-        const pendingRequest = requests.find(request => request.bookId === this.book.id && request.status === 'Pending');
-        if (pendingRequest) {
-          this.buttonState = ButtonState.Pending;
-          this.buttonTitle = 'Pending...';
-          this.showCancelButton = true;
-        } else {
-          this.showCancelButton = false;
-        }
+    this.bookRequestStateService.checkRequestState(this.book.id).subscribe(
+      ({ buttonState, buttonTitle, showCancelButton }) => {
+        this.buttonState = buttonState;
+        this.buttonTitle = buttonTitle;
+        this.showCancelButton = showCancelButton;
       },
       (error: any) => {
-        console.error('Error fetching book requests:', error);
+        console.error('Error fetching book request state:', error);
       }
     );
   }

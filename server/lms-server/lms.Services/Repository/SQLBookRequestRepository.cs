@@ -67,16 +67,15 @@ namespace lms.Services.Repository
         public async Task<BookRequest> ApproveRequest(Guid clientId, Guid bookId)
         {
             var bookRequestToApprove = await dbContext.BookRequests.SingleOrDefaultAsync(br => br.ClientId == clientId && br.BookId == bookId);
-            var bookstatus = await dbContext.BookRequests.AnyAsync(bs => bs.BookId == bookId && bs.Status == "Pending");
 
-            if (bookRequestToApprove == null && !bookstatus)
+            if (bookRequestToApprove == null || bookRequestToApprove.Status != "Pending")
             {
-                throw new GlobalException("Book request not in pending state.");
+                throw new GlobalException("Book request is not in pending state and cannot be approved.");
             }
 
             bookRequestToApprove.DateApproved = DateTime.Now;
             bookRequestToApprove.AcceptedReturnDate = DateTime.Now.AddDays(15);
-            bookRequestToApprove.Approve(dbContext);
+            bookRequestToApprove?.Approve(dbContext);
             await dbContext.SaveChangesAsync();
             return bookRequestToApprove;
         }

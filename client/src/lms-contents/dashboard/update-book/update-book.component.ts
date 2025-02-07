@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookDto } from 'auto/autolmsclient-abstractions';
 import { BooksService } from 'src/services/books.services';
@@ -9,6 +9,9 @@ import { BooksService } from 'src/services/books.services';
   styleUrls: ['./update-book.component.less']
 })
 export class UpdateBookComponent implements OnInit {
+  @Input() bookId!: string;
+  @Input() isAddMode: boolean = false;
+  @Output() close = new EventEmitter<void>();
 
   book: BookDto = {
     id: '',
@@ -24,6 +27,7 @@ export class UpdateBookComponent implements OnInit {
     numberOfCopies: 0
   };
   errorMessage: string = '';
+
   constructor(
     private booksService: BooksService,
     private route: ActivatedRoute,
@@ -31,30 +35,55 @@ export class UpdateBookComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const bookId = this.route.snapshot.paramMap.get('id');
-    if (bookId) {
-      this.booksService.getBook(bookId).subscribe(
-        book => {
-          this.book = book;
-        },
-        error => {
-          console.error('Error fetching book:', error);
-          this.errorMessage = 'Failed to load book data';
-        }
-      );
+    if (!this.isAddMode) {
+      const bookId = this.bookId || this.route.snapshot.paramMap.get('id');
+      if (bookId) {
+        this.booksService.getBook(bookId).subscribe(
+          book => {
+            this.book = book;
+          },
+          error => {
+            console.error('Error fetching book:', error);
+            this.errorMessage = 'Failed to load book data';
+          }
+        );
+      }
     }
   }
 
-  updateBook(): void {
-    this.booksService.updateBook(this.book.id, this.book).subscribe(
-      updatedBook => {
-        alert('Book updated successfully');
-        this.router.navigate(['/dashboard']); 
-      },
-      error => {
-        console.error('Error updating book:', error);
-        this.errorMessage = 'Failed to update book';
+  closeModal() {
+    this.close.emit();
+  }
+
+  saveBook(): void {
+    if (this.isAddMode) {
+      console.log('Adding book:', this.book);
+      this.booksService.addBook(this.book).subscribe(
+        newBook => {
+          alert('Book added successfully');
+          this.closeModal();
+        },
+        error => {
+          console.error('Error adding book:', error);
+          this.errorMessage = 'Failed to add book';
+        }
+      );
+    } else {
+      if (!this.book.id) {
+        console.error('Book ID is undefined');
+        this.errorMessage = 'Book ID is undefined';
+        return;
       }
-    );
+      this.booksService.updateBook(this.book.id, this.book).subscribe(
+        updatedBook => {
+          alert('Book updated successfully');
+          this.closeModal();
+        },
+        error => {
+          console.error('Error updating book:', error);
+          this.errorMessage = 'Failed to update book';
+        }
+      );
+    }
   }
 }
