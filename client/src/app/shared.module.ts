@@ -42,6 +42,7 @@ import { UpdateClientComponent } from 'src/lms-contents/update-client/update-cli
 import { AdminBookViewComponent } from '../lms-contents/dashboard/admin-book-view/admin-book-view.component';
 import { UpdateBookComponent} from 'src/lms-contents/dashboard/update-book/update-book.component';
 import { ClientService } from 'src/services/client.service';
+import { UserManagementService } from 'src/services/user-management.service';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { ClientService } from 'src/services/client.service';
     UserRoleService,
     ClientService,
     BookRequestStateService,
+    UserManagementService,
     { provide: 'IClient', useClass: Client },
     { provide: API_BASE_URL, useValue: 'https://localhost:7025' },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor , multi:true}

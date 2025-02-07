@@ -273,77 +273,17 @@ namespace lms.Tests.ControllerTests
         }
 
         [Fact]
-        public async Task AssignRole_ReturnsOk_WhenRoleAssignmentIsSuccessful()
-        {
-            // Arrange
-            var roleDto = new RoleDto
-            {
-                UserId = Guid.NewGuid(),
-                Role = "admin"
-            };
-
-            var user = new ApplicationUser { Id = roleDto.UserId };
-
-            _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
-                .ReturnsAsync(user);
-
-            _userManagerMock.Setup(x => x.AddToRoleAsync(user, roleDto.Role))
-                .ReturnsAsync(IdentityResult.Success);
-
-            // Act
-            var result = await _controller.AssignRole(roleDto);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var response = Assert.IsType<AccountActionResponseDto>(okResult.Value);
-            Assert.True(response.isSuccessful);
-        }
-
-        [Fact]
-        public async Task AssignRole_ReturnsBadRequest_WhenRoleAssignmentFails()
-        {
-            // Arrange
-            var roleDto = new RoleDto
-            {
-                UserId = Guid.NewGuid(),
-                Role = "admin"
-            };
-
-            var user = new ApplicationUser { Id = roleDto.UserId };
-
-            _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
-                .ReturnsAsync(user);
-
-            var identityResult = IdentityResult.Failed(new IdentityError { Description = "Role assignment failed" });
-            _userManagerMock.Setup(x => x.AddToRoleAsync(user, roleDto.Role))
-                .ReturnsAsync(identityResult);
-
-            // Act
-            var result = await _controller.AssignRole(roleDto);
-
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
-            var response = Assert.IsType<AccountActionResponseDto>(badRequestResult.Value);
-            Assert.False(response.isSuccessful);
-            Assert.Single(response.errors);
-            Assert.Equal("Role assignment failed", response.errors.First().Description);
-        }
-
-        [Fact]
         public async Task AssignRole_ReturnsNotFound_WhenUserNotFound()
         {
             // Arrange
-            var roleDto = new RoleDto
-            {
-                UserId = Guid.NewGuid(),
-                Role = "admin"
-            };
+            Guid userId = Guid.NewGuid();
+            string? role = "admin";
 
-            _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
+            _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString()))
                 .ReturnsAsync((ApplicationUser)null);
 
             // Act
-            var result = await _controller.AssignRole(roleDto);
+            var result = await _controller.AssignRole(userId, role);
 
             // Assert
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
@@ -352,37 +292,73 @@ namespace lms.Tests.ControllerTests
         }
 
         [Fact]
-        public async Task AssignRole_ThrowsGlobalException()
+        public async Task AssignRole_ThrowsGlobalException_WhenGlobalExceptionOccurs()
         {
             // Arrange
-            var roleDto = new RoleDto
-            {
-                UserId = Guid.NewGuid(),
-                Role = "admin"
-            };
+            Guid userId = Guid.NewGuid();
+            string role = "admin";
 
-            _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
-                .ThrowsAsync(new GlobalException("Test exception"));
+            _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString()))
+                .ThrowsAsync(new GlobalException("Test GlobalException"));
 
             // Act & Assert
-            await Assert.ThrowsAsync<GlobalException>(() => _controller.AssignRole(roleDto));
+            var exception = await Assert.ThrowsAsync<GlobalException>(() => _controller.AssignRole(userId, role));
+            Assert.Contains("in accountController:", exception.Message);
+            Assert.Contains("Test GlobalException", exception.Message);
+        }
+
+        [Fact]
+        public async Task AssignRole_RemovesClient_WhenRoleIsNotClient()
+        {
+            // Arrange
+            Guid userId = Guid.NewGuid();
+            string? role = "admin";
+
+            var user = new ApplicationUser { Id = userId };
+            var client = new Client { Id = user.Id };
+
+            _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString()))
+                .ReturnsAsync(user);
+
+            _userManagerMock.Setup(x => x.GetRolesAsync(user))
+                .ReturnsAsync(new List<string> { "Client" });
+
+            _userManagerMock.Setup(x => x.RemoveFromRolesAsync(user, It.IsAny<string[]>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _userManagerMock.Setup(x => x.AddToRoleAsync(user, role))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _contextMock.Setup(x => x.Clients.FindAsync(user.Id))
+                .ReturnsAsync(client);
+
+            _contextMock.Setup(x => x.Clients.Remove(client));
+            _contextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1);
+
+            // Act
+            var result = await _controller.AssignRole(userId, role);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var response = Assert.IsType<AccountActionResponseDto>(okResult.Value);
+            Assert.True(response.isSuccessful);
+            _contextMock.Verify(x => x.Clients.Remove(client), Times.Once);
+            _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task AssignRole_ReturnsInternalServerError_WhenExceptionOccurs()
         {
             // Arrange
-            var roleDto = new RoleDto
-            {
-                UserId = Guid.NewGuid(),
-                Role = "admin"
-            };
+            Guid userId = Guid.NewGuid();
+            string? role = "admin";
 
-            _userManagerMock.Setup(x => x.FindByIdAsync(roleDto.UserId.ToString()))
+            _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString()))
                 .ThrowsAsync(new Exception("Test exception"));
 
             // Act
-            var result = await _controller.AssignRole(roleDto);
+            var result = await _controller.AssignRole(userId, role);
 
             // Assert
             var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
@@ -632,17 +608,26 @@ namespace lms.Tests.ControllerTests
         }
 
         [Fact]
-        public async Task DeleteUser_ReturnsOk_WhenUserDeletionIsSuccessful()
+        public async Task DeleteUser_RemovesClient_WhenClientExists()
         {
             // Arrange
             var userId = Guid.NewGuid();
             var user = new ApplicationUser { Id = userId };
+            var client = new Client { Id = userId };
+            var deleteResponse = new AccountActionResponseDto { isSuccessful = true };
 
             _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString()))
                 .ReturnsAsync(user);
 
             _userManagerMock.Setup(x => x.DeleteAsync(user))
                 .ReturnsAsync(IdentityResult.Success);
+
+            _contextMock.Setup(x => x.Clients.FindAsync(user.Id))
+                .ReturnsAsync(client);
+
+            _contextMock.Setup(x => x.Clients.Remove(client));
+            _contextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(1);
 
             // Act
             var result = await _controller.DeleteUser(userId);
@@ -651,6 +636,37 @@ namespace lms.Tests.ControllerTests
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var response = Assert.IsType<AccountActionResponseDto>(okResult.Value);
             Assert.True(response.isSuccessful);
+            _contextMock.Verify(x => x.Clients.Remove(client), Times.Once);
+            _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteUser_DoesNotRemoveClient_WhenClientDoesNotExist()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var user = new ApplicationUser { Id = userId };
+            Client client = null;
+            var deleteResponse = new AccountActionResponseDto { isSuccessful = true };
+
+            _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString()))
+                .ReturnsAsync(user);
+
+            _userManagerMock.Setup(x => x.DeleteAsync(user))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _contextMock.Setup(x => x.Clients.FindAsync(user.Id))
+                .ReturnsAsync(client);
+
+            // Act
+            var result = await _controller.DeleteUser(userId);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var response = Assert.IsType<AccountActionResponseDto>(okResult.Value);
+            Assert.True(response.isSuccessful);
+            _contextMock.Verify(x => x.Clients.Remove(It.IsAny<Client>()), Times.Never);
+            _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
         }
 
         [Fact]
