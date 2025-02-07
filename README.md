@@ -41,6 +41,7 @@ The server-side application is built using .NET Core. It includes various contro
     ```sh
     cd client
     npm install
+    npm run build
     ```
 
 3. Navigate to the server directory and install dependencies:
