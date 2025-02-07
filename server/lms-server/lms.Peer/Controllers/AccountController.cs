@@ -151,12 +151,12 @@ namespace lms.Peer.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPost("AssignRole")]
-        public async Task<ActionResult<AccountActionResponseDto>> AssignRole([FromBody] RoleDto assignRoleDto)
+        [HttpPost("AssignRole/{clientId}/{role}")]
+        public async Task<ActionResult<AccountActionResponseDto>> AssignRole([FromRoute] Guid clientId, [FromRoute] string role)
         {
             try
             {
-                var user = await userManager.FindByIdAsync(assignRoleDto.UserId.ToString());
+                var user = await userManager.FindByIdAsync(clientId.ToString());
                 if (user == null)
                 {
                     var problemDetails = new ProblemDetails
@@ -167,7 +167,13 @@ namespace lms.Peer.Controllers
                     return NotFound(problemDetails);
                 }
 
-                var result = await userManager.AddToRoleAsync(user, assignRoleDto.Role);
+                var currentRoles = await userManager.GetRolesAsync(user);
+                if (currentRoles.Any())
+                {
+                    await userManager.RemoveFromRolesAsync(user, currentRoles.ToArray());
+                }
+
+                var result = await userManager.AddToRoleAsync(user, role);
                 var assignRoleResponse = new AccountActionResponseDto
                 {
                     isSuccessful = result.Succeeded,
@@ -176,15 +182,14 @@ namespace lms.Peer.Controllers
 
                 if (result.Succeeded)
                 {
-                    if(assignRoleDto.Role !="Client")
+                    if (role != "Client")
                     {
                         var client = await dbContext.Clients.FindAsync(user.Id);
-                        if(client != null)
+                        if (client != null)
                         {
                             dbContext.Clients.Remove(client);
                             await dbContext.SaveChangesAsync();
                         }
-
                     }
                     return Ok(assignRoleResponse);
                 }
@@ -195,7 +200,7 @@ namespace lms.Peer.Controllers
             {
                 throw new GlobalException($"in accountController: {ex}");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 var problemDetails = new ProblemDetails
                 {

@@ -54,11 +54,16 @@ export class UserGroupingComponent implements OnInit {
     this.router.navigate(['/update-client', id]);
   }
 
-  assignRole(clientId: string, event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    const role = selectElement.value;
-    this.userManagementService.assignRole(clientId, role);
-  }
+  assignRole(userId: string, role: string): void {
+    this.userManagementService.assignRole(userId, role).subscribe({
+        next: (response) => {
+            console.log('Role assigned successfully:', response);
+        },
+        error: (error) => {
+            console.error('Error assigning role:', error);
+        }
+    });
+}
 
   sortClients(field: SortableFields): void {
     this.sortDirection[field] = !this.sortDirection[field];

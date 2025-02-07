@@ -102,30 +102,30 @@
         }
       }
     },
-    "/api/Account/AssignRole": {
+    "/api/Account/AssignRole/{clientId}/{role}": {
       "post": {
         "tags": [
           "Account"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RoleDto"
-              }
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "role",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1243,6 +1243,7 @@
           "author",
           "category",
           "description",
+          "id",
           "isbn",
           "numberOfCopies",
           "pageCount",
